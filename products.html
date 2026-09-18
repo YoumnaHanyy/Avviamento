@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Shop | Avviamento</title>
+
+    <link rel="stylesheet" href="products.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@500;600&display=swap"
+          rel="stylesheet">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <button class="menu-btn" id="menuBtn">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <a href="index.html" class="logo">
+        AV
+    </a>
+
+    <div class="nav-icons">
+
+        <button class="icon-btn">
+            <i class="fa-regular fa-heart"></i>
+        </button>
+
+        <button class="icon-btn bag-btn">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <span class="bag-count">0</span>
+        </button>
+
+    </div>
+
+</nav>
+
+
+<!-- ================= SIDE MENU ================= -->
+
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<div class="side-menu" id="sideMenu">
+
+    <div class="side-menu-header">
+
+        <span>MENU</span>
+
+        <button id="closeMenu">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+    </div>
+
+    <div class="menu-links">
+
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="#">New Arrivals</a>
+        <a href="#">About Us</a>
+        <a href="#">Contact</a>
+
+    </div>
+
+</div>
+
+
+<!-- ================= SHOP HEADER ================= -->
+
+<section class="shop-header">
+
+    <p class="small-title">AVVIAMENTO MENSWEAR</p>
+
+    <h1>The Collection</h1>
+
+    <p class="description">
+        Timeless essentials designed for effortless everyday style.
+    </p>
+
+</section>
+
+
+<!-- ================= SHOP CONTROLS ================= -->
+
+<section class="shop-controls">
+
+    <p id="productCount">
+        0 Products
+    </p>
+
+    <div class="controls-right">
+
+        <select id="sortProducts">
+            <option value="default">Sort by</option>
+            <option value="low">Price: Low to High</option>
+            <option value="high">Price: High to Low</option>
+            <option value="name">Name</option>
+        </select>
+
+    </div>
+
+</section>
+
+
+<!-- ================= PRODUCTS ================= -->
+
+<main class="products-container">
+
+    <div class="products-grid" id="productsGrid">
+
+        <!-- Products will come from JavaScript -->
+
+    </div>
+
+</main>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <div class="footer-logo">
+        AVVIAMENTO
+    </div>
+
+    <p>MENSWEAR</p>
+
+    <div class="footer-line"></div>
+
+    <span>
+        BETTER BASICS. A BRIGHTER YOU.
+    </span>
+
+</footer>
+
+
+<script src="products.js"></script>
+
+</body>
+</html>
