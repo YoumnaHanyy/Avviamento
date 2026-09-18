@@ -14,19 +14,63 @@
 
 <body>
 
-<header class="navbar">
+   <header class="navbar">
 
-    <button class="menu-button" aria-label="Open menu">
-        ☰
-    </button>
+    <!-- Left Icons -->
+    <div class="navbar-left">
 
-    <a href="index.html" class="logo">
-        <img src="images/logo.png" alt="Avviamento Logo">
+        <button class="menu-button"
+                type="button"
+                aria-label="Open menu">
+
+            <i class="fa-solid fa-bars"></i>
+
+        </button>
+
+        <a href="search.html"
+           class="nav-icon"
+           aria-label="Search">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+        </a>
+
+    </div>
+
+
+    <!-- Logo -->
+    <a href="index.html"
+       class="logo"
+       aria-label="Avviamento Home">
+
+        <img
+            src="images/logo.png"
+            alt="Avviamento Logo"
+        >
+
     </a>
 
-    <a href="cart.html" class="cart-icon" aria-label="Shopping cart">
-        <i class="fa-solid fa-bag-shopping"></i>
-    </a>
+
+    <!-- Right Icons -->
+    <div class="navbar-right">
+
+        <a href="favorites.html"
+           class="nav-icon"
+           aria-label="Favourites">
+
+            <i class="fa-regular fa-heart"></i>
+
+        </a>
+
+        <a href="cart.html"
+           class="cart-icon"
+           aria-label="Shopping cart">
+
+            <i class="fa-solid fa-bag-shopping"></i>
+
+        </a>
+
+    </div>
 
 </header>
 
