@@ -102,8 +102,8 @@ function renderProducts(list) {
 
         card.addEventListener("click", () => {
 
-            window.location.href =
-                `product.html?id=${product.id}`;
+           window.location.href =
+    `product-details.html?id=${product.id}`;
 
         });
 

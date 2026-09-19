@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details | Avviamento</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="product-details.css">
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="navbar-left">
+            <button class="back-button" type="button" aria-label="Go back" onclick="history.back()">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <button class="menu-button" type="button" aria-label="Open menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <a href="index.html" class="logo" aria-label="Avviamento Home">
+            <img src="images/logo.png" alt="Avviamento Logo">
+        </a>
+
+        <a href="cart.html" class="cart-icon" aria-label="Shopping cart">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <span class="cart-count" id="cartCount">0</span>
+        </a>
+    </header>
+
+    <main class="product-page">
+        <section class="product-gallery" aria-label="Product images">
+            <button class="favourite-button" id="favouriteButton" type="button" aria-label="Add to favourites">
+                <i class="fa-regular fa-heart"></i>
+            </button>
+
+            <button class="gallery-arrow gallery-arrow-left" id="previousImage" type="button" aria-label="Previous image">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <div class="image-stage">
+                <img id="productImage" src="" alt="">
+                <div class="image-placeholder" id="imagePlaceholder">
+                    <i class="fa-solid fa-shirt"></i>
+                    <span>AVVIAMENTO</span>
+                </div>
+            </div>
+
+            <button class="gallery-arrow gallery-arrow-right" id="nextImage" type="button" aria-label="Next image">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+
+            <div class="gallery-dots" id="galleryDots" aria-label="Choose product image"></div>
+        </section>
+
+        <section class="product-information">
+            <div class="product-heading">
+                <div>
+                    <p class="eyebrow">AVVIAMENTO MENSWEAR</p>
+                    <h1 id="productName">Linen Shirt</h1>
+                </div>
+                <p class="product-price" id="productPrice">EGP 1,450</p>
+            </div>
+
+            <p class="product-description" id="productDescription">
+                A modern essential, crafted from breathable European linen for effortless refinement.
+            </p>
+
+            <div class="option-group">
+                <div class="option-title">
+                    <span>Colour: <strong id="selectedColourName">Ivory</strong></span>
+                </div>
+                <div class="colour-options" id="colourOptions"></div>
+            </div>
+
+            <div class="option-group">
+                <div class="option-title">
+                    <span>Size: <strong id="selectedSizeName">Select a size</strong></span>
+                    <button class="text-button" id="openSizeGuide" type="button">
+                        Size Guide <i class="fa-solid fa-arrow-right-long"></i>
+                    </button>
+                </div>
+                <div class="size-options" id="sizeOptions"></div>
+                <p class="selection-error" id="sizeError">Please select a size first.</p>
+            </div>
+
+            <div class="accordion-list">
+                <article class="accordion-item">
+                    <button class="accordion-button" type="button" aria-expanded="false">
+                        <span>Details</span><i class="fa-solid fa-plus"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <p id="productDetails"></p>
+                    </div>
+                </article>
+
+                <article class="accordion-item">
+                    <button class="accordion-button" type="button" aria-expanded="false">
+                        <span>Fabric &amp; Care</span><i class="fa-solid fa-plus"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <p id="fabricCare"></p>
+                    </div>
+                </article>
+
+                <article class="accordion-item">
+                    <button class="accordion-button" type="button" aria-expanded="false">
+                        <span>Delivery &amp; Returns</span><i class="fa-solid fa-plus"></i>
+                    </button>
+                    <div class="accordion-content">
+                        <p>Delivery within 2–5 business days. Exchanges and returns are available within 14 days.</p>
+                    </div>
+                </article>
+            </div>
+
+            <div class="purchase-row">
+                <div class="quantity-selector" aria-label="Quantity selector">
+                    <button id="decreaseQuantity" type="button" aria-label="Decrease quantity">−</button>
+                    <span id="quantity">1</span>
+                    <button id="increaseQuantity" type="button" aria-label="Increase quantity">+</button>
+                </div>
+
+                <button class="add-to-bag" id="addToBag" type="button">
+                    <span>Add to Bag</span>
+                    <i class="fa-solid fa-arrow-right-long"></i>
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <div class="modal" id="sizeGuideModal" aria-hidden="true">
+        <div class="modal-backdrop" data-close-modal></div>
+        <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="sizeGuideTitle">
+            <button class="modal-close" type="button" data-close-modal aria-label="Close size guide">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <p class="eyebrow">FIND YOUR FIT</p>
+            <h2 id="sizeGuideTitle">Size Guide</h2>
+            <div class="size-table-wrapper">
+                <table>
+                    <thead><tr><th>Size</th><th>Chest</th><th>Waist</th></tr></thead>
+                    <tbody>
+                        <tr><td>S</td><td>91–96 cm</td><td>76–81 cm</td></tr>
+                        <tr><td>M</td><td>97–102 cm</td><td>82–87 cm</td></tr>
+                        <tr><td>L</td><td>103–108 cm</td><td>88–93 cm</td></tr>
+                        <tr><td>XL</td><td>109–114 cm</td><td>94–99 cm</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <script src="product-details.js"></script>
+</body>
