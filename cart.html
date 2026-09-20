@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Your Bag | Avviamento</title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <link rel="stylesheet" href="cart.css">
+
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar">
+
+        <div class="navbar-left">
+
+            <button
+                class="menu-button"
+                type="button"
+                aria-label="Open menu"
+            >
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <a
+                href="search.html"
+                class="nav-icon"
+                aria-label="Search"
+            >
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </a>
+
+        </div>
+
+
+        <a
+            href="index.html"
+            class="logo"
+            aria-label="Avviamento Home"
+        >
+            <img
+                src="images/logo.png"
+                alt="Avviamento Logo"
+            >
+        </a>
+
+
+        <div class="navbar-right">
+
+            <a
+                href="favorites.html"
+                class="nav-icon"
+                aria-label="Favourites"
+            >
+                <i class="fa-regular fa-heart"></i>
+            </a>
+
+            <a
+                href="cart.html"
+                class="cart-icon"
+                aria-label="Shopping bag"
+            >
+
+                <i class="fa-solid fa-bag-shopping"></i>
+
+                <span
+                    class="cart-count"
+                    id="cartCount"
+                >
+                    0
+                </span>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- Cart Page -->
+    <main class="cart-page">
+
+        <section class="cart-heading">
+
+            <p class="small-title">
+                AVVIAMENTO MENSWEAR
+            </p>
+
+            <h1>Your Bag</h1>
+
+            <p id="bagSubtitle">
+                Review your selected pieces.
+            </p>
+
+        </section>
+
+
+
+        <!-- Cart Content -->
+        <div
+            class="cart-layout"
+            id="cartLayout"
+        >
+
+            <!-- Products -->
+            <section class="cart-products">
+
+                <div class="section-heading">
+
+                    <h2>Shopping Bag</h2>
+
+                    <span id="itemCountText">
+                        0 items
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="cart-items"
+                    id="cartItems"
+                >
+                </div>
+
+            </section>
+
+
+
+            <!-- Order Summary -->
+            <aside class="order-summary">
+
+                <h2>Order Summary</h2>
+
+
+                <div class="summary-row">
+
+                    <span>Subtotal</span>
+
+                    <strong id="subtotal">
+                        EGP 0
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                    <span>Delivery</span>
+
+                    <strong id="delivery">
+                        EGP 0
+                    </strong>
+
+                </div>
+
+
+                <p
+                    class="delivery-note"
+                    id="deliveryNote"
+                >
+                    Delivery is calculated from your order total.
+                </p>
+
+
+
+                <!-- Promo Code -->
+                <div class="promo-section">
+
+                    <label for="promoCode">
+                        Promo Code
+                    </label>
+
+                    <div class="promo-input">
+
+                        <input
+                            type="text"
+                            id="promoCode"
+                            placeholder="Enter code"
+                        >
+
+                        <button
+                            type="button"
+                            id="applyPromo"
+                        >
+                            Apply
+                        </button>
+
+                    </div>
+
+                    <p
+                        class="promo-message"
+                        id="promoMessage"
+                    >
+                    </p>
+
+                </div>
+
+
+
+                <div class="summary-total">
+
+                    <span>Total</span>
+
+                    <strong id="total">
+                        EGP 0
+                    </strong>
+
+                </div>
+
+
+                <a
+                    href="checkout.html"
+                    class="checkout-button"
+                    id="checkoutButton"
+                >
+
+                    <span>
+                        Continue to Checkout
+                    </span>
+
+                    <i class="fa-solid fa-arrow-right-long"></i>
+
+                </a>
+
+
+                <a
+                    href="products.html"
+                    class="continue-shopping"
+                >
+
+                    <i class="fa-solid fa-arrow-left-long"></i>
+
+                    Continue Shopping
+
+                </a>
+
+
+                <div class="secure-checkout">
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    <span>
+                        Secure checkout and protected payment
+                    </span>
+
+                </div>
+
+            </aside>
+
+        </div>
+
+
+
+        <!-- Empty Cart -->
+        <section
+            class="empty-cart"
+            id="emptyCart"
+        >
+
+            <div class="empty-cart-icon">
+
+                <i class="fa-solid fa-bag-shopping"></i>
+
+            </div>
+
+            <h2>Your bag is empty</h2>
+
+            <p>
+                Discover refined essentials made for an elevated everyday.
+            </p>
+
+            <a href="products.html">
+                Shop the Collection
+            </a>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- Notification -->
+    <div
+        class="toast"
+        id="toast"
+    >
+    </div>
+
+
+
+    <!-- Footer -->
+    <footer class="footer">
+
+        <div class="footer-brand">
+
+            <h2>AVVIAMENTO</h2>
+
+            <p>
+                Refined menswear for an elevated everyday.
+            </p>
+
+        </div>
+
+
+        <div class="footer-section">
+
+            <h3>Information</h3>
+
+            <a href="about.html">
+                About Us
+            </a>
+
+            <a href="contact.html">
+                Contact Us
+            </a>
+
+            <a href="shipping-policy.html">
+                Shipping Policy
+            </a>
+
+            <a href="refund-policy.html">
+                Refund & Exchange Policy
+            </a>
+
+        </div>
+
+
+        <div class="footer-section">
+
+            <h3>Contact Us</h3>
+
+            <a
+                href="https://wa.me/201000000000"
+                target="_blank"
+            >
+                <i class="fa-brands fa-whatsapp"></i>
+                WhatsApp
+            </a>
+
+            <a href="mailto:info@avviamento.com">
+
+                <i class="fa-regular fa-envelope"></i>
+
+                info@avviamento.com
+
+            </a>
+
+            <a
+                href="https://instagram.com/"
+                target="_blank"
+            >
+                <i class="fa-brands fa-instagram"></i>
+                Instagram
+            </a>
+
+        </div>
+
+    </footer>
+
+
+    <script src="cart.js"></script>
+
+</body>
+
+</html>

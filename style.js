@@ -109,3 +109,126 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 });
+
+
+function getCart() {
+
+    try {
+
+        const savedCart =
+            JSON.parse(
+                localStorage.getItem(
+                    "avviamentoCart"
+                )
+            );
+
+
+        return Array.isArray(savedCart)
+            ? savedCart
+            : [];
+
+    }
+
+    catch (error) {
+
+        return [];
+
+    }
+
+}
+
+
+
+function updateCartCount() {
+
+    const cart =
+        getCart();
+
+
+    const totalQuantity =
+        cart.reduce(
+
+            (total, item) => {
+
+                return total
+                    + Number(
+                        item.quantity || 0
+                    );
+
+            },
+
+            0
+        );
+
+
+    const cartCount =
+        document.getElementById(
+            "cartCount"
+        );
+
+
+    if (!cartCount) {
+
+        return;
+
+    }
+
+
+    cartCount.textContent =
+        totalQuantity;
+
+
+    cartCount.style.display =
+        totalQuantity > 0
+            ? "flex"
+            : "none";
+
+}
+
+
+
+/*
+Update cart when the page opens
+*/
+
+updateCartCount();
+
+
+
+/*
+Update cart when returning
+to the home page
+*/
+
+window.addEventListener(
+    "pageshow",
+
+    () => {
+
+        updateCartCount();
+
+    }
+);
+
+
+
+/*
+Update cart if another tab changes it
+*/
+
+window.addEventListener(
+    "storage",
+
+    event => {
+
+        if (
+            event.key ===
+            "avviamentoCart"
+        ) {
+
+            updateCartCount();
+
+        }
+
+    }
+);
