@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | Avviamento</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="checkout.css">
+</head>
+
+<body>
+    <header class="checkout-header">
+        <a href="cart.html" class="back-link">
+            <i class="fa-solid fa-chevron-left"></i>
+            <span>Back to Bag</span>
+        </a>
+
+        <a href="index.html" class="logo" aria-label="Avviamento Home">
+            <img src="images/logo.png" alt="Avviamento Logo">
+        </a>
+
+        <div class="secure-header">
+            <i class="fa-solid fa-lock"></i>
+            <span>Secure Checkout</span>
+        </div>
+    </header>
+
+    <main class="checkout-page">
+        <section class="checkout-title">
+            <p class="eyebrow">AVVIAMENTO MENSWEAR</p>
+            <h1>Checkout</h1>
+        </section>
+
+        <div class="checkout-layout" id="checkoutLayout">
+            <form class="checkout-form" id="checkoutForm" novalidate>
+                <section class="form-section">
+                    <div class="section-heading">
+                        <span class="step-number">01</span>
+                        <div>
+                            <h2>Contact Information</h2>
+                            <p>We will use these details to update you about your order.</p>
+                        </div>
+                    </div>
+
+                    <div class="fields-grid">
+                        <div class="field full-width">
+                            <label for="email">Email Address</label>
+                            <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+                            <span class="field-error">Enter a valid email address.</span>
+                        </div>
+
+                        <div class="field">
+                            <label for="firstName">First Name</label>
+                            <input id="firstName" name="firstName" type="text" autocomplete="given-name" required>
+                            <span class="field-error">First name is required.</span>
+                        </div>
+
+                        <div class="field">
+                            <label for="lastName">Last Name</label>
+                            <input id="lastName" name="lastName" type="text" autocomplete="family-name" required>
+                            <span class="field-error">Last name is required.</span>
+                        </div>
+
+                        <div class="field full-width">
+                            <label for="phone">Phone Number</label>
+                            <div class="phone-field">
+                                <span>+20</span>
+                                <input id="phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="10 0000 0000" required>
+                            </div>
+                            <span class="field-error">Enter a valid Egyptian phone number.</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="form-section">
+                    <div class="section-heading">
+                        <span class="step-number">02</span>
+                        <div>
+                            <h2>Shipping Address</h2>
+                            <p>Enter the address where you would like to receive your order.</p>
+                        </div>
+                    </div>
+
+                    <div class="fields-grid">
+                        <div class="field">
+                            <label for="governorate">Governorate</label>
+                            <select id="governorate" name="governorate" required>
+                                <option value="">Select governorate</option>
+                                <option>Cairo</option>
+                                <option>Giza</option>
+                                <option>Alexandria</option>
+                                <option>Qalyubia</option>
+                                <option>Sharqia</option>
+                                <option>Dakahlia</option>
+                                <option>Gharbia</option>
+                                <option>Other</option>
+                            </select>
+                            <span class="field-error">Select your governorate.</span>
+                        </div>
+
+                        <div class="field">
+                            <label for="city">City / Area</label>
+                            <input id="city" name="city" type="text" autocomplete="address-level2" required>
+                            <span class="field-error">City or area is required.</span>
+                        </div>
+
+                        <div class="field full-width">
+                            <label for="street">Street Address</label>
+                            <input id="street" name="street" type="text" autocomplete="street-address" placeholder="Street name and number" required>
+                            <span class="field-error">Street address is required.</span>
+                        </div>
+
+                        <div class="field">
+                            <label for="building">Building / Villa</label>
+                            <input id="building" name="building" type="text" required>
+                            <span class="field-error">Building number is required.</span>
+                        </div>
+
+                        <div class="field">
+                            <label for="apartment">Floor / Apartment</label>
+                            <input id="apartment" name="apartment" type="text">
+                        </div>
+
+                        <div class="field full-width">
+                            <label for="notes">Delivery Notes <span>(Optional)</span></label>
+                            <textarea id="notes" name="notes" rows="3" placeholder="Landmark or special delivery instructions"></textarea>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="form-section">
+                    <div class="section-heading">
+                        <span class="step-number">03</span>
+                        <div>
+                            <h2>Delivery Method</h2>
+                            <p>Choose how quickly you would like to receive your order.</p>
+                        </div>
+                    </div>
+
+                    <div class="choice-list">
+                        <label class="choice-card selected">
+                            <input type="radio" name="deliveryMethod" value="standard" checked>
+                            <span class="custom-radio"></span>
+                            <span class="choice-icon"><i class="fa-solid fa-truck"></i></span>
+                            <span class="choice-content">
+                                <strong>Standard Delivery</strong>
+                                <small>2–5 business days</small>
+                            </span>
+                            <strong class="choice-price" id="standardDeliveryPrice">EGP 100</strong>
+                        </label>
+
+                        <label class="choice-card">
+                            <input type="radio" name="deliveryMethod" value="express">
+                            <span class="custom-radio"></span>
+                            <span class="choice-icon"><i class="fa-solid fa-bolt"></i></span>
+                            <span class="choice-content">
+                                <strong>Express Delivery</strong>
+                                <small>1–2 business days</small>
+                            </span>
+                            <strong class="choice-price">EGP 175</strong>
+                        </label>
+                    </div>
+                </section>
+
+                <section class="form-section">
+                    <div class="section-heading">
+                        <span class="step-number">04</span>
+                        <div>
+                            <h2>Payment Method</h2>
+                            <p>All transactions are secure and protected.</p>
+                        </div>
+                    </div>
+
+                    <div class="choice-list">
+                        <label class="choice-card selected">
+                            <input type="radio" name="paymentMethod" value="cash" checked>
+                            <span class="custom-radio"></span>
+                            <span class="choice-icon"><i class="fa-solid fa-money-bill-wave"></i></span>
+                            <span class="choice-content">
+                                <strong>Cash on Delivery</strong>
+                                <small>Pay when your order arrives</small>
+                            </span>
+                        </label>
+
+                    
+                    </div>
+
+                    <p class="payment-disclaimer" id="paymentDisclaimer">
+                        Card payment is a demo option until a secure payment gateway is connected.
+                    </p>
+                </section>
+
+                <label class="terms-row">
+                    <input id="terms" type="checkbox" required>
+                    <span>
+                        I agree to the <a href="shipping-policy.html">shipping policy</a> and
+                        <a href="refund-policy.html">refund and exchange policy</a>.
+                    </span>
+                </label>
+                <p class="terms-error" id="termsError">Please accept the policies before placing your order.</p>
+            </form>
+
+            <aside class="order-summary">
+                <div class="summary-header">
+                    <h2>Your Order</h2>
+                    <a href="cart.html">Edit Bag</a>
+                </div>
+
+                <div class="summary-products" id="summaryProducts"></div>
+
+                <div class="summary-prices">
+                    <div class="price-row">
+                        <span>Subtotal</span>
+                        <strong id="subtotal">EGP 0</strong>
+                    </div>
+                    <div class="price-row">
+                        <span>Delivery</span>
+                        <strong id="delivery">EGP 0</strong>
+                    </div>
+                    <div class="price-row total-row">
+                        <span>Total</span>
+                        <strong id="total">EGP 0</strong>
+                    </div>
+                </div>
+
+                <button class="place-order-button" id="placeOrderButton" type="submit" form="checkoutForm">
+                    <span>Place Order</span>
+                    <i class="fa-solid fa-arrow-right-long"></i>
+                </button>
+
+                <p class="secure-note">
+                    <i class="fa-solid fa-lock"></i>
+                    Your personal information is protected.
+                </p>
+            </aside>
+        </div>
+
+        <section class="empty-checkout" id="emptyCheckout">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <h2>Your bag is empty</h2>
+            <p>Add products to your bag before continuing to checkout.</p>
+            <a href="products.html">Shop the Collection</a>
+        </section>
+    </main>
+
+    <div class="order-modal" id="orderModal" aria-hidden="true">
+        <div class="modal-backdrop"></div>
+        <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="successTitle">
+            <div class="success-icon"><i class="fa-solid fa-check"></i></div>
+            <p class="eyebrow">ORDER CONFIRMED</p>
+            <h2 id="successTitle">Thank You</h2>
+            <p>Your order has been placed successfully.</p>
+            <div class="order-number">
+                <span>Order Number</span>
+                <strong id="orderNumber"></strong>
+            </div>
+            <p class="confirmation-text">A confirmation will be sent to <strong id="confirmationEmail"></strong>.</p>
+            <a href="products.html">Continue Shopping</a>
+        </section>
+    </div>
+
+    <script src="checkout.js"></script>
+</body>
+</html>

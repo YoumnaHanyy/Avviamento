@@ -110,7 +110,43 @@ button {
     font-weight: normal;
     line-height: 0.98;
 }
+.cart-icon {
+    position: relative;
 
+    width: 45px;
+    height: 45px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.cart-count {
+    position: absolute;
+
+    top: 0;
+    right: -2px;
+
+    min-width: 18px;
+    height: 18px;
+
+    padding: 0 5px;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50px;
+
+    background-color: #032d37;
+    color: #F3EEE5;
+
+    font-size: 10px;
+    font-weight: bold;
+
+    line-height: 1;
+}
 /* Shop button */
 
 .shop-button {

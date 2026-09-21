@@ -102,8 +102,8 @@ function renderProducts(list) {
 
         card.addEventListener("click", () => {
 
-            window.location.href =
-                `product.html?id=${product.id}`;
+           window.location.href =
+    `product-details.html?id=${product.id}`;
 
         });
 
@@ -198,3 +198,126 @@ sort.addEventListener("change", () => {
 
 
 renderProducts(products);
+
+function getCart() {
+
+    try {
+
+        const savedCart =
+            JSON.parse(
+                localStorage.getItem(
+                    "avviamentoCart"
+                )
+            );
+
+
+        return Array.isArray(savedCart)
+            ? savedCart
+            : [];
+
+    }
+
+    catch (error) {
+
+        return [];
+
+    }
+
+}
+
+
+
+function updateCartCount() {
+
+    const cart =
+        getCart();
+
+
+    const totalQuantity =
+        cart.reduce(
+
+            (total, item) => {
+
+                return total
+                    + Number(
+                        item.quantity || 0
+                    );
+
+            },
+
+            0
+        );
+
+
+    const cartCount =
+        document.getElementById(
+            "cartCount"
+        );
+
+
+    if (!cartCount) {
+
+        return;
+
+    }
+
+
+    cartCount.textContent =
+        totalQuantity;
+
+
+    cartCount.style.display =
+        totalQuantity > 0
+            ? "flex"
+            : "none";
+
+}
+
+
+
+/*
+Update number when page opens
+*/
+
+updateCartCount();
+
+
+
+/*
+Update number when returning
+from Product Details or Cart
+*/
+
+window.addEventListener(
+    "pageshow",
+
+    () => {
+
+        updateCartCount();
+
+    }
+);
+
+
+
+/*
+Update number if cart changes
+in another browser tab
+*/
+
+window.addEventListener(
+    "storage",
+
+    event => {
+
+        if (
+            event.key ===
+            "avviamentoCart"
+        ) {
+
+            updateCartCount();
+
+        }
+
+    }
+);
