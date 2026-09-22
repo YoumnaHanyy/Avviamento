@@ -1,114 +1,352 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
 
-    const productCards =
-        document.querySelectorAll(
-            ".new-arrivals .product-card"
-        );
-
-
-    productCards.forEach(card => {
-
-        const productId =
-            card.dataset.productId;
+        const productCards =
+            document.querySelectorAll(
+                ".new-arrivals .product-card"
+            );
 
 
-        const productLink =
-            card.querySelector("a");
+        function getFavourites() {
+
+            try {
+
+                const saved =
+                    JSON.parse(
+                        localStorage.getItem(
+                            "avviamentoFavourites"
+                        )
+                    );
 
 
-        /*
-        Make sure the image link contains
-        the correct product ID
-        */
+                return Array.isArray(saved)
+                    ? saved
+                    : [];
 
-        if (productLink) {
+            }
 
-            productLink.href =
-                `product-details.html?id=${productId}`;
+            catch {
+
+                return [];
+
+            }
 
         }
 
 
-        /*
-        Open product details when clicking
-        anywhere on the product card
-        */
+        function saveFavourites(
+            favourites
+        ) {
 
-        card.addEventListener("click", event => {
-
-            /*
-            Do not open product details
-            when clicking the favourite button
-            */
-
-            if (
-                event.target.closest(
-                    ".favorite-button"
+            localStorage.setItem(
+                "avviamentoFavourites",
+                JSON.stringify(
+                    favourites
                 )
-            ) {
+            );
 
+        }
+
+
+        function updateNavbarFavourite() {
+
+            const navbarFavourite =
+                document.getElementById(
+                    "navbarFavourite"
+                );
+
+
+            if (!navbarFavourite) {
                 return;
-
             }
 
 
-            event.preventDefault();
+            const favourites =
+                getFavourites();
 
 
-            window.location.href =
-                `product-details.html?id=${productId}`;
-
-        });
-
-    });
+            const hasFavourites =
+                favourites.length > 0;
 
 
+            const icon =
+                navbarFavourite.querySelector(
+                    "i"
+                );
 
-    /*
-    Favourite buttons
-    */
 
-    const favouriteButtons =
-        document.querySelectorAll(
-            ".favorite-button"
+            navbarFavourite.classList.toggle(
+                "active",
+                hasFavourites
+            );
+
+
+            if (hasFavourites) {
+
+                icon.classList.remove(
+                    "fa-regular"
+                );
+
+                icon.classList.add(
+                    "fa-solid"
+                );
+
+            }
+
+            else {
+
+                icon.classList.remove(
+                    "fa-solid"
+                );
+
+                icon.classList.add(
+                    "fa-regular"
+                );
+
+            }
+
+        }
+
+
+        function updateHomeFavouriteButtons() {
+
+            const favourites =
+                getFavourites();
+
+
+            productCards.forEach(
+                card => {
+
+                    const productId =
+                        Number(
+                            card.dataset.productId
+                        );
+
+
+                    const button =
+                        card.querySelector(
+                            ".favorite-button"
+                        );
+
+
+                    if (!button) {
+                        return;
+                    }
+
+
+                    const active =
+                        favourites.includes(
+                            productId
+                        );
+
+
+                    button.classList.toggle(
+                        "active",
+                        active
+                    );
+
+
+                    const icon =
+                        button.querySelector(
+                            "i"
+                        );
+
+
+                    if (active) {
+
+                        icon.classList.remove(
+                            "fa-regular"
+                        );
+
+                        icon.classList.add(
+                            "fa-solid"
+                        );
+
+
+                        button.setAttribute(
+                            "aria-label",
+                            "Remove from favourites"
+                        );
+
+                    }
+
+                    else {
+
+                        icon.classList.remove(
+                            "fa-solid"
+                        );
+
+                        icon.classList.add(
+                            "fa-regular"
+                        );
+
+
+                        button.setAttribute(
+                            "aria-label",
+                            "Add to favourites"
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        productCards.forEach(
+            card => {
+
+                const productId =
+                    Number(
+                        card.dataset.productId
+                    );
+
+
+                const productLink =
+                    card.querySelector(
+                        "a"
+                    );
+
+
+                if (productLink) {
+
+                    productLink.href =
+                        `product-details.html?id=${productId}`;
+
+                }
+
+
+                card.addEventListener(
+                    "click",
+                    event => {
+
+                        if (
+                            event.target.closest(
+                                ".favorite-button"
+                            )
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        event.preventDefault();
+
+
+                        window.location.href =
+                            `product-details.html?id=${productId}`;
+
+                    }
+                );
+
+
+                const favouriteButton =
+                    card.querySelector(
+                        ".favorite-button"
+                    );
+
+
+                if (!favouriteButton) {
+                    return;
+                }
+
+
+                favouriteButton.addEventListener(
+                    "click",
+                    event => {
+
+                        event.preventDefault();
+
+                        event.stopPropagation();
+
+
+                        const favourites =
+                            getFavourites();
+
+
+                        const index =
+                            favourites.indexOf(
+                                productId
+                            );
+
+
+                        if (
+                            index === -1
+                        ) {
+
+                            favourites.push(
+                                productId
+                            );
+
+                        }
+
+                        else {
+
+                            favourites.splice(
+                                index,
+                                1
+                            );
+
+                        }
+
+
+                        saveFavourites(
+                            favourites
+                        );
+
+
+                        updateHomeFavouriteButtons();
+
+                        updateNavbarFavourite();
+
+                    }
+                );
+
+            }
         );
 
 
-    favouriteButtons.forEach(button => {
+        updateHomeFavouriteButtons();
 
-        button.addEventListener(
-            "click",
+        updateNavbarFavourite();
 
+
+        window.addEventListener(
+            "pageshow",
+            () => {
+
+                updateHomeFavouriteButtons();
+
+                updateNavbarFavourite();
+
+            }
+        );
+
+
+        window.addEventListener(
+            "storage",
             event => {
 
-                event.preventDefault();
-
-                event.stopPropagation();
-
-
-                button.classList.toggle("active");
-
-
                 if (
-                    button.classList.contains("active")
+                    event.key ===
+                    "avviamentoFavourites"
                 ) {
 
-                    button.textContent = "♥";
+                    updateHomeFavouriteButtons();
 
-                }
-
-                else {
-
-                    button.textContent = "♡";
+                    updateNavbarFavourite();
 
                 }
 
             }
         );
 
-    });
+    }
+);
 
-});
 
 
 function getCart() {
@@ -187,22 +425,11 @@ function updateCartCount() {
 
 
 
-/*
-Update cart when the page opens
-*/
-
 updateCartCount();
 
 
-
-/*
-Update cart when returning
-to the home page
-*/
-
 window.addEventListener(
     "pageshow",
-
     () => {
 
         updateCartCount();
@@ -211,14 +438,8 @@ window.addEventListener(
 );
 
 
-
-/*
-Update cart if another tab changes it
-*/
-
 window.addEventListener(
     "storage",
-
     event => {
 
         if (

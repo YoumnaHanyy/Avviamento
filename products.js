@@ -4,7 +4,11 @@ const products = [
         name: "Linen Shirt",
         price: 1450,
         image: "images/henley.jpg",
-        colors: ["#eee6d8", "#032d37", "#222222"],
+        colors: [
+            "#eee6d8",
+            "#032d37",
+            "#222222"
+        ],
         sales: 85
     },
 
@@ -13,7 +17,10 @@ const products = [
         name: "Piqué Polo",
         price: 1250,
         image: "images/knitted.jpg",
-        colors: ["#032d37", "#cbb99d"],
+        colors: [
+            "#032d37",
+            "#cbb99d"
+        ],
         sales: 120
     },
 
@@ -22,7 +29,10 @@ const products = [
         name: "Tailored Trousers",
         price: 1650,
         image: "images/trousers.jpg",
-        colors: ["#c9b89c", "#444444"],
+        colors: [
+            "#c9b89c",
+            "#444444"
+        ],
         sales: 60
     },
 
@@ -31,29 +41,147 @@ const products = [
         name: "Overshirt",
         price: 1750,
         image: "images/overshirt.jpg",
-        colors: ["#111111", "#e2ceb5"],
+        colors: [
+            "#111111",
+            "#e2ceb5"
+        ],
         sales: 45
     }
 ];
 
 
-const grid = document.getElementById("productsGrid");
-const count = document.getElementById("productCount");
-const sort = document.getElementById("sortProducts");
+const grid =
+    document.getElementById("productsGrid");
 
+const count =
+    document.getElementById("productCount");
+
+const sort =
+    document.getElementById("sortProducts");
+
+
+/* =========================
+   FAVOURITES
+========================= */
+
+function getFavourites() {
+
+    try {
+
+        const saved =
+            JSON.parse(
+                localStorage.getItem(
+                    "avviamentoFavourites"
+                )
+            );
+
+        return Array.isArray(saved)
+            ? saved
+            : [];
+
+    }
+
+    catch {
+
+        return [];
+
+    }
+
+}
+
+
+function saveFavourites(favourites) {
+
+    localStorage.setItem(
+        "avviamentoFavourites",
+        JSON.stringify(favourites)
+    );
+
+}
+
+
+function isFavourite(productId) {
+
+    const favourites =
+        getFavourites();
+
+    return favourites.includes(
+        productId
+    );
+
+}
+
+
+function toggleFavourite(productId) {
+
+    const favourites =
+        getFavourites();
+
+
+    const index =
+        favourites.indexOf(
+            productId
+        );
+
+
+    if (index === -1) {
+
+        favourites.push(
+            productId
+        );
+
+    }
+
+    else {
+
+        favourites.splice(
+            index,
+            1
+        );
+
+    }
+
+
+    saveFavourites(
+        favourites
+    );
+
+
+    return favourites.includes(
+        productId
+    );
+
+}
+
+
+/* =========================
+   PRODUCTS
+========================= */
 
 function renderProducts(list) {
 
     grid.innerHTML = "";
 
-    count.textContent = `${list.length} Products`;
+    count.textContent =
+        `${list.length} Products`;
 
 
     list.forEach(product => {
 
-        const card = document.createElement("article");
+        const card =
+            document.createElement(
+                "article"
+            );
 
-        card.className = "product-card";
+
+        card.className =
+            "product-card";
+
+
+        const favouriteActive =
+            isFavourite(
+                product.id
+            );
 
 
         card.innerHTML = `
@@ -65,13 +193,15 @@ function renderProducts(list) {
                 >
 
                 <button
-                    class="favorite"
-                    aria-label="Add to favourites"
+                    class="favorite${favouriteActive ? " active" : ""}"
+                    type="button"
+                    aria-label="${favouriteActive ? "Remove from favourites" : "Add to favourites"}"
                 >
-                    <i class="fa-regular fa-heart"></i>
+                    <i class="fa-${favouriteActive ? "solid" : "regular"} fa-heart"></i>
                 </button>
 
             </div>
+
 
             <div class="product-info">
 
@@ -86,12 +216,12 @@ function renderProducts(list) {
                 <div class="colors">
 
                     ${product.colors
-                        .map(color =>
-                            `<span
+                        .map(color => `
+                            <span
                                 class="color"
                                 style="background:${color}">
-                            </span>`
-                        )
+                            </span>
+                        `)
                         .join("")}
 
                 </div>
@@ -100,104 +230,233 @@ function renderProducts(list) {
         `;
 
 
-        card.addEventListener("click", () => {
+        card.addEventListener(
+            "pointerdown",
+            event => {
 
-           window.location.href =
-    `product-details.html?id=${product.id}`;
+                if (
+                    event.target.closest(
+                        ".favorite"
+                    )
+                ) {
+                    return;
+                }
 
-        });
+
+                card.classList.add(
+                    "touch-active"
+                );
+
+            }
+        );
+
+
+        card.addEventListener(
+            "pointerup",
+            () => {
+
+                setTimeout(() => {
+
+                    card.classList.remove(
+                        "touch-active"
+                    );
+
+                }, 150);
+
+            }
+        );
+
+
+        card.addEventListener(
+            "pointerleave",
+            () => {
+
+                card.classList.remove(
+                    "touch-active"
+                );
+
+            }
+        );
+
+
+        card.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    event.target.closest(
+                        ".favorite"
+                    )
+                ) {
+                    return;
+                }
+
+
+                window.location.href =
+                    `product-details.html?id=${product.id}`;
+
+            }
+        );
 
 
         const favorite =
-            card.querySelector(".favorite");
+            card.querySelector(
+                ".favorite"
+            );
 
 
-        favorite.addEventListener("click", event => {
+        favorite.addEventListener(
+            "click",
+            event => {
 
-            event.stopPropagation();
+                event.preventDefault();
 
-
-            favorite.classList.toggle("active");
-
-
-            const icon =
-                favorite.querySelector("i");
+                event.stopPropagation();
 
 
-            if (favorite.classList.contains("active")) {
+                const active =
+                    toggleFavourite(
+                        product.id
+                    );
 
-                icon.classList.remove("fa-regular");
 
-                icon.classList.add("fa-solid");
+                favorite.classList.toggle(
+                    "active",
+                    active
+                );
+
+
+                favorite.setAttribute(
+                    "aria-label",
+                    active
+                        ? "Remove from favourites"
+                        : "Add to favourites"
+                );
+
+
+                const icon =
+                    favorite.querySelector(
+                        "i"
+                    );
+
+
+                if (active) {
+
+                    icon.classList.remove(
+                        "fa-regular"
+                    );
+
+                    icon.classList.add(
+                        "fa-solid"
+                    );
+
+                }
+
+                else {
+
+                    icon.classList.remove(
+                        "fa-solid"
+                    );
+
+                    icon.classList.add(
+                        "fa-regular"
+                    );
+
+                }
 
             }
-
-            else {
-
-                icon.classList.remove("fa-solid");
-
-                icon.classList.add("fa-regular");
-
-            }
-
-        });
+        );
 
 
-        grid.appendChild(card);
+        grid.appendChild(
+            card
+        );
 
     });
 
 }
 
 
-sort.addEventListener("change", () => {
+/* =========================
+   SORT
+========================= */
 
-    let list = [...products];
+function getSortedProducts() {
 
-
-    if (sort.value === "best") {
-
-        list.sort(
-            (a, b) => b.sales - a.sales
-        );
-
-    }
+    let list =
+        [...products];
 
 
-    else if (sort.value === "low") {
-
-        list.sort(
-            (a, b) => a.price - b.price
-        );
-
-    }
-
-
-    else if (sort.value === "high") {
-
-        list.sort(
-            (a, b) => b.price - a.price
-        );
-
-    }
-
-
-    else if (sort.value === "name") {
+    if (
+        sort.value === "best"
+    ) {
 
         list.sort(
             (a, b) =>
-                a.name.localeCompare(b.name)
+                b.sales - a.sales
         );
 
     }
 
 
-    renderProducts(list);
+    else if (
+        sort.value === "low"
+    ) {
 
-});
+        list.sort(
+            (a, b) =>
+                a.price - b.price
+        );
+
+    }
 
 
-renderProducts(products);
+    else if (
+        sort.value === "high"
+    ) {
+
+        list.sort(
+            (a, b) =>
+                b.price - a.price
+        );
+
+    }
+
+
+    else if (
+        sort.value === "name"
+    ) {
+
+        list.sort(
+            (a, b) =>
+                a.name.localeCompare(
+                    b.name
+                )
+        );
+
+    }
+
+
+    return list;
+
+}
+
+
+sort.addEventListener(
+    "change",
+    () => {
+
+        renderProducts(
+            getSortedProducts()
+        );
+
+    }
+);
+
+
+/* =========================
+   CART
+========================= */
 
 function getCart() {
 
@@ -217,14 +476,13 @@ function getCart() {
 
     }
 
-    catch (error) {
+    catch {
 
         return [];
 
     }
 
 }
-
 
 
 function updateCartCount() {
@@ -236,16 +494,15 @@ function updateCartCount() {
     const totalQuantity =
         cart.reduce(
 
-            (total, item) => {
+            (total, item) =>
 
-                return total
-                    + Number(
-                        item.quantity || 0
-                    );
-
-            },
+                total +
+                Number(
+                    item.quantity || 0
+                ),
 
             0
+
         );
 
 
@@ -256,9 +513,7 @@ function updateCartCount() {
 
 
     if (!cartCount) {
-
         return;
-
     }
 
 
@@ -274,24 +529,24 @@ function updateCartCount() {
 }
 
 
+/* =========================
+   START PAGE
+========================= */
 
-/*
-Update number when page opens
-*/
+renderProducts(
+    products
+);
 
 updateCartCount();
 
 
-
-/*
-Update number when returning
-from Product Details or Cart
-*/
-
 window.addEventListener(
     "pageshow",
-
     () => {
+
+        renderProducts(
+            getSortedProducts()
+        );
 
         updateCartCount();
 
@@ -299,15 +554,8 @@ window.addEventListener(
 );
 
 
-
-/*
-Update number if cart changes
-in another browser tab
-*/
-
 window.addEventListener(
     "storage",
-
     event => {
 
         if (
@@ -316,6 +564,18 @@ window.addEventListener(
         ) {
 
             updateCartCount();
+
+        }
+
+
+        if (
+            event.key ===
+            "avviamentoFavourites"
+        ) {
+
+            renderProducts(
+                getSortedProducts()
+            );
 
         }
 
