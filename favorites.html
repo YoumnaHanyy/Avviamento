@@ -1,20 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Products | Avviamento</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Favourites | Avviamento</title>
 
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     >
 
-    <link rel="stylesheet" href="products.css">
+    <link rel="stylesheet" href="favorites.css">
     <link rel="stylesheet" href="menu.css">
-     <link rel="stylesheet" href="search.css">
+    <link rel="stylesheet" href="search.css">
 </head>
+
 
 <body>
 
@@ -31,14 +37,15 @@
             <i class="fa-solid fa-bars"></i>
         </button>
 
-       <button
-    class="nav-icon"
-    id="searchButton"
-    type="button"
-    aria-label="Search"
->
-    <i class="fa-solid fa-magnifying-glass"></i>
-</button>
+
+        <button
+            class="nav-icon"
+            id="searchButton"
+            type="button"
+            aria-label="Search"
+        >
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
 
     </div>
 
@@ -59,10 +66,10 @@
 
         <a
             href="favorites.html"
-            class="nav-icon"
+            class="nav-icon favourite-page-icon"
             aria-label="Favourites"
         >
-            <i class="fa-regular fa-heart"></i>
+            <i class="fa-solid fa-heart"></i>
         </a>
 
 
@@ -79,6 +86,7 @@
             >
                 0
             </span>
+
         </a>
 
     </div>
@@ -130,61 +138,52 @@
 
 <main>
 
-    <section class="shop-header">
+    <section class="favorites-header">
 
         <p class="small-title">
             AVVIAMENTO MENSWEAR
         </p>
 
         <h1>
-            The Collection
+            Your Favourites
         </h1>
 
-        <p class="shop-description">
-            Refined essentials for an elevated everyday.
+        <p class="favorites-description">
+            Pieces you've saved for later.
         </p>
-
-    </section>
-
-
-    <section class="shop-bar">
-
-        <p id="productCount">
-            0 Products
-        </p>
-
-
-        <select id="sortProducts">
-
-            <option value="default">
-                Sort By
-            </option>
-
-            <option value="best">
-                Best Selling
-            </option>
-
-            <option value="low">
-                Price: Low to High
-            </option>
-
-            <option value="high">
-                Price: High to Low
-            </option>
-
-            <option value="name">
-                Name
-            </option>
-
-        </select>
 
     </section>
 
 
     <section
-        class="products-grid"
-        id="productsGrid"
+        class="favorites-grid"
+        id="favoritesGrid"
     ></section>
+
+
+    <section
+        class="empty-favorites"
+        id="emptyFavorites"
+    >
+
+        <i class="fa-regular fa-heart"></i>
+
+        <h2>
+            Your favourites are empty
+        </h2>
+
+        <p>
+            Save the pieces you love and find them here.
+        </p>
+
+        <a
+            href="products.html"
+            class="shop-button"
+        >
+            SHOP COLLECTION
+        </a>
+
+    </section>
 
 </main>
 
@@ -264,7 +263,9 @@
 
 
 <script src="menu.js"></script>
-<script src="products.js"></script>
+<script src="favorites.js"></script>
 <script src="search.js"></script>
+
 </body>
+
 </html>

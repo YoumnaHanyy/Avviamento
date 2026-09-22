@@ -18,6 +18,7 @@
     >
 
     <link rel="stylesheet" href="cart.css">
+    <link rel="stylesheet" href="menu.css">
 
 </head>
 
@@ -30,6 +31,7 @@
 
             <button
                 class="menu-button"
+                id="menuButton"
                 type="button"
                 aria-label="Open menu"
             >
@@ -89,6 +91,50 @@
         </div>
 
     </header>
+
+
+    <!-- Hamburger Menu Overlay -->
+    <div
+        class="menu-overlay"
+        id="menuOverlay"
+    ></div>
+
+
+    <!-- Hamburger Menu -->
+    <aside
+        class="side-menu"
+        id="sideMenu"
+    >
+
+        <div class="menu-header">
+
+            <a href="index.html">
+
+                <img
+                    src="images/logo.png"
+                    alt="Avviamento Logo"
+                >
+
+            </a>
+
+
+            <button
+                id="closeMenu"
+                type="button"
+                aria-label="Close menu"
+            >
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+        </div>
+
+
+        <nav
+            class="menu-links"
+            id="menuLinks"
+        ></nav>
+
+    </aside>
 
 
 
@@ -373,6 +419,7 @@
     </footer>
 
 
+    <script src="menu.js"></script>
     <script src="cart.js"></script>
 
 </body>

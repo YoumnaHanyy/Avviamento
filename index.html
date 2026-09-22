@@ -7,213 +7,284 @@
           content="width=device-width, initial-scale=1.0">
 
     <title>Avviamento Menswear</title>
-<link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
->
-    <!-- CSS -->
-     
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="products.css">
+    <link rel="stylesheet" href="menu.css">
+    <link rel="stylesheet" href="search.css">
 </head>
 
 <body>
 
-    <!-- Navbar -->
-   <header class="navbar">
+<header class="navbar">
 
-    <!-- Left Icons -->
     <div class="navbar-left">
 
-        <button class="menu-button"
-                type="button"
-                aria-label="Open menu">
-
+        <button
+            class="menu-button"
+            id="menuButton"
+            type="button"
+            aria-label="Open menu"
+        >
             <i class="fa-solid fa-bars"></i>
-
         </button>
 
-        <a href="search.html"
-           class="nav-icon"
-           aria-label="Search">
-
+        <button
+            class="nav-icon"
+            id="searchButton"
+            type="button"
+            aria-label="Search"
+        >
             <i class="fa-solid fa-magnifying-glass"></i>
-
-        </a>
+        </button>
 
     </div>
 
 
-    <!-- Logo -->
-    <a href="index.html"
-       class="logo"
-       aria-label="Avviamento Home">
-
+    <a
+        href="index.html"
+        class="logo"
+        aria-label="Avviamento Home"
+    >
         <img
             src="images/logo.png"
             alt="Avviamento Logo"
         >
-
     </a>
 
 
-    <!-- Right Icons -->
     <div class="navbar-right">
 
-        <a href="favorites.html"
-           class="nav-icon"
-           aria-label="Favourites">
-
+        <a
+            href="favorites.html"
+            class="nav-icon"
+            id="navbarFavourite"
+            aria-label="Favourites"
+        >
             <i class="fa-regular fa-heart"></i>
-
         </a>
 
-<a href="cart.html"
-   class="cart-icon"
-   aria-label="Shopping cart">
+        <a
+            href="cart.html"
+            class="cart-icon"
+            aria-label="Shopping cart"
+        >
+            <i class="fa-solid fa-bag-shopping"></i>
 
-    <i class="fa-solid fa-bag-shopping"></i>
+            <span
+                class="cart-count"
+                id="cartCount"
+            >
+                0
+            </span>
+        </a>
 
-    <span
-        class="cart-count"
-        id="cartCount"
-    >
-        0
-    </span>
-
-</a>
     </div>
 
 </header>
-    <!-- Hero Section -->
-    <main>
 
-        <section class="hero">
+
+<div
+    class="menu-overlay"
+    id="menuOverlay"
+></div>
+
+
+<aside
+    class="side-menu"
+    id="sideMenu"
+>
+
+    <div class="menu-header">
+
+        <a href="index.html">
 
             <img
-                src="images/Avviamentoback.jpg"
-                alt="Avviamento menswear collection"
-                class="hero-image"
+                src="images/logo.png"
+                alt="Avviamento Logo"
             >
 
-            <div class="hero-content">
-
-                <p class="brand-name">
-                    AVVIAMENTO
-                </p>
-
-                <p class="brand-category">
-                    MENSWEAR
-                </p>
-
-                <h1>
-                    Everyday.<br>
-                    Elevated.
-                </h1>
-
-                <a href="products.html" class="shop-button">
-                    SHOP COLLECTION
-                    <span>→</span>
-                </a>
-
-            </div>
-
-        </section>
-
-
-        <!-- New Arrivals -->
-        <section class="new-arrivals">
-
-            <div class="section-header">
-
-                <h2>New Arrivals</h2>
-
-                <a href="products.html">
-                    View All →
-                </a>
-
-            </div>
-
-
-            <div class="products-container">
-
-                <!-- Product 1 -->
-<!-- Product 1 -->
-<article class="product-card" data-product-id="2">
-
-    <a href="product-details.html?id=2">
-        <img
-            src="images/knitted.jpg"
-            alt="Navy Piqué Polo"
-        >
-    </a>
-
-    <div class="product-details">
-
-        <div>
-            <h3>Piqué Polo</h3>
-            <p>EGP 1,250</p>
-        </div>
+        </a>
 
         <button
-            class="favorite-button"
+            id="closeMenu"
             type="button"
-            aria-label="Add Piqué Polo to favourites"
+            aria-label="Close menu"
         >
-            ♡
+            <i class="fa-solid fa-xmark"></i>
         </button>
 
     </div>
 
-</article>
+    <nav
+        class="menu-links"
+        id="menuLinks"
+    ></nav>
+
+</aside>
 
 
-                <!-- Product 2 -->
-           <!-- Product 2 -->
-<article class="product-card" data-product-id="1">
+<main>
 
-    <a href="product-details.html?id=1">
+    <section class="hero">
+
         <img
-            src="images/henley.jpg"
-            alt="Ivory Linen Shirt"
+            src="images/Avviamentoback.jpg"
+            alt="Avviamento menswear collection"
+            class="hero-image"
         >
-    </a>
 
-    <div class="product-details">
+        <div class="hero-content">
 
-        <div>
-            <h3>Linen Shirt</h3>
-            <p>EGP 1,450</p>
+            <p class="brand-name">
+                AVVIAMENTO
+            </p>
+
+            <p class="brand-category">
+                MENSWEAR
+            </p>
+
+            <h1>
+                Everyday.<br>
+                Elevated.
+            </h1>
+
+            <a
+                href="products.html"
+                class="shop-button"
+            >
+                SHOP COLLECTION
+                <span>→</span>
+            </a>
+
         </div>
 
-        <button
-            class="favorite-button"
-            type="button"
-            aria-label="Add Linen Shirt to favourites"
-        >
-            ♡
-        </button>
+    </section>
 
-    </div>
 
-</article>
-            </div>
+    <section class="new-arrivals">
 
-        </section>
+        <div class="section-header">
 
-    </main>
+            <h2>
+                New Arrivals
+            </h2>
 
-<!-- Footer -->
+            <a href="products.html">
+                View All →
+            </a>
+
+        </div>
+
+
+        <div class="products-container">
+
+            <article
+                class="product-card"
+                data-product-id="2"
+            >
+
+                <a href="product-details.html?id=2">
+
+                    <img
+                        src="images/knitted.jpg"
+                        alt="Navy Piqué Polo"
+                    >
+
+                </a>
+
+
+                <div class="product-details">
+
+                    <div>
+
+                        <h3>
+                            Piqué Polo
+                        </h3>
+
+                        <p>
+                            EGP 1,250
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        class="favorite-button"
+                        type="button"
+                        aria-label="Add Piqué Polo to favourites"
+                    >
+                        <i class="fa-regular fa-heart"></i>
+                    </button>
+
+                </div>
+
+            </article>
+
+
+            <article
+                class="product-card"
+                data-product-id="1"
+            >
+
+                <a href="product-details.html?id=1">
+
+                    <img
+                        src="images/henley.jpg"
+                        alt="Ivory Linen Shirt"
+                    >
+
+                </a>
+
+
+                <div class="product-details">
+
+                    <div>
+
+                        <h3>
+                            Linen Shirt
+                        </h3>
+
+                        <p>
+                            EGP 1,450
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        class="favorite-button"
+                        type="button"
+                        aria-label="Add Linen Shirt to favourites"
+                    >
+                        <i class="fa-regular fa-heart"></i>
+                    </button>
+
+                </div>
+
+            </article>
+
+        </div>
+
+    </section>
+
+</main>
+
+
 <footer class="footer">
 
     <div class="footer-content">
 
-        <!-- Brand -->
         <div class="footer-brand">
 
-           
-
-            <h2>AVVIAMENTO</h2>
+            <h2>
+                AVVIAMENTO
+            </h2>
 
             <p>
                 Refined menswear for an elevated everyday.
@@ -222,18 +293,24 @@
         </div>
 
 
-        <!-- Information Links -->
         <div class="footer-section">
 
-            <h3>Information</h3>
+            <h3>
+                Information
+            </h3>
 
             <ul>
+
                 <li>
-                    <a href="about.html">About Us</a>
+                    <a href="about.html">
+                        About Us
+                    </a>
                 </li>
 
                 <li>
-                    <a href="contact.html">Contact Us</a>
+                    <a href="contact.html">
+                        Contact Us
+                    </a>
                 </li>
 
                 <li>
@@ -247,42 +324,56 @@
                         Refund & Exchange Policy
                     </a>
                 </li>
+
             </ul>
 
         </div>
 
 
-        <!-- Contact Details -->
         <div class="footer-section">
 
-            <h3>Contact Us</h3>
+            <h3>
+                Contact Us
+            </h3>
 
             <ul class="contact-list">
 
                 <li>
+
                     <i class="fa-brands fa-whatsapp"></i>
 
-                    <a href="https://wa.me/201000000000"
-                       target="_blank">
+                    <a
+                        href="https://wa.me/201000000000"
+                        target="_blank"
+                    >
                         +20 100 000 0000
                     </a>
+
                 </li>
 
+
                 <li>
+
                     <i class="fa-regular fa-envelope"></i>
 
                     <a href="mailto:info@avviamento.com">
                         info@avviamento.com
                     </a>
+
                 </li>
 
+
                 <li>
+
                     <i class="fa-brands fa-instagram"></i>
 
-                    <a href="https://instagram.com/"
-                       target="_blank">
+                    <a
+                        href="https://instagram.com/"
+                        target="_blank"
+                    >
                         @avviamento
                     </a>
+
                 </li>
 
             </ul>
@@ -292,7 +383,6 @@
     </div>
 
 
-    <!-- Bottom Footer -->
     <div class="footer-bottom">
 
         <p>
@@ -302,8 +392,11 @@
     </div>
 
 </footer>
-    <!-- JavaScript -->
-    <script src="style.js"></script>
+
+
+<script src="menu.js"></script>
+<script src="search.js"></script>
+<script src="style.js"></script>
 
 </body>
 </html>
