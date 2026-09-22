@@ -447,7 +447,7 @@ window.addEventListener(
             "avviamentoCart"
         ) {
 
-            updateCartCount();
+            updateCartCount(); //mmmmmm
 
         }
 
