@@ -1,0 +1,35 @@
+/* Homepage additions; loaded after the existing site styles. */
+.winter-announcement { width:100%; height:38px; overflow:hidden; display:flex; align-items:center; background:#032d37; color:#f3eee5; }
+.winter-announcement-track { width:max-content; display:flex; align-items:center; animation:winter-scroll 34s linear infinite; }
+.winter-announcement-set { display:flex; align-items:center; gap:40px; flex:none; padding-right:40px; white-space:nowrap; font-size:10px; font-weight:600; letter-spacing:.2em; }
+.announcement-star { color:#e2ceb5; font-size:13px; }
+@keyframes winter-scroll { to { transform:translateX(-50%); } }
+.winter-announcement:hover .winter-announcement-track { animation-play-state:paused; }
+
+.service-highlights { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:0; padding:0 7%; background:#e2ceb5; }
+.service-highlight { min-width:0; min-height:114px; display:flex; align-items:center; gap:17px; padding:25px 25px 25px 0; color:#032d37; text-decoration:none; border-right:1px solid rgba(3,45,55,.2); }
+.service-highlight + .service-highlight { padding-left:25px; }
+.service-highlight:last-child { border-right:0; }
+.service-icon { width:39px; flex:none; font-size:23px; text-align:center; }
+.service-copy { min-width:0; display:grid; gap:6px; }
+.service-copy strong { font:normal 22px Georgia,'Times New Roman',serif; }
+.service-copy small { color:#425d62; font-size:11px; line-height:1.5; }
+.service-arrow { margin-left:auto; align-self:flex-start; font-size:16px; opacity:.6; transition:transform .2s,opacity .2s; }
+.service-highlight:hover .service-arrow { opacity:1; transform:translate(3px,-3px); }
+
+.winter-edit { display:grid; grid-template-columns:1fr 1fr; min-height:540px; margin:35px 7% 95px; background:#032d37; color:#f3eee5; }
+.winter-edit-image { min-height:540px; position:relative; overflow:hidden; background:#d9c8b3; }
+.winter-edit-image img { display:block; width:100%; height:100%; position:absolute; inset:0; object-fit:cover; object-position:center; }
+.winter-edit-image::after { content:''; position:absolute; inset:0; background:linear-gradient(0deg,rgba(3,45,55,.48),transparent 40%); }
+.winter-edit-image > span { position:absolute; z-index:1; left:32px; bottom:30px; font-size:10px; letter-spacing:.2em; }
+.winter-edit-copy { padding:60px 11%; display:flex; flex-direction:column; justify-content:center; align-items:flex-start; }
+.winter-edit-eyebrow { margin:0 0 24px; color:#e2ceb5; font-size:10px; letter-spacing:.23em; }
+.winter-edit-copy h2 { margin:0 0 25px; font:normal clamp(42px,4.5vw,68px)/1.07 Georgia,'Times New Roman',serif; letter-spacing:-.045em; }
+.winter-edit-copy h2 em { color:#e2ceb5; font-weight:normal; }
+.winter-edit-copy > p:not(.winter-edit-eyebrow) { max-width:380px; margin:0 0 32px; color:#d6d4cc; font-size:14px; line-height:1.8; }
+.winter-edit-copy > a { display:inline-flex; gap:30px; align-items:center; padding:0 0 10px; border-bottom:1px solid #e2ceb5; color:#f3eee5; font-size:11px; letter-spacing:.14em; text-decoration:none; }
+.winter-edit-copy > a:hover { color:#e2ceb5; }
+
+@media(max-width:1000px) { .service-highlights { padding:0 4%; } .service-highlight { gap:9px; padding-right:12px; } .service-highlight + .service-highlight { padding-left:12px; } .service-copy strong { font-size:18px; } .winter-edit { margin-left:4%; margin-right:4%; } }
+@media(max-width:700px) { .winter-announcement { height:34px; } .winter-announcement-set { gap:25px; padding-right:25px; font-size:9px; } .service-highlights { grid-template-columns:1fr; padding:8px 20px; } .service-highlight,.service-highlight + .service-highlight { min-height:78px; padding:12px 0; border-right:0; border-bottom:1px solid rgba(3,45,55,.2); } .service-highlight:last-child { border-bottom:0; } .service-icon { font-size:20px; } .service-copy strong { font-size:19px; } .service-arrow { align-self:center; } .winter-edit { grid-template-columns:1fr; margin:20px 15px 65px; } .winter-edit-image { min-height:380px; } .winter-edit-copy { padding:49px 27px 55px; } .winter-edit-copy h2 { font-size:clamp(41px,10vw,60px); } }
+@media(prefers-reduced-motion:reduce) { .winter-announcement-track { animation:none; } .service-arrow { transition:none; } }

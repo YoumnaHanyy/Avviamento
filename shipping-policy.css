@@ -1,0 +1,56 @@
+:root { --policy-petrol:#032d37; --policy-sand:#e2ceb5; --policy-ivory:#f3eee5; --policy-muted:#627174; }
+html { scroll-behavior:smooth; }
+body { background:var(--policy-ivory); color:var(--policy-petrol); padding-top:85px; }
+.policy-hero a:focus-visible,.policy-closing a:focus-visible,.information a:focus-visible { outline:2px solid currentColor; outline-offset:5px; }
+/* The policy content uses its own classes, leaving the shared menu and navbar styles intact. */
+.policy-hero { min-height:440px; padding:83px 7% 92px; background:var(--policy-petrol); color:var(--policy-ivory); display:flex; align-items:center; justify-content:space-between; gap:32px; overflow:hidden; }
+.policy-hero-inner { max-width:690px; position:relative; z-index:1; }
+.policy-eyebrow { margin:0 0 22px; font-size:10px; letter-spacing:.28em; font-weight:700; }
+.policy-hero h1,.policy-shell h2,.policy-shell h3,.information h2,.information h3,.policy-closing h2 { font-family:Georgia,'Times New Roman',serif; font-weight:normal; }
+.policy-hero h1 { margin:0 0 20px; font-size:clamp(54px,7vw,106px); line-height:.98; letter-spacing:-.055em; }
+.policy-hero h1 em { font-weight:normal; color:var(--policy-sand); }
+.policy-hero-intro { max-width:500px; margin:0 0 30px; font-size:15px; line-height:1.8; color:#e6ddd0; }
+.policy-hero-link { display:inline-flex; align-items:center; gap:20px; padding-bottom:9px; border-bottom:1px solid var(--policy-sand); font-size:12px; text-transform:uppercase; letter-spacing:.12em; }
+.policy-hero-link:hover { opacity:.65; }
+.policy-hero-stamp { width:226px; height:226px; flex:0 0 226px; border:1px solid rgba(226,206,181,.45); border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; transform:rotate(-12deg); color:var(--policy-sand); }
+.policy-hero-stamp span { font:italic 86px Georgia,serif; letter-spacing:-.1em; padding-right:16px; }
+.policy-hero-stamp small { font-size:9px; letter-spacing:.24em; }
+.policy-shell { max-width:1260px; margin:auto; padding:92px 7% 90px; }
+.section-intro { max-width:650px; margin-bottom:38px; }
+.section-intro h2,.information h2,.policy-closing h2 { font-size:clamp(38px,4.2vw,60px); line-height:1.1; letter-spacing:-.04em; margin:0 0 18px; }
+.section-intro > p:last-child { font-size:15px; line-height:1.75; color:var(--policy-muted); }
+.delivery-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
+.delivery-card { min-height:320px; padding:34px; background:#faf7f0; border:1px solid #d7c8b5; }
+.delivery-card.featured { background:var(--policy-sand); }
+.card-top { display:flex; align-items:center; justify-content:space-between; font-size:12px; letter-spacing:.15em; }
+.card-mark { font-size:25px; line-height:1; }
+.delivery-card h3 { font-size:31px; margin:33px 0 16px; }
+.card-time { margin:0 0 24px; font:46px Georgia,serif; }
+.card-time span { font:13px Arial,sans-serif; letter-spacing:.02em; }
+.card-rule { height:1px; background:rgba(3,45,55,.26); margin-bottom:20px; }
+.delivery-card > p:not(.card-time) { font-size:14px; line-height:1.55; margin-bottom:8px; }
+.detail-note { margin:20px 0 0; color:var(--policy-muted); font-size:12px; line-height:1.7; }
+.information { background:#e9dfd0; padding:89px max(7%,calc((100vw - 1084px)/2)) 102px; display:grid; grid-template-columns:.8fr 1.2fr; gap:70px; }
+.information-heading h2 { max-width:340px; }
+.information-list { border-top:1px solid rgba(3,45,55,.25); }
+.information-row { display:grid; grid-template-columns:44px 1fr; gap:12px; padding:26px 0; border-bottom:1px solid rgba(3,45,55,.25); }
+.row-number { font-size:11px; padding-top:6px; }
+.information-row h3 { font-size:25px; margin:0 0 8px; }
+.information-row p { margin:0; color:#40565a; font-size:14px; line-height:1.7; }
+.information-row a { text-decoration:underline; text-underline-offset:3px; }
+.policy-closing { padding:95px 7% 100px; text-align:center; }
+.policy-closing h2 { margin-bottom:30px; }
+.policy-shop-button { min-height:51px; display:inline-flex; gap:36px; align-items:center; justify-content:space-between; background:var(--policy-petrol); color:var(--policy-ivory); padding:0 22px; font-size:12px; letter-spacing:.09em; text-transform:uppercase; transition:background .2s; }
+.policy-shop-button:hover { background:#0c4a55; }
+/* The shared products stylesheet makes .footer a grid; the homepage footer has an inner grid. */
+.footer { display:block; }
+.footer-content { display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:60px; }
+.footer-section ul { padding:0; margin:0; list-style:none; }
+.footer-section li { margin-bottom:12px; }
+.footer-section li a { margin-bottom:0; }
+.footer-section .contact-list li { display:flex; gap:7px; align-items:baseline; }
+.footer-bottom { margin-top:35px; padding-top:18px; border-top:1px solid rgba(226,206,181,.25); text-align:center; }
+.footer-bottom p { max-width:none; margin:0; font-size:12px; }
+@media(max-width:800px) { .policy-hero-stamp { width:150px; height:150px; flex-basis:150px; } .policy-hero-stamp span { font-size:57px; } .information { grid-template-columns:1fr; gap:25px; } }
+@media(max-width:700px) { body { padding-top:70px; } .policy-hero { min-height:0; padding:71px 22px 76px; } .policy-hero-stamp { display:none; } .policy-hero h1 { font-size:clamp(58px,14vw,84px); } .policy-hero-intro { font-size:14px; } .policy-shell { padding:68px 18px 70px; } .delivery-grid { grid-template-columns:1fr; gap:12px; } .delivery-card { min-height:0; padding:26px; } .delivery-card h3 { margin-top:28px; } .card-time { font-size:42px; } .information { padding:70px 21px 79px; } .policy-closing { padding:75px 20px 85px; } .footer-content { grid-template-columns:1fr; gap:30px; } }
+@media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .policy-shop-button { transition:none; } }

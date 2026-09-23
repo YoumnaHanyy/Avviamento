@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Avviamento shipping options, delivery times and charges in Egypt.">
+    <title>Shipping Policy | Avviamento</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="products.css">
+    <link rel="stylesheet" href="menu.css">
+    <link rel="stylesheet" href="search.css">
+    <link rel="stylesheet" href="shipping-policy.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="navbar-left">
+            <button class="menu-button" id="menuButton" type="button" aria-label="Open menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <button class="nav-icon" id="searchButton" type="button" aria-label="Search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </div>
+
+        <a href="index.html" class="logo" aria-label="Avviamento Home">
+            <img src="images/logo.png" alt="Avviamento Logo">
+        </a>
+
+        <div class="navbar-right">
+            <a href="favorites.html" class="nav-icon" id="navbarFavourite" aria-label="Favourites">
+                <i class="fa-regular fa-heart"></i>
+            </a>
+            <a href="cart.html" class="cart-icon" aria-label="Shopping cart">
+                <i class="fa-solid fa-bag-shopping"></i>
+                <span class="cart-count" id="cartCount">0</span>
+            </a>
+        </div>
+    </header>
+
+    <div class="menu-overlay" id="menuOverlay"></div>
+    <aside class="side-menu" id="sideMenu">
+        <div class="menu-header">
+                      <a href="index.html" class="menu-wordmark" aria-label="Avviamento Home">
+    AVVIAMENTO
+</a>
+            <button id="closeMenu" type="button" aria-label="Close menu">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <nav class="menu-links" id="menuLinks"></nav>
+    </aside>
+
+    <main>
+        <section class="policy-hero" aria-labelledby="page-title">
+            <div class="policy-hero-inner">
+                <p class="policy-eyebrow">AVVIAMENTO · CUSTOMER CARE</p>
+                <h1 id="page-title">Shipping <em>Policy</em></h1>
+                <p class="policy-hero-intro">Everything you need to know about getting your order, from delivery options to the details that help it reach you.</p>
+                <a href="#delivery-options" class="policy-hero-link">Explore delivery options <span aria-hidden="true">↓</span></a>
+            </div>
+            <div class="policy-hero-stamp" aria-hidden="true"><span>AV</span><small>EST. IN STYLE</small></div>
+        </section>
+
+        <section class="policy-shell" id="delivery-options" aria-labelledby="options-title">
+            <div class="section-intro">
+                <p class="policy-eyebrow">01 / THE ESSENTIALS</p>
+                <h2 id="options-title">Delivery, your way.</h2>
+                <p>Choose your preferred delivery option at checkout. Times below are estimates in business days.</p>
+            </div>
+
+            <div class="delivery-grid">
+                <article class="delivery-card">
+                    <div class="card-top"><span>01</span><span class="card-mark" aria-hidden="true">↗</span></div>
+                    <h3>Standard Delivery</h3>
+                    <p class="card-time">2–5 <span>business days</span></p>
+                    <div class="card-rule"></div>
+                    <p>EGP 100 on orders under EGP 2,000.</p>
+                    <p>Complimentary on orders of EGP 2,000 or more.</p>
+                </article>
+                <article class="delivery-card featured">
+                    <div class="card-top"><span>02</span><span class="card-mark" aria-hidden="true">↗</span></div>
+                    <h3>Express Delivery</h3>
+                    <p class="card-time">1–2 <span>business days</span></p>
+                    <div class="card-rule"></div>
+                    <p>EGP 175, including orders eligible for complimentary standard delivery.</p>
+                </article>
+            </div>
+
+            <p class="detail-note">Your selected delivery charge appears in your order summary before you place your order. Delivery estimates may vary by location or during busy periods.</p>
+        </section>
+
+        <section class="information" aria-labelledby="good-to-know-title">
+            <div class="information-heading">
+                <p class="policy-eyebrow">02 / GOOD TO KNOW</p>
+                <h2 id="good-to-know-title">A little more detail.</h2>
+            </div>
+            <div class="information-list">
+                <article class="information-row">
+                    <span class="row-number">01</span>
+                    <div><h3>Where we deliver</h3><p>Enter your governorate and full address at checkout. The available delivery options and final charge are shown before you confirm your order.</p></div>
+                </article>
+                <article class="information-row">
+                    <span class="row-number">02</span>
+                    <div><h3>Address details</h3><p>Please include your street, building or villa number, area, and a phone number where you can be reached. Add a landmark or other delivery instructions in the optional notes field.</p></div>
+                </article>
+                <article class="information-row">
+                    <span class="row-number">03</span>
+                    <div><h3>Delivery timing</h3><p>Delivery times are estimates measured in business days. If you need help with an order, have your order number ready when you contact us.</p></div>
+                </article>
+                <article class="information-row">
+                    <span class="row-number">04</span>
+                    <div><h3>Returns and exchanges</h3><p>Shipping questions about a return or exchange? See our <a href="refund-policy.html">Refund &amp; Exchange Policy</a> for the relevant process.</p></div>
+                </article>
+            </div>
+        </section>
+
+        <section class="policy-closing" aria-labelledby="closing-title">
+            <p class="policy-eyebrow">READY WHEN YOU ARE</p>
+            <h2 id="closing-title">Find your next essential.</h2>
+            <a href="products.html" class="policy-shop-button">Shop the collection <span aria-hidden="true">↗</span></a>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h2>AVVIAMENTO</h2>
+                <p>Refined menswear for an elevated everyday.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Information</h3>
+                <ul>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="shipping-policy.html" aria-current="page">Shipping Policy</a></li>
+                    <li><a href="refund-policy.html">Refund &amp; Exchange Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <ul class="contact-list">
+                    <li><i class="fa-brands fa-whatsapp"></i><a href="https://wa.me/201000000000" target="_blank" rel="noopener noreferrer">+20 100 000 0000</a></li>
+                    <li><i class="fa-regular fa-envelope"></i><a href="mailto:info@avviamento.com">info@avviamento.com</a></li>
+                    <li><i class="fa-brands fa-instagram"></i><a href="https://instagram.com/" target="_blank" rel="noopener noreferrer">@avviamento</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom"><p>© 2026 Avviamento. All rights reserved.</p></div>
+    </footer>
+    <script src="menu.js"></script>
+    <script src="search.js"></script>
+    <script src="style.js"></script>
+</body>
+</html>
