@@ -1,158 +1,130 @@
 .menu-overlay {
     position: fixed;
-
     inset: 0;
-
     z-index: 1500;
-
-    background-color:
-        rgba(0, 0, 0, 0.35);
-
+    background-color: rgba(0, 0, 0, 0.35);
     opacity: 0;
-
     visibility: hidden;
-
-    transition:
-        opacity 0.3s ease,
-        visibility 0.3s ease;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
-
 
 .menu-overlay.active {
     opacity: 1;
-
     visibility: visible;
 }
 
-
 .side-menu {
     position: fixed;
-
     top: 0;
     left: -340px;
-
     z-index: 2000;
-
     width: 320px;
     max-width: 85%;
-
     height: 100vh;
-
-    padding: 25px;
-
+    height: 100dvh;
+    padding: 0;
+    overflow-y: auto;
     background-color: #F3EEE5;
-
-    box-shadow:
-        8px 0 30px
-        rgba(3, 45, 55, 0.12);
-
-    transition:
-        left 0.35s ease;
+    box-shadow: 8px 0 30px rgba(3, 45, 55, 0.12);
+    transition: left 0.35s ease;
 }
-
 
 .side-menu.active {
     left: 0;
 }
 
-
+/* الجزء العلوي كله بيج غامق */
 .menu-header {
-    padding-bottom: 20px;
-
+    min-height: 105px;
+    padding: 25px;
     display: flex;
-
     align-items: center;
     justify-content: space-between;
-
-    border-bottom:
-        1px solid
-        rgba(3, 45, 55, 0.15);
+    gap: 10px;
+    background-color: #e2ceb5;
+    border-bottom: 1px solid rgba(3, 45, 55, 0.12);
 }
 
-
-.menu-header img {
-    width: 55px;
-    height: 55px;
-
-    display: block;
-
-    object-fit: contain;
+/* اسم البراند بدل صورة اللوجو */
+.menu-wordmark {
+    color: #032d37;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 20px;
+    font-weight: normal;
+    letter-spacing: 0.13em;
+    line-height: 1;
+    white-space: nowrap;
+    text-decoration: none;
 }
 
+.menu-wordmark:hover {
+    opacity: 0.75;
+}
 
 .menu-header button {
     width: 40px;
     height: 40px;
-
+    flex: none;
+    display: grid;
+    place-items: center;
+    padding: 0;
     border: none;
-
     background-color: transparent;
-
     color: #032d37;
-
     font-size: 24px;
-
     cursor: pointer;
 }
 
-
 .menu-links {
-    padding-top: 30px;
-
+    padding: 30px 25px 25px;
     display: flex;
-
     flex-direction: column;
-
     gap: 22px;
 }
 
-
 .menu-links a {
     padding-bottom: 12px;
-
-    font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
-
+    color: #032d37;
+    font-family: Georgia, "Times New Roman", serif;
     font-size: 23px;
-
-    border-bottom:
-        1px solid
-        rgba(3, 45, 55, 0.08);
-
-    transition:
-        padding-left 0.25s ease,
-        opacity 0.25s ease;
+    border-bottom: 1px solid rgba(3, 45, 55, 0.08);
+    transition: padding-left 0.25s ease, opacity 0.25s ease;
 }
-
 
 .menu-links a:hover {
     padding-left: 8px;
-
     opacity: 0.65;
 }
 
-
 @media screen and (max-width: 700px) {
-
     .side-menu {
         width: 280px;
+    }
 
+    .menu-header {
+        min-height: 88px;
         padding: 20px;
     }
 
-    .menu-header img {
-        width: 50px;
-        height: 50px;
+    .menu-wordmark {
+        font-size: 18px;
+        letter-spacing: 0.12em;
     }
 
     .menu-links {
+        padding: 27px 20px 20px;
         gap: 20px;
     }
 
     .menu-links a {
         font-size: 21px;
     }
+}
 
+@media (prefers-reduced-motion: reduce) {
+    .menu-overlay,
+    .side-menu,
+    .menu-links a {
+        transition: none;
+    }
 }

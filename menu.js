@@ -34,8 +34,15 @@ let menuItems = [
 
     {
         id: 5,
-        label: "Contact Us",
-        url: "contact.html",
+        label: "Shipping Policy",
+        url: "shipping-policy.html",
+        order: 5,
+        active: true
+    },
+        {
+        id: 5,
+        label: "Refund & Exchange Policy",
+        url: "refund-policy.html",
         order: 5,
         active: true
     }
