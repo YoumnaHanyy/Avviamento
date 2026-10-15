@@ -1,64 +1,63 @@
-const searchableProducts = [
-    {
-        id: 1,
-        name: "Linen Shirt",
-        price: 1450,
-        image: "images/henley.jpg"
-    },
+/* =================================
+   Avviamento - Global Search
+   Supabase Version
+================================= */
 
-    {
-        id: 2,
-        name: "Piqué Polo",
-        price: 1250,
-        image: "images/knitted.jpg"
-    },
 
-    {
-        id: 3,
-        name: "Tailored Trousers",
-        price: 1650,
-        image: "images/trousers.jpg"
-    },
-
-    {
-        id: 4,
-        name: "Overshirt",
-        price: 1750,
-        image: "images/overshirt.jpg"
-    }
-];
-
+/* Search Button */
 
 const searchButton =
-    document.getElementById("searchButton");
+    document.getElementById(
+        "searchButton"
+    );
 
+
+/* Only run if search button exists */
 
 if (searchButton) {
+
+
+    /* =================================
+       Create Search Overlay
+    ================================= */
 
     const searchOverlay =
         document.createElement("div");
 
+
     searchOverlay.className =
         "search-overlay";
+
 
     searchOverlay.id =
         "globalSearchOverlay";
 
 
+
+    /* =================================
+       Create Search Panel
+    ================================= */
+
     const searchPanel =
         document.createElement("div");
 
+
     searchPanel.className =
         "search-panel";
+
 
     searchPanel.id =
         "globalSearchPanel";
 
 
     searchPanel.innerHTML = `
+
         <div class="search-panel-header">
 
-            <h2>Search</h2>
+            <h2>
+                Search
+            </h2>
+
 
             <button
                 class="search-close"
@@ -66,7 +65,9 @@ if (searchButton) {
                 type="button"
                 aria-label="Close search"
             >
+
                 <i class="fa-solid fa-xmark"></i>
+
             </button>
 
         </div>
@@ -76,6 +77,7 @@ if (searchButton) {
 
             <i class="fa-solid fa-magnifying-glass"></i>
 
+
             <input
                 type="search"
                 id="globalSearchInput"
@@ -83,13 +85,16 @@ if (searchButton) {
                 autocomplete="off"
             >
 
+
             <button
                 class="clear-search"
                 id="globalSearchClear"
                 type="button"
                 aria-label="Clear search"
             >
+
                 <i class="fa-solid fa-xmark"></i>
+
             </button>
 
         </div>
@@ -107,6 +112,7 @@ if (searchButton) {
             class="search-results-overlay"
             id="globalSearchResults"
         ></div>
+
     `;
 
 
@@ -114,30 +120,40 @@ if (searchButton) {
         searchOverlay
     );
 
+
     document.body.appendChild(
         searchPanel
     );
 
+
+
+    /* =================================
+       Get Elements
+    ================================= */
 
     const searchClose =
         document.getElementById(
             "globalSearchClose"
         );
 
+
     const searchInput =
         document.getElementById(
             "globalSearchInput"
         );
+
 
     const searchClear =
         document.getElementById(
             "globalSearchClear"
         );
 
+
     const searchStatus =
         document.getElementById(
             "globalSearchStatus"
         );
+
 
     const searchResults =
         document.getElementById(
@@ -145,19 +161,160 @@ if (searchButton) {
         );
 
 
-    function openSearch() {
+
+    /* =================================
+       Products
+    ================================= */
+
+    let searchableProducts = [];
+
+
+
+    /* =================================
+       Load Products from Supabase
+    ================================= */
+
+    async function loadSearchProducts() {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("products")
+                .select(`
+                    id,
+                    name,
+                    price,
+                    product_images (
+                        image_url,
+                        is_primary
+                    )
+                `)
+                .eq(
+                    "is_active",
+                    true
+                );
+
+
+        if (error) {
+
+            console.error(
+                "Search products error:",
+                error
+            );
+
+
+            searchableProducts = [];
+
+
+            return;
+
+        }
+
+
+        searchableProducts =
+            data || [];
+
+    }
+
+
+
+    /* =================================
+       Get Product Image
+    ================================= */
+
+    function getProductImage(
+        product
+    ) {
+
+        const images =
+            product.product_images || [];
+
+
+        const primaryImage =
+            images.find(
+                image =>
+                    image.is_primary === true
+            );
+
+
+        if (
+            primaryImage
+            && primaryImage.image_url
+        ) {
+
+            return primaryImage.image_url;
+
+        }
+
+
+        if (
+            images.length > 0
+            && images[0].image_url
+        ) {
+
+            return images[0].image_url;
+
+        }
+
+
+        /*
+        Fallback images
+        */
+
+        const fallbackImages = {
+
+            1:
+                "images/henley.jpg",
+
+            2:
+                "images/knitted.jpg",
+
+            3:
+                "images/trousers.jpg",
+
+            4:
+                "images/overshirt.jpg"
+
+        };
+
+
+        return (
+            fallbackImages[product.id]
+            || "images/placeholder.jpg"
+        );
+
+    }
+
+
+
+    /* =================================
+       Open Search
+    ================================= */
+
+    async function openSearch() {
 
         searchOverlay.classList.add(
             "active"
         );
 
+
         searchPanel.classList.add(
             "active"
         );
 
+
         document.body.classList.add(
             "search-open"
         );
+
+
+        /*
+        Load products
+        */
+
+        await loadSearchProducts();
 
 
         setTimeout(() => {
@@ -169,15 +326,22 @@ if (searchButton) {
     }
 
 
+
+    /* =================================
+       Close Search
+    ================================= */
+
     function closeSearch() {
 
         searchOverlay.classList.remove(
             "active"
         );
 
+
         searchPanel.classList.remove(
             "active"
         );
+
 
         document.body.classList.remove(
             "search-open"
@@ -186,105 +350,162 @@ if (searchButton) {
     }
 
 
+
+    /* =================================
+       Clear Search
+    ================================= */
+
     function clearResults() {
 
         searchInput.value = "";
 
-        searchResults.innerHTML = "";
+
+        searchResults.innerHTML =
+            "";
+
 
         searchStatus.textContent =
             "Start typing to search products.";
 
+
         searchClear.classList.remove(
             "show"
         );
+
 
         searchInput.focus();
 
     }
 
 
-    function renderSearchResults(list) {
 
-        searchResults.innerHTML = "";
+    /* =================================
+       Render Search Results
+    ================================= */
+
+    function renderSearchResults(
+        list
+    ) {
+
+        searchResults.innerHTML =
+            "";
 
 
-        if (list.length === 0) {
+        if (
+            list.length === 0
+        ) {
 
             searchResults.innerHTML = `
+
                 <div class="search-no-results">
 
                     <i class="fa-solid fa-magnifying-glass"></i>
 
-                    <h3>No products found</h3>
+
+                    <h3>
+                        No products found
+                    </h3>
+
 
                     <p>
                         Try searching with another product name.
                     </p>
 
                 </div>
+
             `;
+
 
             return;
 
         }
 
 
-        list.forEach(product => {
 
-            const card =
-                document.createElement(
-                    "article"
+        list.forEach(
+            product => {
+
+                const card =
+                    document.createElement(
+                        "article"
+                    );
+
+
+                card.className =
+                    "search-result-card";
+
+
+                const image =
+                    getProductImage(
+                        product
+                    );
+
+
+                card.innerHTML = `
+
+                    <div class="search-result-image">
+
+                        <img
+                            src="${image}"
+                            alt="${product.name}"
+                        >
+
+                    </div>
+
+
+                    <div class="search-result-info">
+
+                        <h3>
+
+                            ${product.name}
+
+                        </h3>
+
+
+                        <p>
+
+                            EGP ${
+                                Number(
+                                    product.price
+                                )
+                                .toLocaleString(
+                                    "en-EG"
+                                )
+                            }
+
+                        </p>
+
+                    </div>
+
+                `;
+
+
+                card.addEventListener(
+                    "click",
+
+                    () => {
+
+                        window.location.href =
+                            `product-details.html?id=${product.id}`;
+
+                    }
                 );
 
 
-            card.className =
-                "search-result-card";
+                searchResults.appendChild(
+                    card
+                );
 
-
-            card.innerHTML = `
-                <div class="search-result-image">
-
-                    <img
-                        src="${product.image}"
-                        alt="${product.name}"
-                    >
-
-                </div>
-
-                <div class="search-result-info">
-
-                    <h3>
-                        ${product.name}
-                    </h3>
-
-                    <p>
-                        EGP ${product.price.toLocaleString()}
-                    </p>
-
-                </div>
-            `;
-
-
-            card.addEventListener(
-                "click",
-                () => {
-
-                    window.location.href =
-                        `product-details.html?id=${product.id}`;
-
-                }
-            );
-
-
-            searchResults.appendChild(
-                card
-            );
-
-        });
+            }
+        );
 
     }
 
+
+
+    /* =================================
+       Search Products
+    ================================= */
 
     function searchProducts() {
 
@@ -294,16 +515,22 @@ if (searchButton) {
                 .toLowerCase();
 
 
-        if (query === "") {
+        if (
+            query === ""
+        ) {
 
-            searchResults.innerHTML = "";
+            searchResults.innerHTML =
+                "";
+
 
             searchStatus.textContent =
                 "Start typing to search products.";
 
+
             searchClear.classList.remove(
                 "show"
             );
+
 
             return;
 
@@ -326,8 +553,10 @@ if (searchButton) {
                 product => {
 
                     const productName =
-                        product.name
-                            .toLowerCase();
+                        String(
+                            product.name || ""
+                        )
+                        .toLowerCase();
 
 
                     return words.every(
@@ -342,7 +571,12 @@ if (searchButton) {
 
 
         searchStatus.textContent =
-            `${filteredProducts.length} result${filteredProducts.length !== 1 ? "s" : ""} for "${searchInput.value.trim()}"`;
+
+            `${filteredProducts.length} result${
+                filteredProducts.length !== 1
+                    ? "s"
+                    : ""
+            } for "${searchInput.value.trim()}"`;
 
 
         renderSearchResults(
@@ -351,6 +585,11 @@ if (searchButton) {
 
     }
 
+
+
+    /* =================================
+       Events
+    ================================= */
 
     searchButton.addEventListener(
         "click",
@@ -384,10 +623,12 @@ if (searchButton) {
 
     document.addEventListener(
         "keydown",
+
         event => {
 
             if (
-                event.key === "Escape" &&
+                event.key === "Escape"
+                &&
                 searchPanel.classList.contains(
                     "active"
                 )

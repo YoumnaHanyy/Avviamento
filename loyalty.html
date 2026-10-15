@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Avviamento AV Rewards. Earn points and unlock exclusive rewards."
+    >
+
+    <title>AV Rewards | Avviamento</title>
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <!-- Existing User Styles -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="products.css">
+    <link rel="stylesheet" href="menu.css">
+    <link rel="stylesheet" href="search.css">
+    <link rel="stylesheet" href="home-enhancements.css">
+
+    <!-- Loyalty Page -->
+    <link rel="stylesheet" href="loyalty.css">
+</head>
+
+
+<body>
+
+    <!-- ================================
+         NAVBAR
+    ================================= -->
+
+    <header class="navbar">
+
+        <div class="navbar-left">
+
+            <button
+                class="menu-button"
+                id="menuButton"
+                type="button"
+                aria-label="Open menu"
+            >
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <button
+                class="nav-icon"
+                id="searchButton"
+                type="button"
+                aria-label="Search"
+            >
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+
+        </div>
+
+
+        <a
+            href="index.html"
+            class="logo"
+            aria-label="Avviamento Home"
+        >
+            <img
+                src="images/logo.png"
+                alt="Avviamento Logo"
+            >
+        </a>
+
+
+        <div class="navbar-right">
+
+            <a
+                href="favorites.html"
+                class="nav-icon"
+                id="navbarFavourite"
+                aria-label="Favourites"
+            >
+                <i class="fa-regular fa-heart"></i>
+            </a>
+
+            <a
+                href="cart.html"
+                class="cart-icon"
+                aria-label="Shopping cart"
+            >
+                <i class="fa-solid fa-bag-shopping"></i>
+
+                <span
+                    class="cart-count"
+                    id="cartCount"
+                >
+                    0
+                </span>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================================
+         SIDE MENU
+    ================================= -->
+
+    <div
+        class="menu-overlay"
+        id="menuOverlay"
+    ></div>
+
+
+    <aside
+        class="side-menu"
+        id="sideMenu"
+    >
+
+        <div class="menu-header">
+
+            <a
+                href="index.html"
+                class="menu-wordmark"
+                aria-label="Avviamento Home"
+            >
+                AVVIAMENTO
+            </a>
+
+            <button
+                id="closeMenu"
+                type="button"
+                aria-label="Close menu"
+            >
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+        </div>
+
+        <nav
+            class="menu-links"
+            id="menuLinks"
+        ></nav>
+
+    </aside>
+
+
+    <!-- ================================
+         SEARCH
+    ================================= -->
+
+    <div
+        class="search-overlay"
+        id="searchOverlay"
+    >
+
+        <div class="search-container">
+
+            <button
+                class="search-close"
+                id="searchClose"
+                type="button"
+                aria-label="Close search"
+            >
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="search-input-wrapper">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                    type="search"
+                    id="searchInput"
+                    placeholder="Search products..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+            <div
+                class="search-results"
+                id="searchResults"
+            ></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================
+         WINTER ANNOUNCEMENT
+    ================================= -->
+
+    <div
+        class="winter-announcement"
+        aria-label="Welcome to Winter 2026. Express delivery available. Complimentary standard delivery on orders over EGP 2,000."
+    >
+
+        <div
+            class="winter-announcement-track"
+            aria-hidden="true"
+        >
+
+            <div class="winter-announcement-set">
+
+                <span>
+                    WELCOME TO WINTER ’26
+                </span>
+
+                <span class="announcement-star">
+                    ✦
+                </span>
+
+                <span>
+                    EVERYDAY. ELEVATED.
+                </span>
+
+                <span class="announcement-star">
+                    ✦
+                </span>
+
+                <span>
+                    COMPLIMENTARY DELIVERY OVER EGP 2,000
+                </span>
+
+                <span class="announcement-star">
+                    ✦
+                </span>
+
+            </div>
+
+
+            <div class="winter-announcement-set">
+
+                <span>
+                    WELCOME TO WINTER ’26
+                </span>
+
+                <span class="announcement-star">
+                    ✦
+                </span>
+
+                <span>
+                    EVERYDAY. ELEVATED.
+                </span>
+
+                <span class="announcement-star">
+                    ✦
+                </span>
+
+                <span>
+                    COMPLIMENTARY DELIVERY OVER EGP 2,000
+                </span>
+
+                <span class="announcement-star">
+                    ✦
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================
+         MAIN
+    ================================= -->
+
+    <main class="loyalty-page">
+
+
+        <!-- ============================
+             HERO
+        ============================= -->
+
+        <section class="loyalty-hero">
+
+            <div class="loyalty-hero-inner">
+
+                <p class="loyalty-eyebrow">
+                    AVVIAMENTO
+                </p>
+
+                <h1>
+                    AV Rewards
+                </h1>
+
+                <p class="loyalty-hero-subtitle">
+                    Shop. Earn. Unlock more.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ============================
+             LOGIN
+        ============================= -->
+
+        <section
+            class="loyalty-login-section"
+            id="loginSection"
+        >
+
+            <div class="loyalty-login-card">
+
+                <div class="loyalty-card-icon">
+
+                    <i class="fa-regular fa-star"></i>
+
+                </div>
+
+
+                <p class="loyalty-card-eyebrow">
+                    YOUR MEMBERSHIP
+                </p>
+
+
+                <h2>
+                    Your AV Rewards
+                </h2>
+
+
+                <p class="loyalty-card-description">
+                    Enter your email to view your
+                    points, rewards and exclusive benefits.
+                </p>
+
+
+                <form
+                    id="loyaltyLoginForm"
+                    novalidate
+                >
+
+                    <label for="loyaltyEmail">
+                        Email Address
+                    </label>
+
+
+                    <input
+                        type="email"
+                        id="loyaltyEmail"
+                        placeholder="your@email.com"
+                        autocomplete="email"
+                        required
+                    >
+
+
+                    <button
+                        type="submit"
+                        class="loyalty-primary-button"
+                        id="continueButton"
+                    >
+
+                        <span>
+                            CONTINUE
+                        </span>
+
+                        <span class="button-arrow">
+                            →
+                        </span>
+
+                    </button>
+
+                </form>
+
+
+                <p
+                    class="loyalty-error"
+                    id="loginError"
+                ></p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ============================
+             LOADING
+        ============================= -->
+
+        <div
+            class="loyalty-loading"
+            id="loadingState"
+            hidden
+        >
+
+            <i class="fa-solid fa-spinner fa-spin"></i>
+
+            <span>
+                Loading your rewards...
+            </span>
+
+        </div>
+
+
+        <!-- ============================
+             DASHBOARD
+        ============================= -->
+
+        <section
+            class="loyalty-dashboard"
+            id="loyaltyDashboard"
+            hidden
+        >
+
+
+            <!-- CUSTOMER HEADER -->
+
+            <div class="loyalty-dashboard-header">
+
+                <div>
+
+                    <p class="loyalty-eyebrow">
+                        WELCOME BACK
+                    </p>
+
+                    <h2 id="customerEmail">
+                        -
+                    </h2>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="change-email-button"
+                    id="logoutButton"
+                >
+                    CHANGE EMAIL
+                </button>
+
+            </div>
+
+
+            <!-- POINTS -->
+
+            <section class="points-card">
+
+                <div class="points-main">
+
+                    <p class="points-label">
+                        AV POINTS
+                    </p>
+
+                    <strong id="pointsValue">
+                        0
+                    </strong>
+
+                    <p class="points-subtitle">
+                        Available to redeem
+                    </p>
+
+                </div>
+
+
+                <div class="level-box">
+
+                    <p class="level-small">
+                        CURRENT LEVEL
+                    </p>
+
+                    <strong id="levelName">
+                        AV MEMBER
+                    </strong>
+
+                </div>
+
+            </section>
+
+
+            <!-- PROGRESS -->
+
+            <section class="loyalty-section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <p class="loyalty-eyebrow">
+                            YOUR PROGRESS
+                        </p>
+
+                        <h2>
+                            Keep unlocking
+                        </h2>
+
+                    </div>
+
+
+                    <p
+                        class="next-level-text"
+                        id="nextLevelText"
+                    >
+                        -
+                    </p>
+
+                </div>
+
+
+                <div class="progress-card">
+
+                    <div class="progress-bar">
+
+                        <div
+                            class="progress-fill"
+                            id="progressFill"
+                        ></div>
+
+                    </div>
+
+
+                    <div class="progress-info">
+
+                        <span id="currentLevelPoints">
+                            0 points
+                        </span>
+
+                        <span id="nextLevelPoints">
+                            -
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- REWARDS -->
+
+            <section class="loyalty-section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <p class="loyalty-eyebrow">
+                            REWARDS
+                        </p>
+
+                        <h2>
+                            Unlock your benefits
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="rewards-grid"
+                    id="rewardsGrid"
+                ></div>
+
+            </section>
+
+
+            <!-- MISSIONS -->
+
+            <section class="loyalty-section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <p class="loyalty-eyebrow">
+                            MISSIONS
+                        </p>
+
+                        <h2>
+                            Earn more points
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="missions-grid"
+                    id="missionsGrid"
+                ></div>
+
+            </section>
+
+
+            <!-- PROMO CODES -->
+
+            <section class="loyalty-section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <p class="loyalty-eyebrow">
+                            YOUR REWARDS
+                        </p>
+
+                        <h2>
+                            Promo codes
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="promo-list"
+                    id="promoList"
+                ></div>
+
+            </section>
+
+        </section>
+
+
+        <!-- TOAST -->
+
+        <div
+            class="loyalty-toast"
+            id="loyaltyToast"
+        ></div>
+
+    </main>
+
+
+    <!-- ================================
+         FOOTER
+    ================================= -->
+
+    <footer class="footer">
+
+        <div class="footer-content">
+
+            <div class="footer-brand">
+
+                <h2>
+                    AVVIAMENTO
+                </h2>
+
+                <p>
+                    Refined menswear for an elevated everyday.
+                </p>
+
+            </div>
+
+
+            <div class="footer-section">
+
+                <h3>
+                    Information
+                </h3>
+
+                <ul>
+
+                    <li>
+                        <a href="about.html">
+                            About Us
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="contact.html">
+                            Contact Us
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="shipping-policy.html">
+                            Shipping Policy
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="refund-policy.html">
+                            Refund &amp; Exchange Policy
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <div class="footer-section">
+
+                <h3>
+                    Contact Us
+                </h3>
+
+                <ul class="contact-list">
+
+                    <li>
+
+                        <i class="fa-brands fa-whatsapp"></i>
+
+                        <a
+                            href="https://wa.me/201000000000"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            +20 100 000 0000
+                        </a>
+
+                    </li>
+
+
+                    <li>
+
+                        <i class="fa-regular fa-envelope"></i>
+
+                        <a href="mailto:info@avviamento.com">
+                            info@avviamento.com
+                        </a>
+
+                    </li>
+
+
+                    <li>
+
+                        <i class="fa-brands fa-instagram"></i>
+
+                        <a
+                            href="https://instagram.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            @avviamento
+                        </a>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <p>
+                © 2026 Avviamento. All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- ================================
+         SCRIPTS
+    ================================= -->
+
+    <script src="menu.js"></script>
+
+    <script src="style.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="supabase.js"></script>
+
+    <script src="search.js"></script>
+
+    <script src="loyalty.js"></script>
+
+</body>
+
+</html>

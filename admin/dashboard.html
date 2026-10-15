@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard | Avviamento</title>
+
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+    <div class="admin-layout">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+
+            <div class="logo">
+                AVVIAMENTO
+            </div>
+
+            <nav>
+
+                <a href="dashboard.html" class="active">
+                    Dashboard
+                </a>
+
+                <a href="products.html">
+                    Products
+                </a>
+
+                <a href="categories.html">
+                    Categories
+                </a>
+
+                <a href="orders.html">
+                    Orders
+                </a>
+
+                <a href="customers.html">
+                    Customers
+                </a>
+
+                <a href="loyalty.html">
+                    Loyalty
+                </a>
+
+<a href="contact-messages.html">Contact Messages</a>
+
+            </nav>
+
+            <button id="logoutBtn" class="logout-btn">
+                Logout
+            </button>
+
+        </aside>
+
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- Header -->
+            <header class="topbar">
+
+                <div>
+                    <h1>Dashboard</h1>
+                    <p>Welcome back, Admin</p>
+                </div>
+
+            </header>
+
+
+            <!-- Statistics -->
+            <section class="stats-grid">
+
+                <div class="stat-card">
+                    <span>Total Sales</span>
+                    <h2 id="totalSales">EGP 0.00</h2>
+                </div>
+
+                <div class="stat-card">
+                    <span>Total Orders</span>
+                    <h2 id="totalOrders">0</h2>
+                </div>
+
+                <div class="stat-card">
+                    <span>Products</span>
+                    <h2 id="totalProducts">0</h2>
+                </div>
+
+                <div class="stat-card">
+                    <span>Customers</span>
+                    <h2 id="totalCustomers">0</h2>
+                </div>
+
+                <div class="stat-card">
+                    <span>Loyalty Members</span>
+                    <h2 id="totalLoyaltyMembers">0</h2>
+                </div>
+
+            </section>
+
+
+            <!-- Recent Orders -->
+            <section class="dashboard-section">
+
+                <div class="section-header">
+
+                    <h2>Recent Orders</h2>
+
+                    <a href="orders.html" class="dashboard-link">
+                        View All
+                    </a>
+
+                </div>
+
+                <div id="recentOrders" class="orders-list">
+
+                    <p class="loading-text">
+                        Loading orders...
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- Low Stock -->
+            <section class="dashboard-section">
+
+                <div class="section-header">
+
+                    <h2>Low Stock Products</h2>
+
+                    <a href="products.html" class="dashboard-link">
+                        View Products
+                    </a>
+
+                </div>
+
+                <div id="lowStockProducts" class="products-list">
+
+                    <p class="loading-text">
+                        Loading products...
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- Loyalty Quick Access -->
+            <section class="dashboard-section">
+
+                <div class="section-header">
+
+                    <div>
+                        <h2>Loyalty Program</h2>
+                        <p class="loading-text">
+                            Manage rewards, missions and membership levels.
+                        </p>
+                    </div>
+
+                    <a href="loyalty.html" class="dashboard-link">
+                        Manage Loyalty
+                    </a>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="../supabase.js"></script>
+
+    <script src="admin-dashboard.js"></script>
+
+</body>
+
+</html>

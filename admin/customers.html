@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Customers | Avviamento</title>
+
+    <link rel="stylesheet" href="admin.css">
+
+    <style>
+
+        .page-header {
+            margin-bottom: 25px;
+        }
+
+        .page-header p {
+            color: #777;
+            margin-top: 6px;
+        }
+
+        .customers-toolbar {
+            margin-bottom: 20px;
+        }
+
+        .customers-toolbar input {
+            width: 100%;
+            max-width: 400px;
+            padding: 13px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .customers-table-wrapper {
+            overflow-x: auto;
+        }
+
+        .customers-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 850px;
+        }
+
+        .customers-table th,
+        .customers-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .customers-table th {
+            color: #777;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .customer-name {
+            font-weight: bold;
+        }
+
+        .customer-email,
+        .customer-phone {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .customer-orders {
+            font-weight: bold;
+        }
+
+        .customer-spent {
+            font-weight: bold;
+        }
+
+        .no-customers {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+
+        @media (max-width: 600px) {
+
+            .customers-toolbar input {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="admin-layout">
+
+    <!-- Sidebar -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            AVVIAMENTO
+        </div>
+
+        <nav>
+
+            <a href="dashboard.html">
+                Dashboard
+            </a>
+
+            <a href="products.html">
+                Products
+            </a>
+
+            <a href="categories.html">
+                Categories
+            </a>
+
+            <a href="orders.html">
+                Orders
+            </a>
+
+            <a href="customers.html" class="active">
+                Customers
+            </a>
+
+            
+                <a href="loyalty.html">
+                    Loyalty
+                </a>
+
+<a href="contact-messages.html">Contact Messages</a>
+
+
+        </nav>
+
+        <button
+            id="logoutBtn"
+            class="logout-btn">
+
+            Logout
+
+        </button>
+
+    </aside>
+
+
+    <!-- Main -->
+
+    <main class="main-content">
+
+        <header class="page-header">
+
+            <h1>
+                Customers
+            </h1>
+
+            <p>
+                View customer information and order history
+            </p>
+
+        </header>
+
+
+        <!-- Search -->
+
+        <div class="customers-toolbar">
+
+            <input
+                type="text"
+                id="customerSearch"
+                placeholder="Search by name, email or phone..."
+            >
+
+        </div>
+
+
+        <!-- Customers -->
+
+        <section class="dashboard-section">
+
+            <div class="customers-table-wrapper">
+
+                <table class="customers-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Customer
+                            </th>
+
+                            <th>
+                                Email
+                            </th>
+
+                            <th>
+                                Phone
+                            </th>
+
+                            <th>
+                                Orders
+                            </th>
+
+                            <th>
+                                Total Spent
+                            </th>
+
+                            <th>
+                                Last Order
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="customersContainer">
+
+                        <tr>
+
+                            <td
+                                colspan="6"
+                                class="no-customers">
+
+                                Loading customers...
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="../supabase.js"></script>
+
+<script src="admin-customers.js"></script>
+
+</body>
+
+</html>

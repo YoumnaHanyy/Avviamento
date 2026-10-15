@@ -1,0 +1,1077 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+
+body {
+    padding-top: 85px;
+
+    background-color: #F3EEE5;
+    color: #032d37;
+
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+body.menu-open {
+    overflow: hidden;
+}
+
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+
+button {
+    font-family: inherit;
+}
+
+
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    z-index: 1000;
+
+    width: 100%;
+    height: 85px;
+
+    padding: 0 7%;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr auto 1fr;
+
+    align-items: center;
+
+    background-color: #e2ceb5;
+}
+
+
+.navbar-left,
+.navbar-right {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+}
+
+
+.navbar-left {
+    justify-content: flex-start;
+}
+
+
+.navbar-right {
+    justify-content: flex-end;
+}
+
+
+.menu-button,
+.nav-icon {
+    width: 50px;
+    height: 45px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+
+    background-color: transparent;
+
+    color: #032d37;
+
+    font-size: 24px;
+
+    cursor: pointer;
+
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+}
+
+
+.menu-button {
+    font-size: 27px;
+}
+
+
+.cart-icon {
+    position: relative;
+
+    width: 45px;
+    height: 45px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    color: #032d37;
+
+    font-size: 24px;
+
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+}
+
+
+.menu-button:hover,
+.nav-icon:hover,
+.cart-icon:hover {
+    opacity: 0.7;
+
+    transform: translateY(-2px);
+}
+
+
+.cart-count {
+    position: absolute;
+
+    top: 0;
+    right: -2px;
+
+    min-width: 18px;
+    height: 18px;
+
+    padding: 0 5px;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50px;
+
+    background-color: #032d37;
+    color: #F3EEE5;
+
+    font-size: 10px;
+
+    font-weight: bold;
+
+    line-height: 1;
+}
+
+
+.logo {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+}
+
+
+.logo img {
+    width: 60px;
+    height: 60px;
+
+    display: block;
+
+    object-fit: contain;
+}
+
+
+
+/* =========================
+   ABOUT HERO
+========================= */
+
+.about-hero {
+    min-height: 70vh;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 80px 20px;
+
+    background-color: #e2ceb5;
+
+    text-align: center;
+}
+
+
+.about-hero-content {
+    width: 100%;
+
+    max-width: 850px;
+}
+
+
+.small-title {
+    margin-bottom: 18px;
+
+    font-size: 11px;
+
+    letter-spacing: 6px;
+}
+
+
+.about-hero h1 {
+    margin-bottom: 22px;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        clamp(
+            55px,
+            7vw,
+            100px
+        );
+
+    line-height: 0.95;
+
+    font-weight: normal;
+}
+
+
+.about-description {
+    max-width: 580px;
+
+    margin: auto;
+
+    color:
+        rgba(3, 45, 55, 0.75);
+
+    font-size: 14px;
+
+    line-height: 1.8;
+}
+
+
+
+/* =========================
+   STORY
+========================= */
+
+.story-section {
+    width: 88%;
+
+    max-width: 1400px;
+
+    margin:
+        120px auto;
+
+    display: grid;
+
+    grid-template-columns:
+        1.1fr 1fr;
+
+    gap: 90px;
+
+    align-items: center;
+}
+
+
+.story-image {
+    width: 100%;
+
+    height: 700px;
+
+    overflow: hidden;
+
+    background-color: #e2ceb5;
+}
+
+
+.story-image img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    transition:
+        transform 0.6s ease;
+}
+
+
+.story-image:hover img {
+    transform:
+        scale(1.025);
+}
+
+
+.story-content {
+    max-width: 560px;
+}
+
+
+.section-label {
+    margin-bottom: 24px;
+
+    font-size: 11px;
+
+    letter-spacing: 4px;
+}
+
+
+.story-content h2,
+.philosophy-content h2 {
+    margin-bottom: 30px;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        clamp(
+            42px,
+            5vw,
+            68px
+        );
+
+    line-height: 1.08;
+
+    font-weight: normal;
+}
+
+
+.story-content > p:not(.section-label),
+.philosophy-content > p:not(.section-label) {
+    margin-bottom: 18px;
+
+    color:
+        rgba(3, 45, 55, 0.78);
+
+    font-size: 15px;
+
+    line-height: 1.9;
+}
+
+
+
+/* =========================
+   VALUES
+========================= */
+
+.values-section {
+    width: 88%;
+
+    max-width: 1400px;
+
+    margin:
+        140px auto;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    border-top:
+        1px solid rgba(3, 45, 55, 0.2);
+
+    border-bottom:
+        1px solid rgba(3, 45, 55, 0.2);
+}
+
+
+.value {
+    min-height: 290px;
+
+    padding:
+        70px 45px;
+}
+
+
+.value:not(:last-child) {
+    border-right:
+        1px solid rgba(3, 45, 55, 0.2);
+}
+
+
+.value span {
+    display: block;
+
+    margin-bottom: 42px;
+
+    font-size: 11px;
+
+    letter-spacing: 2px;
+
+    opacity: 0.55;
+}
+
+
+.value h3 {
+    margin-bottom: 15px;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 34px;
+
+    font-weight: normal;
+}
+
+
+.value p {
+    max-width: 260px;
+
+    color:
+        rgba(3, 45, 55, 0.72);
+
+    font-size: 14px;
+
+    line-height: 1.8;
+}
+
+
+
+/* =========================
+   BRAND STATEMENT
+========================= */
+
+.brand-statement {
+    padding:
+        150px 8%;
+
+    background-color: #032d37;
+
+    color: #e2ceb5;
+
+    text-align: center;
+}
+
+
+.brand-statement p {
+    margin-bottom: 28px;
+
+    font-size: 11px;
+
+    letter-spacing: 5px;
+}
+
+
+.brand-statement h2 {
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        clamp(
+            50px,
+            7vw,
+            95px
+        );
+
+    line-height: 1.02;
+
+    font-weight: normal;
+}
+
+
+
+/* =========================
+   PHILOSOPHY
+========================= */
+
+.philosophy-section {
+    width: 88%;
+
+    max-width: 1400px;
+
+    margin:
+        140px auto;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1.1fr;
+
+    gap: 100px;
+
+    align-items: center;
+}
+
+
+.philosophy-content {
+    max-width: 520px;
+}
+
+
+.philosophy-image {
+    width: 100%;
+
+    height: 680px;
+
+    overflow: hidden;
+
+    background-color: #e2ceb5;
+}
+
+
+.philosophy-image img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    transition:
+        transform 0.6s ease;
+}
+
+
+.philosophy-image:hover img {
+    transform:
+        scale(1.025);
+}
+
+
+
+/* =========================
+   BUTTON
+========================= */
+
+.about-button {
+    width: fit-content;
+
+    margin-top: 28px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    padding-bottom: 8px;
+
+    border-bottom:
+        1px solid #032d37;
+
+    font-size: 13px;
+
+    letter-spacing: 1px;
+
+    transition:
+        gap 0.3s ease;
+}
+
+
+.about-button:hover {
+    gap: 26px;
+}
+
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer {
+    padding: 50px 7%;
+
+    display: grid;
+
+    grid-template-columns:
+        1.3fr 1fr 1fr;
+
+    gap: 60px;
+
+    background-color: #032d37;
+
+    color: #e2ceb5;
+}
+
+
+.footer h2,
+.footer h3 {
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-weight: normal;
+}
+
+
+.footer h2 {
+    margin-bottom: 12px;
+
+    letter-spacing: 4px;
+}
+
+
+.footer h3 {
+    margin-bottom: 15px;
+}
+
+
+.footer p {
+    max-width: 300px;
+
+    color:
+        rgba(226, 206, 181, 0.75);
+
+    font-size: 14px;
+
+    line-height: 1.7;
+}
+
+
+.footer-section a {
+    margin-bottom: 12px;
+
+    display: block;
+
+    color:
+        rgba(226, 206, 181, 0.8);
+
+    font-size: 14px;
+}
+
+
+.footer-section a:hover {
+    color: #FFFFFF;
+}
+
+
+.footer-section i {
+    width: 22px;
+}
+
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media screen and (max-width: 1000px) {
+
+    .story-section,
+    .philosophy-section {
+        gap: 50px;
+    }
+
+
+    .story-image,
+    .philosophy-image {
+        height: 560px;
+    }
+
+
+    .value {
+        padding:
+            55px 30px;
+    }
+
+}
+
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media screen and (max-width: 700px) {
+
+    body {
+        padding-top: 70px;
+    }
+
+
+    /* NAVBAR */
+
+    .navbar {
+        height: 70px;
+
+        padding:
+            0 12px;
+    }
+
+
+    .navbar-left,
+    .navbar-right {
+        gap: 2px;
+    }
+
+
+    .menu-button,
+    .nav-icon,
+    .cart-icon {
+        width: 34px;
+        height: 38px;
+
+        font-size: 19px;
+    }
+
+
+    .menu-button {
+        font-size: 22px;
+    }
+
+
+    .logo img {
+        width: 52px;
+        height: 52px;
+    }
+
+
+
+    /* HERO */
+
+    .about-hero {
+        min-height: auto;
+
+        padding:
+            65px 20px 70px;
+    }
+
+
+    .small-title {
+        margin-bottom: 16px;
+
+        font-size: 9px;
+
+        letter-spacing: 4px;
+    }
+
+
+    .about-hero h1 {
+        margin-bottom: 18px;
+
+        font-size: 48px;
+
+        line-height: 1;
+    }
+
+
+    .about-description {
+        max-width: 400px;
+
+        font-size: 12px;
+
+        line-height: 1.7;
+    }
+
+
+
+    /* STORY */
+
+    .story-section {
+        width: 100%;
+
+        margin: 0;
+
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 0;
+    }
+
+
+    .story-image {
+        width: 100%;
+
+        height: 500px;
+    }
+
+
+    .story-content {
+        width: 100%;
+
+        max-width: none;
+
+        padding:
+            55px 24px 70px;
+    }
+
+
+    .section-label {
+        margin-bottom: 18px;
+
+        font-size: 10px;
+
+        letter-spacing: 3px;
+    }
+
+
+    .story-content h2,
+    .philosophy-content h2 {
+        margin-bottom: 24px;
+
+        font-size: 40px;
+    }
+
+
+    .story-content > p:not(.section-label),
+    .philosophy-content > p:not(.section-label) {
+        margin-bottom: 16px;
+
+        font-size: 14px;
+
+        line-height: 1.8;
+    }
+
+
+
+    /* VALUES */
+
+    .values-section {
+        width:
+            calc(100% - 48px);
+
+        margin:
+            20px auto 80px;
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .value {
+        min-height: auto;
+
+        padding:
+            42px 0;
+    }
+
+
+    .value:not(:last-child) {
+        border-right: none;
+
+        border-bottom:
+            1px solid rgba(3, 45, 55, 0.2);
+    }
+
+
+    .value span {
+        margin-bottom: 22px;
+    }
+
+
+    .value h3 {
+        margin-bottom: 13px;
+
+        font-size: 31px;
+    }
+
+
+    .value p {
+        max-width: 100%;
+
+        font-size: 13px;
+    }
+
+
+
+    /* STATEMENT */
+
+    .brand-statement {
+        padding:
+            95px 24px;
+    }
+
+
+    .brand-statement p {
+        margin-bottom: 22px;
+
+        font-size: 9px;
+
+        letter-spacing: 4px;
+    }
+
+
+    .brand-statement h2 {
+        font-size: 46px;
+
+        line-height: 1.05;
+    }
+
+
+
+    /* PHILOSOPHY */
+
+    .philosophy-section {
+        width: 100%;
+
+        margin: 0;
+
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 0;
+    }
+
+
+    .philosophy-image {
+        order: 1;
+
+        width: 100%;
+
+        height: 500px;
+    }
+
+
+    .philosophy-content {
+        order: 2;
+
+        width: 100%;
+
+        max-width: none;
+
+        padding:
+            60px 24px 75px;
+    }
+
+
+    .about-button {
+        margin-top: 28px;
+
+        gap: 13px;
+
+        font-size: 12px;
+    }
+
+
+
+    /* FOOTER */
+
+    .footer {
+        padding:
+            40px 20px;
+
+        grid-template-columns: 1fr;
+
+        gap: 30px;
+    }
+
+}
+
+
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
+@media screen and (max-width: 400px) {
+
+    .navbar {
+        padding:
+            0 7px;
+    }
+
+
+    .navbar-left,
+    .navbar-right {
+        gap: 0;
+    }
+
+
+    .menu-button,
+    .nav-icon,
+    .cart-icon {
+        width: 30px;
+
+        font-size: 17px;
+    }
+
+
+    .menu-button {
+        font-size: 20px;
+    }
+
+
+    .logo img {
+        width: 48px;
+        height: 48px;
+    }
+
+
+
+    .about-hero {
+        padding:
+            55px 18px 60px;
+    }
+
+
+    .about-hero h1 {
+        font-size: 42px;
+    }
+
+
+    .about-description {
+        font-size: 12px;
+    }
+
+
+
+    .story-image,
+    .philosophy-image {
+        height: 430px;
+    }
+
+
+    .story-content,
+    .philosophy-content {
+        padding-left: 20px;
+
+        padding-right: 20px;
+    }
+
+
+    .story-content h2,
+    .philosophy-content h2 {
+        font-size: 35px;
+    }
+
+
+
+    .values-section {
+        width:
+            calc(100% - 40px);
+    }
+
+
+
+    .brand-statement {
+        padding:
+            80px 20px;
+    }
+
+
+    .brand-statement h2 {
+        font-size: 39px;
+    }
+
+}

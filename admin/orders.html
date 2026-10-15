@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Orders | Avviamento</title>
+
+    <link rel="stylesheet" href="admin.css">
+
+    <style>
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .page-header p {
+            color: #777;
+            margin-top: 6px;
+        }
+
+        .orders-toolbar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .orders-toolbar input,
+        .orders-toolbar select {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .orders-toolbar input {
+            width: 300px;
+        }
+
+        .orders-table-wrapper {
+            overflow-x: auto;
+        }
+
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 850px;
+        }
+
+        .orders-table th,
+        .orders-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .orders-table th {
+            font-size: 13px;
+            color: #777;
+            font-weight: 600;
+        }
+
+        .order-number {
+            font-weight: bold;
+        }
+
+        .order-date {
+            color: #777;
+            font-size: 13px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: capitalize;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-confirmed {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .status-processing {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-shipped {
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+
+        .status-delivered {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .payment-paid {
+            color: #287a3e;
+            font-weight: bold;
+        }
+
+        .payment-pending {
+            color: #856404;
+            font-weight: bold;
+        }
+
+        .payment-failed {
+            color: #c0392b;
+            font-weight: bold;
+        }
+
+        .payment-refunded {
+            color: #6c3483;
+            font-weight: bold;
+        }
+
+        .view-btn {
+            padding: 8px 14px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .view-btn:hover {
+            background: #f5f5f5;
+        }
+
+        /* Modal */
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 1000;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 750px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 12px;
+            padding: 30px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .close-modal {
+            border: none;
+            background: none;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        .order-details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .detail-box {
+            background: #f7f7f7;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .detail-box span {
+            display: block;
+            color: #777;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .detail-box strong {
+            font-size: 14px;
+        }
+
+        .order-items {
+            margin-top: 20px;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .item-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .item-info span {
+            color: #777;
+            font-size: 13px;
+        }
+
+        .status-controls {
+            margin-top: 25px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .status-controls label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .status-controls select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+
+        .save-status-btn {
+            margin-top: 20px;
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 6px;
+            background: #073642;
+            color: white;
+            cursor: pointer;
+        }
+
+        .order-total-box {
+            margin-top: 25px;
+            padding: 18px;
+            background: #f7f7f7;
+            border-radius: 8px;
+            text-align: right;
+        }
+
+        @media (max-width: 600px) {
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .orders-toolbar input {
+                width: 100%;
+            }
+
+            .order-details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .status-controls {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="admin-layout">
+
+    <!-- Sidebar -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            AVVIAMENTO
+        </div>
+
+        <nav>
+
+            <a href="dashboard.html">
+                Dashboard
+            </a>
+
+            <a href="products.html">
+                Products
+            </a>
+
+            <a href="categories.html">
+                Categories
+            </a>
+
+            <a href="orders.html" class="active">
+                Orders
+            </a>
+
+            <a href="customers.html">
+                Customers
+            </a>
+
+            
+                <a href="loyalty.html">
+                    Loyalty
+                </a>
+
+
+<a href="contact-messages.html">Contact Messages</a>
+
+        </nav>
+
+        <button id="logoutBtn" class="logout-btn">
+            Logout
+        </button>
+
+    </aside>
+
+
+    <!-- Main -->
+
+    <main class="main-content">
+
+        <header class="page-header">
+
+            <div>
+
+                <h1>Orders</h1>
+
+                <p>
+                    Manage customer orders
+                </p>
+
+            </div>
+
+        </header>
+
+
+        <!-- Filters -->
+
+        <div class="orders-toolbar">
+
+            <input
+                type="text"
+                id="orderSearch"
+                placeholder="Search by order number, name or phone..."
+            >
+
+
+            <select id="statusFilter">
+
+                <option value="">
+                    All Statuses
+                </option>
+
+                <option value="pending">
+                    Pending
+                </option>
+
+                <option value="confirmed">
+                    Confirmed
+                </option>
+
+                <option value="processing">
+                    Processing
+                </option>
+
+                <option value="shipped">
+                    Shipped
+                </option>
+
+                <option value="delivered">
+                    Delivered
+                </option>
+
+                <option value="cancelled">
+                    Cancelled
+                </option>
+
+            </select>
+
+
+            <select id="paymentFilter">
+
+                <option value="">
+                    All Payments
+                </option>
+
+                <option value="pending">
+                    Pending
+                </option>
+
+                <option value="paid">
+                    Paid
+                </option>
+
+                <option value="failed">
+                    Failed
+                </option>
+
+                <option value="refunded">
+                    Refunded
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- Orders -->
+
+        <section class="dashboard-section">
+
+            <div class="orders-table-wrapper">
+
+                <table class="orders-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Order
+                            </th>
+
+                            <th>
+                                Customer
+                            </th>
+
+                            <th>
+                                Total
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Payment
+                            </th>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="ordersContainer">
+
+                        <tr>
+
+                            <td colspan="7">
+                                Loading orders...
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- Order Details Modal -->
+
+<div
+    id="orderModal"
+    class="modal">
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <h2 id="modalOrderNumber">
+                Order
+            </h2>
+
+            <button
+                id="closeModalBtn"
+                class="close-modal">
+
+                ×
+
+            </button>
+
+        </div>
+
+
+        <!-- Customer Details -->
+
+        <div class="order-details-grid">
+
+            <div class="detail-box">
+
+                <span>
+                    Customer
+                </span>
+
+                <strong id="detailName">
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="detail-box">
+
+                <span>
+                    Phone
+                </span>
+
+                <strong id="detailPhone">
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="detail-box">
+
+                <span>
+                    City
+                </span>
+
+                <strong id="detailCity">
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="detail-box">
+
+                <span>
+                    Governorate / Address
+                </span>
+
+                <strong id="detailAddress">
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="detail-box">
+
+                <span>
+                    Payment Method
+                </span>
+
+                <strong id="detailPaymentMethod">
+                    -
+                </strong>
+
+            </div>
+
+
+            <div class="detail-box">
+
+                <span>
+                    Delivery
+                </span>
+
+                <strong id="detailDelivery">
+                    -
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- Items -->
+
+        <h3>
+            Order Items
+        </h3>
+
+        <div
+            id="orderItems"
+            class="order-items">
+
+        </div>
+
+
+        <!-- Total -->
+
+        <div class="order-total-box">
+
+            <strong id="detailTotal">
+                Total: EGP 0.00
+            </strong>
+
+        </div>
+
+
+        <!-- Status -->
+
+        <div class="status-controls">
+
+            <div>
+
+                <label>
+                    Order Status
+                </label>
+
+                <select id="orderStatus">
+
+                    <option value="pending">
+                        Pending
+                    </option>
+
+                    <option value="confirmed">
+                        Confirmed
+                    </option>
+
+                    <option value="processing">
+                        Processing
+                    </option>
+
+                    <option value="shipped">
+                        Shipped
+                    </option>
+
+                    <option value="delivered">
+                        Delivered
+                    </option>
+
+                    <option value="cancelled">
+                        Cancelled
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Payment Status
+                </label>
+
+                <select id="paymentStatus">
+
+                    <option value="pending">
+                        Pending
+                    </option>
+
+                    <option value="paid">
+                        Paid
+                    </option>
+
+                    <option value="failed">
+                        Failed
+                    </option>
+
+                    <option value="refunded">
+                        Refunded
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <button
+            id="saveStatusBtn"
+            class="save-status-btn">
+
+            Save Status
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="../supabase.js"></script>
+
+<script src="admin-orders.js"></script>
+
+</body>
+
+</html>

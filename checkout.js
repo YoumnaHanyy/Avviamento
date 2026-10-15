@@ -2,6 +2,8 @@ const CART_KEY = "avviamentoCart";
 
 const ORDER_KEY = "avviamentoLastOrder";
 
+const CHECKOUT_TOKEN_KEY = "avviamentoCheckoutToken";
+
 const FREE_DELIVERY_MINIMUM = 2000;
 
 const STANDARD_DELIVERY_FEE = 100;
@@ -9,72 +11,69 @@ const STANDARD_DELIVERY_FEE = 100;
 const EXPRESS_DELIVERY_FEE = 175;
 
 
+const APPLIED_REWARD_KEY = "avviamentoAppliedLoyaltyCode";
+
+let appliedDiscountCode = null;
+
+try {
+    appliedDiscountCode = JSON.parse(
+        localStorage.getItem(APPLIED_REWARD_KEY)
+    );
+} catch (error) {
+    appliedDiscountCode = null;
+}
 
 /* HTML Elements */
 
 const checkoutForm =
     document.getElementById("checkoutForm");
 
-
 const checkoutLayout =
     document.getElementById("checkoutLayout");
-
 
 const emptyCheckout =
     document.getElementById("emptyCheckout");
 
-
 const summaryProducts =
     document.getElementById("summaryProducts");
-
 
 const subtotalElement =
     document.getElementById("subtotal");
 
-
 const deliveryElement =
     document.getElementById("delivery");
 
-
 const totalElement =
     document.getElementById("total");
-
 
 const standardDeliveryPrice =
     document.getElementById(
         "standardDeliveryPrice"
     );
 
-
 const terms =
     document.getElementById("terms");
 
-
 const termsError =
     document.getElementById("termsError");
-
 
 const placeOrderButton =
     document.getElementById(
         "placeOrderButton"
     );
 
-
 const paymentDisclaimer =
     document.getElementById(
         "paymentDisclaimer"
     );
 
-
 const orderModal =
     document.getElementById("orderModal");
-
 
 
 /* Get shopping cart */
 
 let cart = getCart();
-
 
 
 function getCart() {
@@ -86,7 +85,6 @@ function getCart() {
                 localStorage.getItem(CART_KEY)
             );
 
-
         return Array.isArray(storedCart)
             ? storedCart
             : [];
@@ -95,12 +93,44 @@ function getCart() {
 
     catch (error) {
 
+        console.error(
+            "Cart loading error:",
+            error
+        );
+
         return [];
 
     }
 
 }
 
+
+/* Get checkout token */
+
+function getCheckoutToken() {
+
+    let token =
+        localStorage.getItem(
+            CHECKOUT_TOKEN_KEY
+        );
+
+
+    if (!token) {
+
+        token =
+            crypto.randomUUID();
+
+        localStorage.setItem(
+            CHECKOUT_TOKEN_KEY,
+            token
+        );
+
+    }
+
+
+    return token;
+
+}
 
 
 /* Format price */
@@ -112,7 +142,6 @@ function formatPrice(value) {
         .toLocaleString("en-EG")}`;
 
 }
-
 
 
 /* Protect displayed HTML */
@@ -132,7 +161,6 @@ function escapeHtml(value) {
         .replaceAll("'", "&#039;");
 
 }
-
 
 
 /* Calculate subtotal */
@@ -155,7 +183,6 @@ function getSubtotal() {
 }
 
 
-
 /* Get selected delivery method */
 
 function getSelectedDelivery() {
@@ -165,13 +192,11 @@ function getSelectedDelivery() {
             'input[name="deliveryMethod"]:checked'
         );
 
-
     return selectedDelivery
         ? selectedDelivery.value
         : "standard";
 
 }
-
 
 
 /* Calculate delivery fees */
@@ -180,7 +205,6 @@ function getDeliveryFee() {
 
     const subtotal =
         getSubtotal();
-
 
     const deliveryMethod =
         getSelectedDelivery();
@@ -210,25 +234,18 @@ function getDeliveryFee() {
 }
 
 
-
 /* Display order products */
 
 function renderOrder() {
-
-    /*
-    If cart is empty
-    */
 
     if (cart.length === 0) {
 
         checkoutLayout.style.display =
             "none";
 
-
         emptyCheckout.classList.add(
             "show"
         );
-
 
         return;
 
@@ -238,7 +255,6 @@ function renderOrder() {
     checkoutLayout.style.display =
         "grid";
 
-
     emptyCheckout.classList.remove(
         "show"
     );
@@ -246,7 +262,6 @@ function renderOrder() {
 
     summaryProducts.innerHTML =
         "";
-
 
 
     cart.forEach(item => {
@@ -329,61 +344,54 @@ function renderOrder() {
 }
 
 
-
 /* Update prices */
 
+
 function updateTotals() {
+    const subtotal = getSubtotal();
+    const appliedCode = appliedDiscountCode;
 
-    const subtotal =
-        getSubtotal();
-
-
-    const delivery =
-        getDeliveryFee();
-
-
-    const total =
-        subtotal + delivery;
-
-
-    subtotalElement.textContent =
-        formatPrice(subtotal);
-
-
-    deliveryElement.textContent =
-        delivery === 0
-            ? "Free"
-            : formatPrice(delivery);
-
-
-    totalElement.textContent =
-        formatPrice(total);
-
-
-
-    /*
-    Update standard delivery text
-    */
+    // Calculate loyalty percentage discount
+    let discount = 0;
 
     if (
-        subtotal >=
-        FREE_DELIVERY_MINIMUM
+        appliedCode &&
+        appliedCode.type === "percentage_discount"
     ) {
+        const percentage = Number(appliedCode.value);
 
-        standardDeliveryPrice.textContent =
-            "Free";
-
+        if (percentage >= 0 && percentage <= 100) {
+            discount = subtotal * percentage / 100;
+        }
     }
 
-    else {
+    // Calculate delivery fee
+    let delivery = getDeliveryFee();
 
-        standardDeliveryPrice.textContent =
-            formatPrice(
-                STANDARD_DELIVERY_FEE
-            );
-
+    // Apply free shipping reward
+    if (
+        appliedCode &&
+        appliedCode.type === "free_shipping"
+    ) {
+        delivery = 0;
     }
 
+    const total = Math.max(0, subtotal - discount) + delivery;
+
+    subtotalElement.textContent = formatPrice(subtotal);
+
+    deliveryElement.textContent = delivery === 0
+        ? "Free"
+        : formatPrice(delivery);
+
+    totalElement.textContent = formatPrice(total);
+
+    if (subtotal >= FREE_DELIVERY_MINIMUM) {
+        standardDeliveryPrice.textContent = "Free";
+    } else {
+        standardDeliveryPrice.textContent =
+            formatPrice(STANDARD_DELIVERY_FEE);
+    }
 }
 
 
@@ -417,18 +425,17 @@ document
                             );
 
 
-                        card.classList.toggle(
-                            "selected",
-                            radio.checked
-                        );
+                        if (card) {
+
+                            card.classList.toggle(
+                                "selected",
+                                radio.checked
+                            );
+
+                        }
 
                     });
 
-
-
-                /*
-                Update delivery total
-                */
 
                 if (
                     radioName ===
@@ -439,11 +446,6 @@ document
 
                 }
 
-
-
-                /*
-                Show card payment notice
-                */
 
                 if (
                     radioName ===
@@ -469,7 +471,6 @@ document
     });
 
 
-
 /* Validate input */
 
 function validateField(input) {
@@ -489,17 +490,6 @@ function validateField(input) {
         input.checkValidity();
 
 
-
-    /*
-    Egyptian mobile validation
-
-    Accepted prefixes:
-    010
-    011
-    012
-    015
-    */
-
     if (input.id === "phone") {
 
         let digits =
@@ -508,10 +498,6 @@ function validateField(input) {
                 ""
             );
 
-
-        /*
-        Remove +20 or 20 if entered
-        */
 
         if (
             digits.startsWith("20")
@@ -523,10 +509,6 @@ function validateField(input) {
 
         }
 
-
-        /*
-        Remove first zero
-        */
 
         if (
             digits.startsWith("0")
@@ -555,7 +537,6 @@ function validateField(input) {
     return isValid;
 
 }
-
 
 
 /* Validate fields while typing */
@@ -624,7 +605,6 @@ checkoutForm
     });
 
 
-
 /* Terms checkbox */
 
 terms.addEventListener(
@@ -633,27 +613,286 @@ terms.addEventListener(
     () => {
 
         termsError.classList.toggle(
-
             "show",
-
             !terms.checked
-
         );
 
     }
 );
 
 
+/* Check stock before placing order */
+
+async function validateCartStock() {
+
+    try {
+
+        for (
+            const item of cart
+        ) {
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient
+                    .from("product_variants")
+                    .select(
+                        "stock"
+                    )
+                    .eq(
+                        "product_id",
+                        item.id
+                    )
+                    .eq(
+                        "color",
+                        item.colour
+                    )
+                    .eq(
+                        "size",
+                        item.size
+                    )
+                    .maybeSingle();
+
+
+            if (error) {
+
+                console.error(
+                    "Stock check error:",
+                    error
+                );
+
+                return {
+                    valid: false,
+                    message:
+                        "We couldn't check product availability right now. Please check your internet connection and try again."
+                };
+
+            }
+
+
+            if (!data) {
+
+                return {
+                    valid: false,
+                    message:
+                        `${item.name} (${item.colour} / ${item.size}) is no longer available.`
+                };
+
+            }
+
+
+            if (
+                Number(data.stock) <= 0
+            ) {
+
+                return {
+                    valid: false,
+                    message:
+                        `${item.name} (${item.colour} / ${item.size}) is currently out of stock.`
+                };
+
+            }
+
+
+            if (
+                Number(item.quantity)
+                > Number(data.stock)
+            ) {
+
+                return {
+                    valid: false,
+                    message:
+                        `Only ${data.stock} of ${item.name} (${item.colour} / ${item.size}) are available.`
+                };
+
+            }
+
+        }
+
+
+        return {
+            valid: true,
+            message: ""
+        };
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Unexpected stock validation error:",
+            error
+        );
+
+        return {
+            valid: false,
+            message:
+                "We couldn't connect to the store right now. Please check your internet connection and try again."
+        };
+
+    }
+
+}
+
+
+/* Create order using Supabase function */
+
+async function createGuestOrder(
+    formData,
+    subtotal,
+    deliveryFee,
+    total
+) {
+
+    try {
+
+        const result =
+            await supabaseClient.rpc(
+                "create_guest_order",
+                {
+
+                    p_checkout_token:
+                        getCheckoutToken(),
+                        p_discount_code: appliedDiscountCode?.code || null,
+
+                    p_email:
+                        formData.get(
+                            "email"
+                        ),
+
+                    p_payment_method:
+                        formData.get(
+                            "paymentMethod"
+                        ),
+
+                    p_subtotal:
+                        subtotal,
+
+                    p_shipping_cost:
+                        deliveryFee,
+
+                    p_total:
+                        total,
+
+                    p_full_name:
+                        `${formData.get("firstName")} ${formData.get("lastName")}`,
+
+                    p_phone:
+                        formatPhone(
+                            formData.get("phone")
+                        ),
+
+                    p_address:
+                        `${formData.get("street")}, Building ${formData.get("building")}, Apartment ${formData.get("apartment")}`,
+
+                    p_city:
+                        `${formData.get("governorate")}, ${formData.get("city")}`,
+
+                    p_notes:
+                        formData.get("notes"),
+
+                   
+p_items: cart
+
+
+                }
+            );
+
+
+        return result;
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Unexpected order creation error:",
+            error
+        );
+
+        return {
+            data: null,
+            error
+        };
+
+    }
+
+}
+
+
+/* Format phone */
+
+function formatPhone(
+    phoneValue
+) {
+
+    let phoneDigits =
+        String(
+            phoneValue
+        )
+        .replace(
+            /\D/g,
+            ""
+        );
+
+
+    if (
+        phoneDigits.startsWith("20")
+        && phoneDigits.length === 12
+    ) {
+
+        phoneDigits =
+            phoneDigits.substring(2);
+
+    }
+
+
+    if (
+        phoneDigits.startsWith("0")
+    ) {
+
+        phoneDigits =
+            phoneDigits.substring(1);
+
+    }
+
+
+    return `+20${phoneDigits}`;
+
+}
+
+
+/* Reset Place Order button */
+
+function resetPlaceOrderButton() {
+
+    placeOrderButton.disabled =
+        false;
+
+
+    placeOrderButton.innerHTML = `
+
+        <span>
+            Place Order
+        </span>
+
+        <i class="fa-solid fa-arrow-right"></i>
+
+    `;
+
+}
+
 
 /* Place order */
 
 checkoutForm.addEventListener(
+
     "submit",
 
-    event => {
+    async event => {
 
         event.preventDefault();
-
 
 
         if (cart.length === 0) {
@@ -663,27 +902,28 @@ checkoutForm.addEventListener(
         }
 
 
+        /* Prevent double submission */
 
-        /*
-        Required form fields
-        */
+        if (
+            placeOrderButton.disabled
+        ) {
+
+            return;
+
+        }
+
+
+        /* Required fields */
 
         const requiredFields = [
 
             ...checkoutForm
                 .querySelectorAll(
-
                     ".field input[required], .field select[required]"
-
                 )
 
         ];
 
-
-
-        /*
-        Validate all required fields
-        */
 
         const validationResults =
             requiredFields.map(
@@ -707,11 +947,6 @@ checkoutForm.addEventListener(
         );
 
 
-
-        /*
-        Stop if form contains errors
-        */
-
         if (
             !fieldsValid
             || !termsValid
@@ -719,9 +954,7 @@ checkoutForm.addEventListener(
 
             const firstError =
                 checkoutForm.querySelector(
-
                     ".field.invalid, .terms-error.show"
-
                 );
 
 
@@ -743,10 +976,24 @@ checkoutForm.addEventListener(
         }
 
 
+        /* Final stock check */
 
-        /*
-        Read form information
-        */
+        const stockResult =
+            await validateCartStock();
+
+
+        if (!stockResult.valid) {
+
+            alert(
+                stockResult.message
+            );
+
+            return;
+
+        }
+
+
+        /* Read form */
 
         const formData =
             new FormData(
@@ -754,190 +1001,35 @@ checkoutForm.addEventListener(
             );
 
 
+       
+const subtotal = getSubtotal();
 
-        /*
-        Create order number
-        */
+let deliveryFee = getDeliveryFee();
+let discount = 0;
 
-        const orderNumber =
-            `AV${Date.now()
-                .toString()
-                .slice(-8)}`;
+if (
+    appliedDiscountCode &&
+    appliedDiscountCode.type === "percentage_discount"
+) {
+    const percentage = Number(appliedDiscountCode.value);
 
+    if (percentage >= 0 && percentage <= 100) {
+        discount = subtotal * percentage / 100;
+    }
+}
 
+if (
+    appliedDiscountCode &&
+    appliedDiscountCode.type === "free_shipping"
+) {
+    deliveryFee = 0;
+}
 
-        /*
-        Calculate prices
-        */
 
-        const subtotal =
-            getSubtotal();
+const total = Math.max(0, subtotal - discount) + deliveryFee;
 
 
-        const deliveryFee =
-            getDeliveryFee();
-
-
-        const total =
-            subtotal + deliveryFee;
-
-
-
-        /*
-        Format phone number
-        */
-
-        let phoneDigits =
-            String(
-                formData.get("phone")
-            )
-            .replace(
-                /\D/g,
-                ""
-            );
-
-
-        if (
-            phoneDigits.startsWith("20")
-            && phoneDigits.length === 12
-        ) {
-
-            phoneDigits =
-                phoneDigits.substring(2);
-
-        }
-
-
-        if (
-            phoneDigits.startsWith("0")
-        ) {
-
-            phoneDigits =
-                phoneDigits.substring(1);
-
-        }
-
-
-
-        /*
-        Create order object
-        */
-
-        const order = {
-
-            orderNumber:
-                orderNumber,
-
-
-            createdAt:
-                new Date()
-                    .toISOString(),
-
-
-            customer: {
-
-                email:
-                    formData.get(
-                        "email"
-                    ),
-
-
-                firstName:
-                    formData.get(
-                        "firstName"
-                    ),
-
-
-                lastName:
-                    formData.get(
-                        "lastName"
-                    ),
-
-
-                phone:
-                    `+20${phoneDigits}`
-
-            },
-
-
-            shippingAddress: {
-
-                governorate:
-                    formData.get(
-                        "governorate"
-                    ),
-
-
-                city:
-                    formData.get(
-                        "city"
-                    ),
-
-
-                street:
-                    formData.get(
-                        "street"
-                    ),
-
-
-                building:
-                    formData.get(
-                        "building"
-                    ),
-
-
-                apartment:
-                    formData.get(
-                        "apartment"
-                    ),
-
-
-                notes:
-                    formData.get(
-                        "notes"
-                    )
-
-            },
-
-
-            deliveryMethod:
-                formData.get(
-                    "deliveryMethod"
-                ),
-
-
-            paymentMethod:
-                formData.get(
-                    "paymentMethod"
-                ),
-
-
-            items:
-                cart,
-
-
-            subtotal:
-                subtotal,
-
-
-            deliveryFee:
-                deliveryFee,
-
-
-            total:
-                total,
-
-
-            status:
-                "confirmed"
-
-        };
-
-
-
-        /*
-        Disable button while processing
-        */
+        /* Disable button */
 
         placeOrderButton.disabled =
             true;
@@ -950,41 +1042,364 @@ checkoutForm.addEventListener(
             <span>
                 Processing
             </span>
+
         `;
 
 
+        try {
 
-        /*
-        Simulate order processing
-        */
+            /* Create order */
 
-        setTimeout(() => {
+            const {
+                data: orderId,
+                error: orderError
+            } =
+                await createGuestOrder(
+                    formData,
+                    subtotal,
+                    deliveryFee,
+                    total
+                );
 
-            /*
-            Save completed order
-            */
+
+            /* Handle order error */
+
+            if (orderError) {
+
+                console.error(
+                    "Order creation error:",
+                    orderError
+                );
+
+
+                const errorMessage =
+                    String(
+                        orderError.message
+                        || orderError.details
+                        || ""
+                    ).toLowerCase();
+
+
+                if (
+                    errorMessage.includes(
+                        "not enough stock"
+                    )
+                    || errorMessage.includes(
+                        "available"
+                    )
+                ) {
+
+                    alert(
+                        "Sorry, the requested quantity is no longer available. Please return to your bag and update the quantity."
+                    );
+
+                }
+
+                else if (
+                    errorMessage.includes(
+                        "variant not found"
+                    )
+                ) {
+
+                    alert(
+                        "Sorry, one of the selected product variants is no longer available. Please return to your bag and choose another option."
+                    );
+
+                }
+
+                else if (
+                    errorMessage.includes(
+                        "checkout_token"
+                    )
+                ) {
+
+                    alert(
+                        "This checkout session is no longer valid. Please return to your bag and start checkout again."
+                    );
+
+                }
+
+                else {
+
+                    alert(
+                        "We couldn't place your order right now. Please check your internet connection and try again."
+                    );
+
+                }
+
+
+                resetPlaceOrderButton();
+
+                return;
+
+            }
+
+
+            /* Create order number */
+
+            const orderNumber =
+                `AV${String(
+                    orderId
+                ).padStart(
+                    6,
+                    "0"
+                )}`;
+
+
+            /* Send order confirmation email */
+
+            let emailFailed =
+                false;
+
+
+            try {
+
+                const {
+                    data: emailResult,
+                    error: emailError
+                } =
+                    await supabaseClient.functions.invoke(
+                        "hyper-worker",
+                        {
+                            body: {
+
+                                email:
+                                    formData.get(
+                                        "email"
+                                    ),
+
+                                customerName:
+                                    `${formData.get("firstName")} ${formData.get("lastName")}`,
+
+                                orderNumber:
+                                    orderNumber,
+
+                                total:
+                                    total,
+
+                                items:
+                                    cart,
+
+                                subtotal:
+                                    subtotal,
+
+                                deliveryFee:
+                                    deliveryFee,
+
+                                deliveryMethod:
+                                    formData.get(
+                                        "deliveryMethod"
+                                    ),
+
+                                paymentMethod:
+                                    formData.get(
+                                        "paymentMethod"
+                                    ),
+
+                                phone:
+                                    formatPhone(
+                                        formData.get(
+                                            "phone"
+                                        )
+                                    ),
+
+                                address: {
+
+                                    governorate:
+                                        formData.get(
+                                            "governorate"
+                                        ),
+
+                                    city:
+                                        formData.get(
+                                            "city"
+                                        ),
+
+                                    street:
+                                        formData.get(
+                                            "street"
+                                        ),
+
+                                    building:
+                                        formData.get(
+                                            "building"
+                                        ),
+
+                                    apartment:
+                                        formData.get(
+                                            "apartment"
+                                        ),
+
+                                    notes:
+                                        formData.get(
+                                            "notes"
+                                        )
+
+                                }
+
+                            }
+                        }
+                    );
+
+
+                if (emailError) {
+
+                    emailFailed =
+                        true;
+
+
+                    console.error(
+                        "Email sending error:",
+                        emailError
+                    );
+
+                }
+
+                else {
+
+                    console.log(
+                        "Confirmation email sent:",
+                        emailResult
+                    );
+
+                }
+
+            }
+
+            catch (emailError) {
+
+                emailFailed =
+                    true;
+
+
+                console.error(
+                    "Unexpected email error:",
+                    emailError
+                );
+
+            }
+
+
+            /* Save last order locally */
 
             localStorage.setItem(
 
                 ORDER_KEY,
 
-                JSON.stringify(order)
+                JSON.stringify({
+
+                    orderNumber:
+                        orderNumber,
+
+                    orderId:
+                        orderId,
+
+                    createdAt:
+                        new Date()
+                            .toISOString(),
+
+                    customer: {
+
+                        email:
+                            formData.get(
+                                "email"
+                            ),
+
+                        firstName:
+                            formData.get(
+                                "firstName"
+                            ),
+
+                        lastName:
+                            formData.get(
+                                "lastName"
+                            ),
+
+                        phone:
+                            formatPhone(
+                                formData.get(
+                                    "phone"
+                                )
+                            )
+
+                    },
+
+                    shippingAddress: {
+
+                        governorate:
+                            formData.get(
+                                "governorate"
+                            ),
+
+                        city:
+                            formData.get(
+                                "city"
+                            ),
+
+                        street:
+                            formData.get(
+                                "street"
+                            ),
+
+                        building:
+                            formData.get(
+                                "building"
+                            ),
+
+                        apartment:
+                            formData.get(
+                                "apartment"
+                            ),
+
+                        notes:
+                            formData.get(
+                                "notes"
+                            )
+
+                    },
+
+                    deliveryMethod:
+                        formData.get(
+                            "deliveryMethod"
+                        ),
+
+                    paymentMethod:
+                        formData.get(
+                            "paymentMethod"
+                        ),
+
+                    items:
+                        cart,
+
+                    subtotal:
+                        subtotal,
+
+                    deliveryFee:
+                        deliveryFee,
+
+                    total:
+                        total,
+
+                    status:
+                        "confirmed"
+
+                })
 
             );
 
 
-            /*
-            Empty shopping cart
-            */
+            /* Empty cart */
 
             localStorage.removeItem(
                 CART_KEY
             );
 
+            localStorage.removeItem(
+                CHECKOUT_TOKEN_KEY
+            );
 
-            /*
-            Display confirmation details
-            */
+
+            /* Display confirmation */
 
             document
                 .getElementById(
@@ -999,12 +1414,23 @@ checkoutForm.addEventListener(
                     "confirmationEmail"
                 )
                 .textContent =
-                    order.customer.email;
+                    formData.get(
+                        "email"
+                    );
 
 
-            /*
-            Open success modal
-            */
+            /* Show email warning only if order succeeded */
+
+            if (emailFailed) {
+
+                alert(
+                    `Your order ${orderNumber} was placed successfully, but we couldn't send the confirmation email. Please keep your order number for reference.`
+                );
+
+            }
+
+
+            /* Open success modal */
 
             orderModal.classList.add(
                 "open"
@@ -1020,12 +1446,28 @@ checkoutForm.addEventListener(
             document.body.style.overflow =
                 "hidden";
 
+        }
 
-        }, 700);
+        catch (error) {
+
+            console.error(
+                "Unexpected checkout error:",
+                error
+            );
+
+
+            alert(
+                "Something went wrong while processing your order. Your order could not be completed. Please check your internet connection and try again."
+            );
+
+
+            resetPlaceOrderButton();
+
+        }
 
     }
-);
 
+);
 
 
 /* Start checkout page */
