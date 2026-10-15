@@ -26,24 +26,33 @@ let menuItems = [
 
     {
         id: 4,
-        label: "About Us",
-        url: "about.html",
+        label: "AV Rewards",
+        url: "loyalty.html",
         order: 4,
         active: true
     },
 
     {
         id: 5,
-        label: "Shipping Policy",
-        url: "shipping-policy.html",
+        label: "About Us",
+        url: "about.html",
         order: 5,
         active: true
     },
-        {
-        id: 5,
+
+    {
+        id: 6,
+        label: "Shipping Policy",
+        url: "shipping-policy.html",
+        order: 6,
+        active: true
+    },
+
+    {
+        id: 7,
         label: "Refund & Exchange Policy",
         url: "refund-policy.html",
-        order: 5,
+        order: 7,
         active: true
     }
 
@@ -81,6 +90,11 @@ const menuLinks =
 
 
 function renderMenu() {
+
+    if (!menuLinks) {
+        return;
+    }
+
 
     menuLinks.innerHTML = "";
 
@@ -126,6 +140,11 @@ function renderMenu() {
 
 function openMenu() {
 
+    if (!sideMenu || !menuOverlay) {
+        return;
+    }
+
+
     sideMenu.classList.add(
         "active"
     );
@@ -144,6 +163,11 @@ function openMenu() {
 
 
 function hideMenu() {
+
+    if (!sideMenu || !menuOverlay) {
+        return;
+    }
+
 
     sideMenu.classList.remove(
         "active"

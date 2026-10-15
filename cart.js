@@ -5,6 +5,8 @@ const FREE_DELIVERY_MINIMUM = 2000;
 const DELIVERY_FEE = 100;
 
 
+const APPLIED_REWARD_KEY = "avviamentoAppliedLoyaltyCode";
+
 
 const cartItemsContainer =
     document.getElementById("cartItems");
@@ -66,12 +68,46 @@ const toast =
 let cart = getCart();
 
 let discountRate = 0;
-
 let toastTimer;
 
+window.appliedLoyaltyCode = null;
+
+// Restore the applied loyalty code when the cart page opens.
+try {
+    const savedReward = JSON.parse(
+        localStorage.getItem(APPLIED_REWARD_KEY)
+    );
+
+    if (
+        savedReward &&
+        savedReward.code &&
+        savedReward.type
+    ) {
+        window.appliedLoyaltyCode = savedReward;
+
+        if (savedReward.type === "percentage_discount") {
+            const percentage = Number(savedReward.value);
+
+            if (percentage >= 0 && percentage <= 100) {
+                discountRate = percentage / 100;
+            } else {
+                window.appliedLoyaltyCode = null;
+            }
+        }
+
+        if (promoCodeInput) {
+            promoCodeInput.value = savedReward.code;
+        }
+    }
+} catch (error) {
+    console.error("Could not restore loyalty code:", error);
+}
 
 
-/* Get cart from localStorage */
+
+/* =================================
+   Get cart from localStorage
+================================= */
 
 function getCart() {
 
@@ -99,7 +135,9 @@ function getCart() {
 
 
 
-/* Save cart */
+/* =================================
+   Save cart
+================================= */
 
 function saveCart() {
 
@@ -112,7 +150,9 @@ function saveCart() {
 
 
 
-/* Format price */
+/* =================================
+   Format price
+================================= */
 
 function formatPrice(value) {
 
@@ -123,7 +163,9 @@ function formatPrice(value) {
 
 
 
-/* Total number of products */
+/* =================================
+   Total number of products
+================================= */
 
 function getTotalQuantity() {
 
@@ -143,7 +185,9 @@ function getTotalQuantity() {
 
 
 
-/* Protect HTML */
+/* =================================
+   Protect HTML
+================================= */
 
 function escapeHtml(value) {
 
@@ -163,9 +207,140 @@ function escapeHtml(value) {
 
 
 
-/* Display cart */
+/* =================================
+   Get stock from Supabase
+================================= */
 
-function renderCart() {
+async function getVariantStock(
+    productId,
+    colour,
+    size
+) {
+
+    const {
+        data,
+        error
+    } =
+        await supabaseClient
+            .from("product_variants")
+            .select(`
+                stock
+            `)
+            .eq(
+                "product_id",
+                productId
+            )
+            .eq(
+                "color",
+                colour
+            )
+            .eq(
+                "size",
+                size
+            )
+            .maybeSingle();
+
+
+    if (error) {
+
+        console.error(
+            "Error checking stock:",
+            error
+        );
+
+        return null;
+
+    }
+
+
+    if (!data) {
+
+        return 0;
+
+    }
+
+
+    return Number(
+        data.stock || 0
+    );
+
+}
+
+
+
+/* =================================
+   Check all cart stock
+================================= */
+
+async function validateCartStock() {
+
+    for (
+        const item of cart
+    ) {
+
+        const stock =
+            await getVariantStock(
+                item.id,
+                item.colour,
+                item.size
+            );
+
+
+        if (
+            stock === null
+        ) {
+
+            continue;
+
+        }
+
+
+        if (
+            stock <= 0
+        ) {
+
+            showToast(
+                `${item.name} (${item.colour} / ${item.size}) is currently out of stock.`
+            );
+
+            return false;
+
+        }
+
+
+        if (
+            Number(item.quantity) >
+            stock
+        ) {
+
+            item.quantity =
+                stock;
+
+
+            showToast(
+                `Only ${stock} of ${item.name} (${item.colour} / ${item.size}) are available.`
+            );
+
+            saveCart();
+
+            return false;
+
+        }
+
+    }
+
+
+    return true;
+
+}
+
+
+
+/* =================================
+   Display cart
+================================= */
+
+async function renderCart() {
 
     const totalQuantity =
         getTotalQuantity();
@@ -204,7 +379,9 @@ function renderCart() {
 
     /* Empty cart */
 
-    if (cart.length === 0) {
+    if (
+        cart.length === 0
+    ) {
 
         cartLayout.style.display =
             "none";
@@ -233,133 +410,143 @@ function renderCart() {
         "";
 
 
+    /* =================================
+       Render each cart item
+    ================================= */
 
-    cart.forEach((item, index) => {
+    cart.forEach(
+        (item, index) => {
 
-        const article =
-            document.createElement("article");
+            const article =
+                document.createElement(
+                    "article"
+                );
 
 
-        article.className =
-            "cart-item";
+            article.className =
+                "cart-item";
 
 
-        article.innerHTML = `
+            article.innerHTML = `
 
-            <a
-                class="item-image"
-                href="product-details.html?id=${encodeURIComponent(item.id)}"
-            >
-
-                <img
-                    src="${escapeHtml(item.image)}"
-                    alt="${escapeHtml(item.name)}"
+                <a
+                    class="item-image"
+                    href="product-details.html?id=${encodeURIComponent(item.id)}"
                 >
 
-            </a>
-
-
-            <div class="item-info">
-
-                <a href="product-details.html?id=${encodeURIComponent(item.id)}">
-
-                    <h3>
-                        ${escapeHtml(item.name)}
-                    </h3>
+                    <img
+                        src="${escapeHtml(item.image)}"
+                        alt="${escapeHtml(item.name)}"
+                    >
 
                 </a>
 
 
-                <p class="item-variant">
+                <div class="item-info">
 
-                    Colour:
-                    ${escapeHtml(item.colour)}
+                    <a
+                        href="product-details.html?id=${encodeURIComponent(item.id)}"
+                    >
 
-                </p>
+                        <h3>
+                            ${escapeHtml(item.name)}
+                        </h3>
 
-
-                <p class="item-variant">
-
-                    Size:
-                    ${escapeHtml(item.size)}
-
-                </p>
+                    </a>
 
 
-                <p class="item-price-mobile">
+                    <p class="item-variant">
 
-                    ${formatPrice(
-                        item.price *
-                        item.quantity
-                    )}
+                        Colour:
+                        ${escapeHtml(item.colour)}
 
-                </p>
+                    </p>
 
 
-                <div
-                    class="quantity-control"
-                    aria-label="Quantity for ${escapeHtml(item.name)}"
-                >
+                    <p class="item-variant">
+
+                        Size:
+                        ${escapeHtml(item.size)}
+
+                    </p>
+
+
+                    <p class="item-price-mobile">
+
+                        ${formatPrice(
+                            item.price *
+                            item.quantity
+                        )}
+
+                    </p>
+
+
+                    <div
+                        class="quantity-control"
+                        aria-label="Quantity for ${escapeHtml(item.name)}"
+                    >
+
+                        <button
+                            type="button"
+                            data-action="decrease"
+                            data-index="${index}"
+                            aria-label="Decrease quantity"
+                        >
+                            −
+                        </button>
+
+
+                        <span>
+                            ${Number(item.quantity)}
+                        </span>
+
+
+                        <button
+                            type="button"
+                            data-action="increase"
+                            data-index="${index}"
+                            aria-label="Increase quantity"
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="item-side">
+
+                    <p class="item-total">
+
+                        ${formatPrice(
+                            item.price *
+                            item.quantity
+                        )}
+
+                    </p>
+
 
                     <button
+                        class="remove-item"
                         type="button"
-                        data-action="decrease"
+                        data-action="remove"
                         data-index="${index}"
-                        aria-label="Decrease quantity"
                     >
-                        −
-                    </button>
-
-
-                    <span>
-                        ${Number(item.quantity)}
-                    </span>
-
-
-                    <button
-                        type="button"
-                        data-action="increase"
-                        data-index="${index}"
-                        aria-label="Increase quantity"
-                    >
-                        +
+                        Remove
                     </button>
 
                 </div>
 
-            </div>
+            `;
 
 
-            <div class="item-side">
+            cartItemsContainer.appendChild(
+                article
+            );
 
-                <p class="item-total">
-
-                    ${formatPrice(
-                        item.price *
-                        item.quantity
-                    )}
-
-                </p>
-
-
-                <button
-                    class="remove-item"
-                    type="button"
-                    data-action="remove"
-                    data-index="${index}"
-                >
-                    Remove
-                </button>
-
-            </div>
-        `;
-
-
-        cartItemsContainer.appendChild(
-            article
-        );
-
-    });
+        }
+    );
 
 
     updateSummary();
@@ -368,83 +555,72 @@ function renderCart() {
 
 
 
-/* Calculate prices */
+/* =================================
+   Calculate prices
+================================= */
+
 
 function updateSummary() {
+    const subtotal = cart.reduce((total, item) => {
+        return total + Number(item.price) * Number(item.quantity);
+    }, 0);
 
-    const subtotal =
-        cart.reduce(
+    const appliedCode = window.appliedLoyaltyCode;
 
-            (total, item) => {
+    // Calculate percentage discount
+    const discount = subtotal * discountRate;
 
-                return total +
-                    Number(item.price) *
-                    Number(item.quantity);
+    // Calculate delivery fee
+    let delivery = subtotal >= FREE_DELIVERY_MINIMUM
+        ? 0
+        : DELIVERY_FEE;
 
-            },
-
-            0
-        );
-
-
-    const discount =
-        subtotal * discountRate;
-
-
-    const delivery =
-        subtotal >= FREE_DELIVERY_MINIMUM
-            ? 0
-            : DELIVERY_FEE;
-
-
-    const total =
-        subtotal - discount + delivery;
-
-
-    subtotalElement.textContent =
-        formatPrice(subtotal);
-
-
-    deliveryElement.textContent =
-        delivery === 0
-            ? "Free"
-            : formatPrice(delivery);
-
-
-    totalElement.textContent =
-        formatPrice(total);
-
-
-
-    if (delivery === 0) {
-
-        deliveryNote.textContent =
-            "You have unlocked complimentary delivery.";
-
+    // Apply free shipping reward
+    if (
+        appliedCode &&
+        appliedCode.type === "free_shipping"
+    ) {
+        delivery = 0;
     }
 
-    else {
+    const total = Math.max(0, subtotal - discount) + delivery;
 
-        const remaining =
-            FREE_DELIVERY_MINIMUM -
-            subtotal;
+    subtotalElement.textContent = formatPrice(subtotal);
 
+    deliveryElement.textContent = delivery === 0
+        ? "Free"
+        : formatPrice(delivery);
+
+    totalElement.textContent = formatPrice(total);
+
+    if (
+        appliedCode &&
+        appliedCode.type === "free_shipping"
+    ) {
+        deliveryNote.textContent =
+            "Free shipping reward applied.";
+    } else if (delivery === 0) {
+        deliveryNote.textContent =
+            "You have unlocked complimentary delivery.";
+    } else {
+        const remaining = FREE_DELIVERY_MINIMUM - subtotal;
 
         deliveryNote.textContent =
             `Add ${formatPrice(remaining)} more for free delivery.`;
-
     }
-
 }
 
 
 
-/* Quantity and remove buttons */
+
+/* =================================
+   Quantity and remove buttons
+================================= */
 
 cartItemsContainer.addEventListener(
     "click",
 
-    event => {
+    async event => {
 
         const button =
             event.target.closest(
@@ -460,14 +636,18 @@ cartItemsContainer.addEventListener(
 
 
         const index =
-            Number(button.dataset.index);
+            Number(
+                button.dataset.index
+            );
 
 
         const action =
             button.dataset.action;
 
 
-        if (!cart[index]) {
+        if (
+            !cart[index]
+        ) {
 
             return;
 
@@ -475,22 +655,86 @@ cartItemsContainer.addEventListener(
 
 
 
-        /* Increase quantity */
+        /* =================================
+           Increase quantity
+        ================================= */
 
-        if (action === "increase") {
+        if (
+            action === "increase"
+        ) {
 
-            cart[index].quantity =
+            const item =
+                cart[index];
+
+
+            const stock =
+                await getVariantStock(
+                    item.id,
+                    item.colour,
+                    item.size
+                );
+
+
+            if (
+                stock === null
+            ) {
+
+                showToast(
+                    "Unable to check stock right now."
+                );
+
+                return;
+
+            }
+
+
+            const currentQuantity =
                 Number(
-                    cart[index].quantity
-                ) + 1;
+                    item.quantity
+                );
+
+
+            if (
+                stock <= 0
+            ) {
+
+                showToast(
+                    `${item.name} is currently out of stock.`
+                );
+
+                return;
+
+            }
+
+
+            if (
+                currentQuantity >=
+                stock
+            ) {
+
+                showToast(
+                    `Only ${stock} available for ${item.name}.`
+                );
+
+                return;
+
+            }
+
+
+            item.quantity =
+                currentQuantity + 1;
 
         }
 
 
 
-        /* Decrease quantity */
+        /* =================================
+           Decrease quantity
+        ================================= */
 
-        if (action === "decrease") {
+        if (
+            action === "decrease"
+        ) {
 
             cart[index].quantity =
                 Math.max(
@@ -507,15 +751,22 @@ cartItemsContainer.addEventListener(
 
 
 
-        /* Remove product */
+        /* =================================
+           Remove product
+        ================================= */
 
-        if (action === "remove") {
+        if (
+            action === "remove"
+        ) {
 
             const removedName =
                 cart[index].name;
 
 
-            cart.splice(index, 1);
+            cart.splice(
+                index,
+                1
+            );
 
 
             showToast(
@@ -527,92 +778,133 @@ cartItemsContainer.addEventListener(
 
         saveCart();
 
-        renderCart();
+
+        await renderCart();
 
     }
 );
 
 
 
+/* =================================
+   Apply promo code
+================================= */
+
+
 /* Apply promo code */
 
 document
     .getElementById("applyPromo")
-    .addEventListener("click", () => {
+    .addEventListener("click", async () => {
+        const enteredCode = promoCodeInput.value
+            .trim()
+            .toUpperCase();
 
-        const enteredCode =
-            promoCodeInput
-                .value
-                .trim()
-                .toUpperCase();
+        promoMessage.className = "promo-message";
 
-
-        promoMessage.className =
-            "promo-message";
-
-
-
-        /*
-        Test promo code:
-        AVVIAMENTO10
-        */
-
-        if (
-            enteredCode ===
-            "AVVIAMENTO10"
-        ) {
-
-            discountRate = 0.10;
-
-
-            promoMessage.textContent =
-                "10% discount applied.";
-
-
-            promoMessage.classList.add(
-                "success"
-            );
-
-
+        if (!enteredCode) {
+            discountRate = 0;
+            window.appliedLoyaltyCode = null;
+            localStorage.removeItem(APPLIED_REWARD_KEY);
+            promoMessage.textContent = "Please enter a promo code.";
+            promoMessage.classList.add("error");
             updateSummary();
-
-
             return;
-
         }
 
+        const applyButton = document.getElementById("applyPromo");
+        applyButton.disabled = true;
+        applyButton.textContent = "CHECKING...";
 
+        try {
+            const { data, error } = await supabaseClient.rpc(
+                "validate_loyalty_discount_code",
+                { p_discount_code: enteredCode }
+            );
 
-        discountRate = 0;
+            if (error) throw error;
 
+            if (!data || data.length === 0 || !data[0].valid) {
+                discountRate = 0;
+                
+            window.appliedLoyaltyCode = null;
+            localStorage.removeItem(APPLIED_REWARD_KEY);
 
-        promoMessage.textContent =
-            enteredCode
+                promoMessage.textContent =
+                    "Invalid, expired, or already used code.";
+                promoMessage.classList.add("error");
+                updateSummary();
+                return;
+            }
 
-                ? "This promo code is not valid."
+            const reward = data[0];
 
-                : "Please enter a promo code.";
+            if (reward.reward_type === "percentage_discount") {
+                discountRate = Number(reward.reward_value) / 100;
 
+                promoMessage.textContent =
+                    `${reward.reward_value}% discount applied.`;
+            } else if (reward.reward_type === "free_shipping") {
+                discountRate = 0;
 
-        promoMessage.classList.add(
-            "error"
-        );
+                // Free shipping is handled separately below.
+                window.appliedLoyaltyCode = {
+                    code: reward.discount_code,
+                    type: reward.reward_type,
+                    value: Number(reward.reward_value)
+                };
 
+                promoMessage.textContent = "Free shipping applied.";
+            } else {
+                discountRate = 0;
+                promoMessage.textContent =
+                    "This reward type is not supported yet.";
+                promoMessage.classList.add("error");
+                updateSummary();
+                return;
+            }
 
-        updateSummary();
+            window.appliedLoyaltyCode = {
+                
+                code: reward.discount_code,
+                type: reward.reward_type,
+                value: Number(reward.reward_value)
+                
+            };
+            localStorage.setItem(
+    APPLIED_REWARD_KEY,
+    JSON.stringify(window.appliedLoyaltyCode)
+);
+        
 
+            promoMessage.classList.add("success");
+            updateSummary();
+
+        } catch (error) {
+            console.error("Promo validation error:", error);
+
+            promoMessage.textContent =
+                "Unable to validate the code. Please try again.";
+            promoMessage.classList.add("error");
+        } finally {
+            applyButton.disabled = false;
+            applyButton.textContent = "APPLY";
+        }
     });
 
 
-
-/* Checkout protection */
+/* =================================
+   Checkout protection
+================================= */
 
 checkoutButton.addEventListener(
     "click",
 
-    event => {
+    async event => {
 
-        if (cart.length === 0) {
+        if (
+            cart.length === 0
+        ) {
 
             event.preventDefault();
 
@@ -621,6 +913,30 @@ checkoutButton.addEventListener(
                 "Your bag is empty"
             );
 
+
+            return;
+
+        }
+
+
+        /*
+           Check real stock before
+           going to checkout.
+        */
+
+        const stockValid =
+            await validateCartStock();
+
+
+        if (
+            !stockValid
+        ) {
+
+            event.preventDefault();
+
+
+            await renderCart();
+
         }
 
     }
@@ -628,11 +944,17 @@ checkoutButton.addEventListener(
 
 
 
-/* Show notification */
+/* =================================
+   Show notification
+================================= */
 
-function showToast(message) {
+function showToast(
+    message
+) {
 
-    clearTimeout(toastTimer);
+    clearTimeout(
+        toastTimer
+    );
 
 
     toast.textContent =
@@ -645,18 +967,23 @@ function showToast(message) {
 
 
     toastTimer =
-        setTimeout(() => {
+        setTimeout(
+            () => {
 
-            toast.classList.remove(
-                "show"
-            );
+                toast.classList.remove(
+                    "show"
+                );
 
-        }, 2400);
+            },
+            2400
+        );
 
 }
 
 
 
-/* Start cart */
+/* =================================
+   Start cart
+================================= */
 
 renderCart();

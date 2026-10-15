@@ -1,120 +1,6 @@
-const products = {
-    "1": {
-        id: 1,
-        name: "Linen Shirt",
-        price: 1450,
-
-        description:
-            "A modern essential, crafted from breathable European linen for effortless refinement.",
-
-        details:
-            "Relaxed fit with a soft spread collar, button fastening and curved hem. Designed for an easy, polished silhouette.",
-
-        care:
-            "100% linen. Machine wash cold with similar colours. Do not bleach. Warm iron when needed.",
-
-        images: [
-            "images/henley.jpg"
-        ],
-
-        colours: [
-            { name: "Ivory", value: "#eee9dc" },
-            { name: "Sand", value: "#cbbda4" },
-            { name: "Navy", value: "#132a44" },
-            { name: "Black", value: "#222522" }
-        ],
-
-        sizes: ["S", "M", "L", "XL"]
-    },
-
-
-    "2": {
-        id: 2,
-        name: "Piqué Polo",
-        price: 1250,
-
-        description:
-            "A refined piqué polo with a clean collar and a comfortable modern fit.",
-
-        details:
-            "Regular fit, two-button placket and neatly finished sleeves for an elevated everyday look.",
-
-        care:
-            "100% premium cotton. Machine wash cold. Wash dark colours separately. Do not tumble dry.",
-
-        images: [
-            "images/knitted.jpg"
-        ],
-
-        colours: [
-            { name: "Navy", value: "#132a44" },
-            { name: "Ivory", value: "#eee9dc" },
-            { name: "Petrol", value: "#032d37" }
-        ],
-
-        sizes: ["S", "M", "L", "XL"]
-    },
-
-
-    "3": {
-        id: 3,
-        name: "Tailored Trousers",
-        price: 1650,
-
-        description:
-            "Clean-cut tailored trousers designed to move effortlessly from day to evening.",
-
-        details:
-            "Straight leg, front pleats, side pockets and a concealed hook-and-zip fastening.",
-
-        care:
-            "Viscose blend. Gentle wash at 30°C or dry clean. Cool iron on reverse.",
-
-        images: [
-            "images/trousers.jpg"
-        ],
-
-        colours: [
-            { name: "Stone", value: "#c9bea9" },
-            { name: "Black", value: "#222522" },
-            { name: "Charcoal", value: "#4b4d4b" }
-        ],
-
-        sizes: ["30", "32", "34", "36", "38"]
-    },
-
-
-    "4": {
-        id: 4,
-        name: "Overshirt",
-        price: 1750,
-
-        description:
-            "A versatile structured layer with a relaxed fit and understated utility details.",
-
-        details:
-            "Point collar, button fastening, chest pockets and adjustable button cuffs.",
-
-        care:
-            "Cotton twill. Machine wash cold. Do not bleach. Hang to dry.",
-
-        images: [
-            "images/overshirt.jpg"
-        ],
-
-        colours: [
-            { name: "Black", value: "#222522" },
-            { name: "Olive", value: "#565b47" },
-            { name: "Stone", value: "#c9bea9" }
-        ],
-
-        sizes: ["S", "M", "L", "XL"]
-    }
-};
-
-
-
-/* Get product ID from URL */
+/* =========================
+   GET PRODUCT ID FROM URL
+========================= */
 
 const params =
     new URLSearchParams(
@@ -124,18 +10,21 @@ const params =
 const requestedId =
     params.get("id") || "1";
 
-const product =
-    products[requestedId] ||
-    products["1"];
+
+/* =========================
+   CURRENT PRODUCT
+========================= */
+
+let product = null;
 
 
-
-/* Current product selections */
+/* =========================
+   CURRENT PRODUCT SELECTIONS
+========================= */
 
 let activeImageIndex = 0;
 
-let selectedColour =
-    product.colours[0].name;
+let selectedColour = null;
 
 let selectedSize = null;
 
@@ -144,8 +33,9 @@ let quantity = 1;
 let toastTimer;
 
 
-
-/* HTML elements */
+/* =========================
+   HTML ELEMENTS
+========================= */
 
 const elements = {
 
@@ -247,18 +137,20 @@ const elements = {
 };
 
 
-
-/* Format price */
+/* =========================
+   FORMAT PRICE
+========================= */
 
 function formatPrice(price) {
 
-    return `EGP ${price.toLocaleString("en-EG")}`;
+    return `EGP ${Number(price).toLocaleString("en-EG")}`;
 
 }
 
 
-
-/* Get array from localStorage */
+/* =========================
+   GET ARRAY FROM LOCALSTORAGE
+========================= */
 
 function getStoredArray(key) {
 
@@ -284,10 +176,218 @@ function getStoredArray(key) {
 }
 
 
+/* =========================
+   COLOR VALUE
+========================= */
 
-/* Show product information */
+function getColorValue(colorName) {
+
+    const colors = {
+
+        Ivory: "#eee9dc",
+
+        Sand: "#cbbda4",
+
+        Navy: "#132a44",
+
+        Black: "#222522",
+
+        Petrol: "#032d37",
+
+        Stone: "#c9bea9",
+
+        Charcoal: "#4b4d4b",
+
+        Olive: "#565b47",
+
+        White: "#ffffff",
+
+        Red: "#b3261e",
+
+        Blue: "#315a8a",
+
+        Green: "#4d6b50"
+
+    };
+
+
+    return colors[colorName] ||
+        colorName ||
+        "#cccccc";
+
+}
+
+
+/* =========================
+   LOAD PRODUCT FROM SUPABASE
+========================= */
+
+async function loadProduct() {
+
+    try {
+
+        const { data, error } =
+            await supabaseClient
+
+                .from("products")
+
+                .select(`
+                    id,
+                    name,
+                    price,
+                    description,
+                    details,
+                    care,
+                    product_images (
+                        id,
+                        image_url,
+                        is_primary
+                    ),
+                    product_variants (
+                        id,
+                        color,
+                        size,
+                        stock
+                    )
+                `)
+
+                .eq(
+                    "id",
+                    requestedId
+                )
+
+                .eq(
+                    "is_active",
+                    true
+                )
+
+                .single();
+
+
+        if (error) {
+
+            console.error(
+                "Error loading product:",
+                error
+            );
+
+            showToast(
+                "Unable to load product"
+            );
+
+            return;
+
+        }
+
+
+        if (!data) {
+
+            showToast(
+                "Product not found"
+            );
+
+            return;
+
+        }
+
+
+        /* =========================
+           CONVERT DATABASE DATA
+           TO FRONTEND FORMAT
+        ========================= */
+
+        product = {
+
+            id:
+                data.id,
+
+            name:
+                data.name,
+
+            price:
+                Number(
+                    data.price
+                ),
+
+            description:
+                data.description || "",
+
+            details:
+                data.details || "",
+
+            care:
+                data.care || "",
+
+            images:
+                data.product_images
+                    ? data.product_images
+                        .sort(
+                            (a, b) =>
+                                Number(
+                                    b.is_primary
+                                ) -
+                                Number(
+                                    a.is_primary
+                                )
+                        )
+                        .map(
+                            image =>
+                                image.image_url
+                        )
+                    : [],
+
+            variants:
+                data.product_variants || []
+
+        };
+
+
+        /* =========================
+           DEFAULT COLOUR
+        ========================= */
+
+        const firstVariant =
+            product.variants[0];
+
+
+        selectedColour =
+            firstVariant
+                ? firstVariant.color
+                : null;
+
+
+        renderProduct();
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Unexpected error loading product:",
+            error
+        );
+
+        showToast(
+            "Something went wrong"
+        );
+
+    }
+
+}
+
+
+/* =========================
+   SHOW PRODUCT INFORMATION
+========================= */
 
 function renderProduct() {
+
+    if (!product) {
+
+        return;
+
+    }
+
 
     document.title =
         `${product.name} | Avviamento`;
@@ -332,16 +432,45 @@ function renderProduct() {
 }
 
 
-
-/* Create colour buttons */
+/* =========================
+   CREATE COLOUR BUTTONS
+========================= */
 
 function renderColours() {
 
     elements.colourOptions.innerHTML = "";
 
 
-    product.colours.forEach(
-        (colour, index) => {
+    const colours = [
+        ...new Set(
+            product.variants.map(
+                variant =>
+                    variant.color
+            )
+        )
+    ];
+
+
+    if (colours.length === 0) {
+
+        elements.selectedColourName.textContent =
+            "No colours";
+
+        return;
+
+    }
+
+
+    if (!selectedColour) {
+
+        selectedColour =
+            colours[0];
+
+    }
+
+
+    colours.forEach(
+        colourName => {
 
             const button =
                 document.createElement(
@@ -354,22 +483,26 @@ function renderColours() {
 
 
             button.className =
-                `colour-button${index === 0 ? " active" : ""}`;
+                `colour-button${
+                    colourName === selectedColour
+                        ? " active"
+                        : ""
+                }`;
 
 
             button.setAttribute(
                 "aria-label",
-                colour.name
+                colourName
             );
 
 
             button.title =
-                colour.name;
+                colourName;
 
 
             button.innerHTML = `
                 <span
-                    style="background-color: ${colour.value}">
+                    style="background-color: ${getColorValue(colourName)}">
                 </span>
             `;
 
@@ -379,29 +512,52 @@ function renderColours() {
                 () => {
 
                     selectedColour =
-                        colour.name;
+                        colourName;
 
 
-                    elements.selectedColourName.textContent =
+                    selectedSize =
+                        null;
+
+
+                    elements.selectedColourName
+                        .textContent =
                         selectedColour;
+
+
+                    elements.selectedSizeName
+                        .textContent =
+                        "Select size";
+
+
+                    elements.sizeError
+                        .classList
+                        .remove(
+                            "show"
+                        );
 
 
                     document
                         .querySelectorAll(
                             ".colour-button"
                         )
-                        .forEach(item => {
+                        .forEach(
+                            item => {
 
-                            item.classList.remove(
-                                "active"
-                            );
+                                item.classList
+                                    .remove(
+                                        "active"
+                                    );
 
-                        });
+                            }
+                        );
 
 
                     button.classList.add(
                         "active"
                     );
+
+
+                    renderSizes();
 
                 }
             );
@@ -415,19 +571,61 @@ function renderColours() {
         }
     );
 
+
+    elements.selectedColourName
+        .textContent =
+        selectedColour;
+
 }
 
 
-
-/* Create size buttons */
+/* =========================
+   CREATE SIZE BUTTONS
+========================= */
 
 function renderSizes() {
 
     elements.sizeOptions.innerHTML = "";
 
 
-    product.sizes.forEach(
+    const variantsForColour =
+        product.variants.filter(
+            variant =>
+                variant.color ===
+                selectedColour
+        );
+
+
+    const sizes = [
+        ...new Set(
+            variantsForColour.map(
+                variant =>
+                    variant.size
+            )
+        )
+    ];
+
+
+    if (sizes.length === 0) {
+
+        elements.selectedSizeName.textContent =
+            "No sizes";
+
+        return;
+
+    }
+
+
+    sizes.forEach(
         size => {
+
+            const variant =
+                variantsForColour.find(
+                    item =>
+                        item.size ===
+                        size
+                );
+
 
             const button =
                 document.createElement(
@@ -438,22 +636,54 @@ function renderSizes() {
             button.type =
                 "button";
 
+
             button.className =
                 "size-button";
 
+
             button.textContent =
                 size;
+
+
+            /* =========================
+               OUT OF STOCK
+            ========================= */
+
+            if (
+                !variant ||
+                variant.stock <= 0
+            ) {
+
+                button.disabled =
+                    true;
+
+                button.classList.add(
+                    "out-of-stock"
+                );
+
+            }
 
 
             button.addEventListener(
                 "click",
                 () => {
 
+                    if (
+                        !variant ||
+                        variant.stock <= 0
+                    ) {
+
+                        return;
+
+                    }
+
+
                     selectedSize =
                         size;
 
 
-                    elements.selectedSizeName.textContent =
+                    elements.selectedSizeName
+                        .textContent =
                         size;
 
 
@@ -468,13 +698,16 @@ function renderSizes() {
                         .querySelectorAll(
                             ".size-button"
                         )
-                        .forEach(item => {
+                        .forEach(
+                            item => {
 
-                            item.classList.remove(
-                                "active"
-                            );
+                                item.classList
+                                    .remove(
+                                        "active"
+                                    );
 
-                        });
+                            }
+                        );
 
 
                     button.classList.add(
@@ -496,12 +729,23 @@ function renderSizes() {
 }
 
 
-
-/* Create gallery dots */
+/* =========================
+   CREATE GALLERY DOTS
+========================= */
 
 function renderGalleryDots() {
 
     elements.galleryDots.innerHTML = "";
+
+
+    if (
+        !product.images ||
+        product.images.length === 0
+    ) {
+
+        return;
+
+    }
 
 
     product.images.forEach(
@@ -518,7 +762,11 @@ function renderGalleryDots() {
 
 
             button.className =
-                `gallery-dot${index === 0 ? " active" : ""}`;
+                `gallery-dot${
+                    index === 0
+                        ? " active"
+                        : ""
+                }`;
 
 
             button.setAttribute(
@@ -550,17 +798,36 @@ function renderGalleryDots() {
 }
 
 
-
-/* Display selected image */
+/* =========================
+   DISPLAY IMAGE
+========================= */
 
 function showImage(index) {
+
+    if (
+        !product ||
+        !product.images ||
+        product.images.length === 0
+    ) {
+
+        elements.productImage.style.display =
+            "none";
+
+        elements.imagePlaceholder.style.display =
+            "flex";
+
+        return;
+
+    }
+
 
     activeImageIndex =
         (
             index +
             product.images.length
         )
-        % product.images.length;
+        %
+        product.images.length;
 
 
     elements.productImage.style.opacity =
@@ -580,7 +847,9 @@ function showImage(index) {
 
 
             elements.productImage.alt =
-                `${product.name} - view ${activeImageIndex + 1}`;
+                `${product.name} - view ${
+                    activeImageIndex + 1
+                }`;
 
 
             elements.productImage.style.opacity =
@@ -610,8 +879,9 @@ function showImage(index) {
 }
 
 
-
-/* If image is missing */
+/* =========================
+   IMAGE ERROR
+========================= */
 
 elements.productImage
     .addEventListener(
@@ -643,8 +913,9 @@ elements.productImage
     );
 
 
-
-/* Previous image */
+/* =========================
+   PREVIOUS IMAGE
+========================= */
 
 document
     .getElementById(
@@ -662,8 +933,9 @@ document
     );
 
 
-
-/* Next image */
+/* =========================
+   NEXT IMAGE
+========================= */
 
 document
     .getElementById(
@@ -681,8 +953,9 @@ document
     );
 
 
-
-/* Decrease quantity */
+/* =========================
+   DECREASE QUANTITY
+========================= */
 
 document
     .getElementById(
@@ -698,6 +971,7 @@ document
                     quantity - 1
                 );
 
+
             elements.quantity.textContent =
                 quantity;
 
@@ -705,8 +979,9 @@ document
     );
 
 
-
-/* Increase quantity */
+/* =========================
+   INCREASE QUANTITY
+========================= */
 
 document
     .getElementById(
@@ -725,8 +1000,9 @@ document
     );
 
 
-
-/* Accordion sections */
+/* =========================
+   ACCORDION
+========================= */
 
 document
     .querySelectorAll(
@@ -765,8 +1041,9 @@ document
     );
 
 
-
-/* Update product favourite icon */
+/* =========================
+   UPDATE PRODUCT FAVOURITE
+========================= */
 
 function updateFavouriteButton() {
 
@@ -777,6 +1054,7 @@ function updateFavouriteButton() {
 
 
     const isFavourite =
+        product &&
         favourites.includes(
             product.id
         );
@@ -791,7 +1069,11 @@ function updateFavouriteButton() {
 
 
     elements.favouriteButton.innerHTML = `
-        <i class="fa-${isFavourite ? "solid" : "regular"} fa-heart"></i>
+        <i class="fa-${
+            isFavourite
+                ? "solid"
+                : "regular"
+        } fa-heart"></i>
     `;
 
 
@@ -805,15 +1087,18 @@ function updateFavouriteButton() {
 }
 
 
-
-/* Update navbar favourite icon */
+/* =========================
+   UPDATE NAVBAR FAVOURITE
+========================= */
 
 function updateNavbarFavourite() {
 
     if (
         !elements.navbarFavourite
     ) {
+
         return;
+
     }
 
 
@@ -869,13 +1154,21 @@ function updateNavbarFavourite() {
 }
 
 
-
-/* Favourite button */
+/* =========================
+   FAVOURITE BUTTON
+========================= */
 
 elements.favouriteButton
     .addEventListener(
         "click",
         () => {
+
+            if (!product) {
+
+                return;
+
+            }
+
 
             const favourites =
                 getStoredArray(
@@ -935,8 +1228,9 @@ elements.favouriteButton
     );
 
 
-
-/* Add product to cart */
+/* =========================
+   ADD PRODUCT TO CART
+========================= */
 
 document
     .getElementById(
@@ -946,9 +1240,14 @@ document
         "click",
         () => {
 
-            if (
-                !selectedSize
-            ) {
+            if (!product) {
+
+                return;
+
+            }
+
+
+            if (!selectedSize) {
 
                 elements.sizeError
                     .classList
@@ -968,6 +1267,46 @@ document
 
                     });
 
+
+                return;
+
+            }
+
+
+            const selectedVariant =
+                product.variants.find(
+                    variant =>
+
+                        variant.color ===
+                            selectedColour &&
+
+                        variant.size ===
+                            selectedSize
+                );
+
+
+            if (
+                !selectedVariant ||
+                selectedVariant.stock <= 0
+            ) {
+
+                showToast(
+                    "This size is out of stock"
+                );
+
+                return;
+
+            }
+
+
+            if (
+                quantity >
+                selectedVariant.stock
+            ) {
+
+                showToast(
+                    `Only ${selectedVariant.stock} available`
+                );
 
                 return;
 
@@ -996,12 +1335,29 @@ document
                 );
 
 
-            if (
-                existingItem
-            ) {
+            if (existingItem) {
 
-                existingItem.quantity +=
+                const newQuantity =
+                    existingItem.quantity +
                     quantity;
+
+
+                if (
+                    newQuantity >
+                    selectedVariant.stock
+                ) {
+
+                    showToast(
+                        `Only ${selectedVariant.stock} available`
+                    );
+
+                    return;
+
+                }
+
+
+                existingItem.quantity =
+                    newQuantity;
 
             }
 
@@ -1019,7 +1375,7 @@ document
                         product.price,
 
                     image:
-                        product.images[0],
+                        product.images[0] || "",
 
                     colour:
                         selectedColour,
@@ -1054,8 +1410,9 @@ document
     );
 
 
-
-/* Update cart number */
+/* =========================
+   UPDATE CART COUNT
+========================= */
 
 function updateCartCount() {
 
@@ -1093,8 +1450,9 @@ function updateCartCount() {
 }
 
 
-
-/* Notification message */
+/* =========================
+   TOAST
+========================= */
 
 function showToast(message) {
 
@@ -1131,8 +1489,9 @@ function showToast(message) {
 }
 
 
-
-/* Open and close size guide */
+/* =========================
+   SIZE GUIDE MODAL
+========================= */
 
 function setModal(open) {
 
@@ -1161,7 +1520,6 @@ function setModal(open) {
 }
 
 
-
 document
     .getElementById(
         "openSizeGuide"
@@ -1176,7 +1534,6 @@ document
 
         }
     );
-
 
 
 document
@@ -1201,8 +1558,9 @@ document
     );
 
 
-
-/* Keyboard controls */
+/* =========================
+   KEYBOARD CONTROLS
+========================= */
 
 document.addEventListener(
     "keydown",
@@ -1247,10 +1605,12 @@ document.addEventListener(
 );
 
 
-
-/* Mobile swipe */
+/* =========================
+   MOBILE SWIPE
+========================= */
 
 let touchStartX = 0;
+
 
 const gallery =
     document.querySelector(
@@ -1258,73 +1618,78 @@ const gallery =
     );
 
 
-gallery.addEventListener(
-    "touchstart",
+if (gallery) {
 
-    event => {
+    gallery.addEventListener(
+        "touchstart",
 
-        touchStartX =
-            event.changedTouches[0]
-                .clientX;
+        event => {
 
-    },
+            touchStartX =
+                event.changedTouches[0]
+                    .clientX;
 
-    {
-        passive: true
-    }
-);
+        },
 
-
-gallery.addEventListener(
-    "touchend",
-
-    event => {
-
-        const difference =
-            event.changedTouches[0]
-                .clientX
-            - touchStartX;
-
-
-        if (
-            Math.abs(
-                difference
-            ) < 45
-        ) {
-
-            return;
-
+        {
+            passive: true
         }
+    );
 
 
-        if (
-            difference < 0
-        ) {
+    gallery.addEventListener(
+        "touchend",
 
-            showImage(
-                activeImageIndex + 1
-            );
+        event => {
 
+            const difference =
+                event.changedTouches[0]
+                    .clientX
+                - touchStartX;
+
+
+            if (
+                Math.abs(
+                    difference
+                ) < 45
+            ) {
+
+                return;
+
+            }
+
+
+            if (
+                difference < 0
+            ) {
+
+                showImage(
+                    activeImageIndex + 1
+                );
+
+            }
+
+            else {
+
+                showImage(
+                    activeImageIndex - 1
+                );
+
+            }
+
+        },
+
+        {
+            passive: true
         }
+    );
 
-        else {
-
-            showImage(
-                activeImageIndex - 1
-            );
-
-        }
-
-    },
-
-    {
-        passive: true
-    }
-);
+}
 
 
-
-/* Refresh favourite state when returning to page */
+/* =========================
+   PAGE SHOW
+========================= */
 
 window.addEventListener(
     "pageshow",
@@ -1340,8 +1705,9 @@ window.addEventListener(
 );
 
 
-
-/* Sync if localStorage changes */
+/* =========================
+   STORAGE SYNC
+========================= */
 
 window.addEventListener(
     "storage",
@@ -1372,7 +1738,8 @@ window.addEventListener(
 );
 
 
+/* =========================
+   START PAGE
+========================= */
 
-/* Start page */
-
-renderProduct();
+loadProduct();

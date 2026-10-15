@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Loyalty | Avviamento</title>
+
+    <link rel="stylesheet" href="admin.css">
+
+    <link rel="stylesheet" href="loyalty.css">
+
+    <style>
+
+        .loyalty-form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px; margin:24px 0; }
+
+        .loyalty-form-grid label { display:flex; flex-direction:column; gap:8px; font-weight:600; }
+
+        .loyalty-form-grid input, .loyalty-form-grid select { width:100%; box-sizing:border-box; padding:12px; border:1px solid #ded8d0; border-radius:8px; font:inherit; }
+
+        .loyalty-form-grid small { color:#777; font-size:12px; font-weight:400; line-height:1.5; }
+
+        #loyaltySettingsMessage { font-size:13px; }
+
+        @media (max-width:700px) { .loyalty-form-grid { grid-template-columns:1fr; } }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="admin-layout">
+
+        <!-- ================= SIDEBAR ================= -->
+
+        <aside class="sidebar">
+
+            <div class="sidebar-logo">
+
+                <h2>Avviamento</h2>
+
+                <span>Admin Panel</span>
+
+            </div>
+
+            <nav class="sidebar-nav">
+
+                <a href="dashboard.html">
+
+                    Dashboard
+
+                </a>
+
+                <a href="products.html">
+
+                    Products
+
+                </a>
+
+                <a href="categories.html">
+
+                    Categories
+
+                </a>
+
+                <a href="orders.html">
+
+                    Orders
+
+                </a>
+
+                <a href="customers.html">
+
+                    Customers
+
+                </a>
+
+                <a href="loyalty.html" class="active">
+
+                    Loyalty
+
+                </a>
+
+<a href="contact-messages.html">Contact Messages</a>
+
+            </nav>
+
+            <button
+
+                id="logoutBtn"
+
+                class="logout-btn">
+
+                Logout
+
+            </button>
+
+        </aside>
+
+        <!-- ================= MAIN ================= -->
+
+        <main class="main-content">
+
+            <div class="loyalty-content">
+
+                <!-- ================= HEADER ================= -->
+
+                <div class="loyalty-page-header">
+
+                    <h1>Loyalty Program</h1>
+
+                    <p>
+
+                        Manage rewards, missions and customer loyalty levels
+
+                        dynamically from the admin dashboard.
+
+                    </p>
+
+                </div>
+
+                <!-- ================= TABS ================= -->
+
+                <div class="loyalty-tabs">
+
+                    <button
+
+                        class="loyalty-tab active"
+
+                        data-tab="overview">
+
+                        Overview
+
+                    </button>
+
+                    <button
+
+                        class="loyalty-tab"
+
+                        data-tab="rewards">
+
+                        Rewards
+
+                    </button>
+
+                    <button
+
+                        class="loyalty-tab"
+
+                        data-tab="missions">
+
+                        Missions
+
+                    </button>
+
+                    <button
+
+                        class="loyalty-tab"
+
+                        data-tab="levels">
+
+                        Levels
+
+                    </button>
+
+                    <button class="loyalty-tab" data-tab="settings">
+
+                        Settings
+
+                    </button>
+
+                </div>
+
+                <!-- =================================================
+
+                     OVERVIEW
+
+                     ================================================= -->
+
+                <section
+
+                    id="overviewTab"
+
+                    class="loyalty-tab-content">
+
+                    <div class="loyalty-stats-grid">
+
+                        <div class="loyalty-stat-card">
+
+                            <div class="loyalty-stat-icon">
+
+                                👥
+
+                            </div>
+
+                            <h3>Members</h3>
+
+                            <p
+
+                                id="loyaltyMembersCount"
+
+                                class="stat-number">
+
+                                0
+
+                            </p>
+
+                        </div>
+
+                        <div class="loyalty-stat-card">
+
+                            <div class="loyalty-stat-icon">
+
+                                ✦
+
+                            </div>
+
+                            <h3>Points Issued</h3>
+
+                            <p
+
+                                id="pointsIssued"
+
+                                class="stat-number">
+
+                                0
+
+                            </p>
+
+                        </div>
+
+                        <div class="loyalty-stat-card">
+
+                            <div class="loyalty-stat-icon">
+
+                                ↗
+
+                            </div>
+
+                            <h3>Points Redeemed</h3>
+
+                            <p
+
+                                id="pointsRedeemed"
+
+                                class="stat-number">
+
+                                0
+
+                            </p>
+
+                        </div>
+
+                        <div class="loyalty-stat-card">
+
+                            <div class="loyalty-stat-icon">
+
+                                🎁
+
+                            </div>
+
+                            <h3>Active Rewards</h3>
+
+                            <p
+
+                                id="activeRewardsCount"
+
+                                class="stat-number">
+
+                                0
+
+                            </p>
+
+                        </div>
+
+                        <div class="loyalty-stat-card">
+
+                            <div class="loyalty-stat-icon">
+
+                                ✓
+
+                            </div>
+
+                            <h3>Active Missions</h3>
+
+                            <p
+
+                                id="activeMissionsCount"
+
+                                class="stat-number">
+
+                                0
+
+                            </p>
+
+                        </div>
+
+                        <div class="loyalty-stat-card">
+
+                            <div class="loyalty-stat-icon">
+
+                                ★
+
+                            </div>
+
+                            <h3>Active Levels</h3>
+
+                            <p
+
+                                id="activeLevelsCount"
+
+                                class="stat-number">
+
+                                0
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <!-- MANAGEMENT -->
+
+                    <div class="loyalty-panel">
+
+                        <div class="loyalty-panel-header">
+
+                            <div>
+
+                                <h2>Loyalty Management</h2>
+
+                                <p>
+
+                                    Control every part of the loyalty program
+
+                                    without changing the website code.
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="loyalty-management-grid">
+
+                            <!-- REWARDS -->
+
+                            <div class="management-card">
+
+                                <div class="management-icon">
+
+                                    🎁
+
+                                </div>
+
+                                <h3>Rewards</h3>
+
+                                <p>
+
+                                    Create discounts, free shipping,
+
+                                    special gifts and other customer rewards.
+
+                                </p>
+
+                                <button
+
+                                    class="loyalty-primary-btn"
+
+                                    data-open-tab="rewards">
+
+                                    Manage Rewards
+
+                                </button>
+
+                            </div>
+
+                            <!-- MISSIONS -->
+
+                            <div class="management-card">
+
+                                <div class="management-icon">
+
+                                    🎯
+
+                                </div>
+
+                                <h3>Missions</h3>
+
+                                <p>
+
+                                    Create actions customers can complete
+
+                                    to earn additional loyalty points.
+
+                                </p>
+
+                                <button
+
+                                    class="loyalty-primary-btn"
+
+                                    data-open-tab="missions">
+
+                                    Manage Missions
+
+                                </button>
+
+                            </div>
+
+                            <!-- LEVELS -->
+
+                            <div class="management-card">
+
+                                <div class="management-icon">
+
+                                    ★
+
+                                </div>
+
+                                <h3>Levels</h3>
+
+                                <p>
+
+                                    Define loyalty tiers and benefits
+
+                                    customers can unlock.
+
+                                </p>
+
+                                <button
+
+                                    class="loyalty-primary-btn"
+
+                                    data-open-tab="levels">
+
+                                    Manage Levels
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <!-- =================================================
+
+                     REWARDS
+
+                     ================================================= -->
+
+                <section
+
+                    id="rewardsTab"
+
+                    class="loyalty-tab-content"
+
+                    style="display:none;">
+
+                    <div class="loyalty-panel">
+
+                        <div class="loyalty-panel-header">
+
+                            <div>
+
+                                <h2>Rewards</h2>
+
+                                <p>
+
+                                    Manage the rewards customers can unlock
+
+                                    using their points.
+
+                                </p>
+
+                            </div>
+
+                            <button
+
+                                id="addRewardBtn"
+
+                                class="loyalty-primary-btn">
+
+                                + Add Reward
+
+                            </button>
+
+                        </div>
+
+                        <div
+
+                            id="rewardsList"
+
+                            class="loyalty-items">
+
+                            <div class="loyalty-loading">
+
+                                Loading rewards...
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <!-- =================================================
+
+                     MISSIONS
+
+                     ================================================= -->
+
+                <section
+
+                    id="missionsTab"
+
+                    class="loyalty-tab-content"
+
+                    style="display:none;">
+
+                    <div class="loyalty-panel">
+
+                        <div class="loyalty-panel-header">
+
+                            <div>
+
+                                <h2>Missions</h2>
+
+                                <p>
+
+                                    Create missions that reward customers
+
+                                    with additional loyalty points.
+
+                                </p>
+
+                            </div>
+
+                            <button
+
+                                id="addMissionBtn"
+
+                                class="loyalty-primary-btn">
+
+                                + Add Mission
+
+                            </button>
+
+                        </div>
+
+                        <div
+
+                            id="missionsList"
+
+                            class="loyalty-items">
+
+                            <div class="loyalty-loading">
+
+                                Loading missions...
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <!-- =================================================
+
+                     LEVELS
+
+                     ================================================= -->
+
+                <section
+
+                    id="levelsTab"
+
+                    class="loyalty-tab-content"
+
+                    style="display:none;">
+
+                    <div class="loyalty-panel">
+
+                        <div class="loyalty-panel-header">
+
+                            <div>
+
+                                <h2>Loyalty Levels</h2>
+
+                                <p>
+
+                                    Define the levels customers can reach
+
+                                    and the benefits they receive.
+
+                                </p>
+
+                            </div>
+
+                            <button
+
+                                id="addLevelBtn"
+
+                                class="loyalty-primary-btn">
+
+                                + Add Level
+
+                            </button>
+
+                        </div>
+
+                        <div
+
+                            id="levelsList"
+
+                            class="loyalty-items">
+
+                            <div class="loyalty-loading">
+
+                                Loading levels...
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <!-- ================= SETTINGS ================= -->
+
+                <section id="settingsTab" class="loyalty-tab-content" style="display: none;">
+
+                    <div class="loyalty-panel">
+
+                        <div class="loyalty-panel-header">
+
+                            <div>
+
+                                <h2>Loyalty Settings</h2>
+
+                                <p>Control how customers earn loyalty points from their orders.</p>
+
+                            </div>
+
+                        </div>
+
+                        <form id="loyaltySettingsForm">
+
+                            <label class="loyalty-checkbox-field">
+
+                                <input type="checkbox" id="loyaltyEnabled">
+
+                                <span>Enable Loyalty Program</span>
+
+                            </label>
+
+                            <div class="loyalty-form-grid">
+
+                                <label>
+
+                                    Amount Spent (EGP)
+
+                                    <input type="number" id="amountPerPoints" min="0.01" step="0.01" placeholder="100" required>
+
+                                    <small>How much the customer must spend to earn points.</small>
+
+                                </label>
+
+                                <label>
+
+                                    Points Earned
+
+                                    <input type="number" id="pointsPerAmount" min="1" step="1" placeholder="10" required>
+
+                                    <small>Number of points earned for the amount above.</small>
+
+                                </label>
+
+                                <label>
+
+                                    Minimum Order Amount (EGP)
+
+                                    <input type="number" id="minimumOrderAmount" min="0" step="0.01" placeholder="0" required>
+
+                                    <small>Minimum eligible order subtotal after discounts.</small>
+
+                                </label>
+
+                                <label>
+
+                                    Award Points When Order Status Is
+
+                                    <select id="awardOnStatus" required>
+
+                                        <option value="delivered">Delivered</option>
+
+                                        <option value="confirmed">Confirmed</option>
+
+                                        <option value="processing">Processing</option>
+
+                                        <option value="shipped">Shipped</option>
+
+                                        <option value="pending">Pending</option>
+
+                                    </select>
+
+                                    <small>Must match the status value stored in your orders table.</small>
+
+                                </label>
+
+                            </div>
+
+                            <div class="loyalty-form-actions">
+
+                                <button type="submit" class="loyalty-primary-btn" id="saveLoyaltySettingsBtn">Save Settings</button>
+
+                                <span id="loyaltySettingsMessage" role="status" aria-live="polite"></span>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <!-- =========================================================
+
+         REWARD MODAL
+
+         ========================================================= -->
+
+    <div
+
+        id="rewardModal"
+
+        class="loyalty-modal">
+
+        <div class="loyalty-modal-box">
+
+            <div class="loyalty-modal-header">
+
+                <h2 id="rewardModalTitle">
+
+                    Add Reward
+
+                </h2>
+
+                <button
+
+                    type="button"
+
+                    class="loyalty-close-btn"
+
+                    data-close-modal="rewardModal">
+
+                    ×
+
+                </button>
+
+            </div>
+
+            <form id="rewardForm">
+
+                <input
+
+                    type="hidden"
+
+                    id="rewardId">
+
+                <label>
+
+                    Reward Name
+
+                    <input
+
+                        type="text"
+
+                        id="rewardName"
+
+                        placeholder="Example: 5% OFF"
+
+                        required>
+
+                </label>
+
+                <label>
+
+                    Reward Type
+
+                    <select
+
+                        id="rewardType"
+
+                        required>
+
+                        <option value="percentage_discount">
+
+                            Percentage Discount
+
+                        </option>
+
+                        <option value="fixed_discount">
+
+                            Fixed Discount
+
+                        </option>
+
+                        <option value="free_shipping">
+
+                            Free Shipping
+
+                        </option>
+
+                        <option value="special_gift">
+
+                            Special Gift
+
+                        </option>
+
+                        <option value="early_access">
+
+                            Early Access
+
+                        </option>
+
+                    </select>
+
+                </label>
+
+                <label class="loyalty-field-full">
+
+                    Description
+
+                    <textarea
+
+                        id="rewardDescription"
+
+                        placeholder="Describe the reward..."></textarea>
+
+                </label>
+
+                <label>
+
+                    Reward Value
+
+                    <input
+
+                        type="number"
+
+                        id="rewardValue"
+
+                        min="0"
+
+                        step="0.01"
+
+                        placeholder="Example: 5">
+
+                </label>
+
+                <label>
+
+                    Points Required
+
+                    <input
+
+                        type="number"
+
+                        id="rewardPoints"
+
+                        min="1"
+
+                        step="1"
+
+                        placeholder="Example: 100"
+
+                        required>
+
+                </label>
+
+                <label>
+
+                    Start Date
+
+                    <input
+
+                        type="datetime-local"
+
+                        id="rewardStartDate">
+
+                </label>
+
+                <label>
+
+                    End Date
+
+                    <input
+
+                        type="datetime-local"
+
+                        id="rewardEndDate">
+
+                </label>
+
+                <label class="loyalty-checkbox-field">
+
+                    <input
+
+                        type="checkbox"
+
+                        id="rewardActive"
+
+                        checked>
+
+                    <span>
+
+                        Active Reward
+
+                    </span>
+
+                </label>
+
+                <div class="loyalty-form-actions">
+
+                    <button
+
+                        type="button"
+
+                        class="loyalty-secondary-btn"
+
+                        data-close-modal="rewardModal">
+
+                        Cancel
+
+                    </button>
+
+                    <button
+
+                        type="submit"
+
+                        class="loyalty-primary-btn">
+
+                        Save Reward
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- =========================================================
+
+         MISSION MODAL
+
+         ========================================================= -->
+
+    <div
+
+        id="missionModal"
+
+        class="loyalty-modal">
+
+        <div class="loyalty-modal-box">
+
+            <div class="loyalty-modal-header">
+
+                <h2 id="missionModalTitle">
+
+                    Add Mission
+
+                </h2>
+
+                <button
+
+                    type="button"
+
+                    class="loyalty-close-btn"
+
+                    data-close-modal="missionModal">
+
+                    ×
+
+                </button>
+
+            </div>
+
+            <form id="missionForm">
+
+                <input
+
+                    type="hidden"
+
+                    id="missionId">
+
+                <label>
+
+                    Mission Title
+
+                    <input
+
+                        type="text"
+
+                        id="missionTitle"
+
+                        placeholder="Example: Spend 2,000 EGP"
+
+                        required>
+
+                </label>
+
+                <label>
+
+                    Mission Type
+
+                    <select
+
+                        id="missionType"
+
+                        required>
+
+                        <option value="spend_money">
+
+                            Spend Money
+
+                        </option>
+
+                        <option value="number_of_orders">
+
+                            Number of Orders
+
+                        </option>
+
+                        <option value="buy_quantity">
+
+                            Buy Quantity
+
+                        </option>
+
+                        <option value="specific_product">
+
+                            Buy Specific Product
+
+                        </option>
+
+                        <option value="specific_category">
+
+                            Buy From Category
+
+                        </option>
+
+                        <option value="first_order">
+
+                            First Order
+
+                        </option>
+
+                        <option value="referral">
+
+                            Referral
+
+                        </option>
+
+                    </select>
+
+                </label>
+
+                <label class="loyalty-field-full">
+
+                    Description
+
+                    <textarea
+
+                        id="missionDescription"
+
+                        placeholder="Describe what the customer needs to do..."></textarea>
+
+                </label>
+
+                <label id="missionGoalValueField">
+
+                    Goal Value
+
+                    <input
+
+                        type="number"
+
+                        id="missionGoalValue"
+
+                        min="1"
+
+                        step="1"
+
+                        placeholder="Example: 2000">
+
+                </label>
+
+                <label
+
+                    id="missionProductField"
+
+                    style="display:none;">
+
+                    Product
+
+                    <select id="missionProduct">
+
+                        <option value="">
+
+                            Select Product
+
+                        </option>
+
+                    </select>
+
+                </label>
+
+                <label
+
+                    id="missionCategoryField"
+
+                    style="display:none;">
+
+                    Category
+
+                    <select id="missionCategory">
+
+                        <option value="">
+
+                            Select Category
+
+                        </option>
+
+                    </select>
+
+                </label>
+
+                <label>
+
+                    Reward Points
+
+                    <input
+
+                        type="number"
+
+                        id="missionRewardPoints"
+
+                        min="1"
+
+                        step="1"
+
+                        placeholder="Example: 100"
+
+                        required>
+
+                </label>
+
+                <label>
+
+                    Start Date
+
+                    <input
+
+                        type="datetime-local"
+
+                        id="missionStartDate">
+
+                </label>
+
+                <label>
+
+                    End Date
+
+                    <input
+
+                        type="datetime-local"
+
+                        id="missionEndDate">
+
+                </label>
+
+                <label class="loyalty-checkbox-field">
+
+                    <input
+
+                        type="checkbox"
+
+                        id="missionActive"
+
+                        checked>
+
+                    <span>
+
+                        Active Mission
+
+                    </span>
+
+                </label>
+
+                <div class="loyalty-form-actions">
+
+                    <button
+
+                        type="button"
+
+                        class="loyalty-secondary-btn"
+
+                        data-close-modal="missionModal">
+
+                        Cancel
+
+                    </button>
+
+                    <button
+
+                        type="submit"
+
+                        class="loyalty-primary-btn">
+
+                        Save Mission
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- =========================================================
+
+         LEVEL MODAL
+
+         ========================================================= -->
+
+    <div
+
+        id="levelModal"
+
+        class="loyalty-modal">
+
+        <div class="loyalty-modal-box">
+
+            <div class="loyalty-modal-header">
+
+                <h2 id="levelModalTitle">
+
+                    Add Level
+
+                </h2>
+
+                <button
+
+                    type="button"
+
+                    class="loyalty-close-btn"
+
+                    data-close-modal="levelModal">
+
+                    ×
+
+                </button>
+
+            </div>
+
+            <form id="levelForm">
+
+                <input
+
+                    type="hidden"
+
+                    id="levelId">
+
+                <label>
+
+                    Level Name
+
+                    <input
+
+                        type="text"
+
+                        id="levelName"
+
+                        placeholder="Example: AV INSIDER"
+
+                        required>
+
+                </label>
+
+                <label>
+
+                    Minimum Points
+
+                    <input
+
+                        type="number"
+
+                        id="levelMinPoints"
+
+                        min="0"
+
+                        step="1"
+
+                        placeholder="Example: 250"
+
+                        required>
+
+                </label>
+
+                <label class="loyalty-field-full">
+
+                    Description
+
+                    <textarea
+
+                        id="levelDescription"
+
+                        placeholder="Describe this loyalty level..."></textarea>
+
+                </label>
+
+                <label class="loyalty-field-full">
+
+                    Benefits
+
+                    <textarea
+
+                        id="levelBenefits"
+
+                        placeholder="Example: 10% birthday discount, early access..."></textarea>
+
+                    <span class="loyalty-form-help">
+
+                        You can describe multiple benefits in one field.
+
+                    </span>
+
+                </label>
+
+                <label class="loyalty-checkbox-field">
+
+                    <input
+
+                        type="checkbox"
+
+                        id="levelActive"
+
+                        checked>
+
+                    <span>
+
+                        Active Level
+
+                    </span>
+
+                </label>
+
+                <div class="loyalty-form-actions">
+
+                    <button
+
+                        type="button"
+
+                        class="loyalty-secondary-btn"
+
+                        data-close-modal="levelModal">
+
+                        Cancel
+
+                    </button>
+
+                    <button
+
+                        type="submit"
+
+                        class="loyalty-primary-btn">
+
+                        Save Level
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- =========================================================
+
+         SCRIPTS
+
+         ========================================================= -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="../supabase.js"></script>
+
+    <script src="admin-loyalty.js"></script>
+
+</body>
+
+</html>

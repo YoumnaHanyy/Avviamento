@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Messages | Avviamento Admin</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="contact-messages.css">
+</head>
+<body>
+<div class="admin-layout">
+    <aside class="sidebar">
+        <div class="logo">AVVIAMENTO</div>
+        <nav>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="products.html">Products</a>
+            <a href="categories.html">Categories</a>
+            <a href="orders.html">Orders</a>
+            <a href="customers.html">Customers</a>
+            <a href="loyalty.html">Loyalty</a>
+            <a href="contact-messages.html" class="active">Contact Messages</a>
+            
+        </nav>
+        <button id="logoutBtn" class="logout-btn" type="button">Logout</button>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar contact-topbar">
+            <div>
+                <p class="contact-kicker">CUSTOMER CARE</p>
+                <h1>Contact Messages</h1>
+                <p>Review customer inquiries and track follow-ups.</p>
+            </div>
+            <button type="button" id="refreshMessages" class="contact-refresh">
+                Refresh
+            </button>
+        </header>
+
+        <section class="contact-stats">
+            <article class="contact-stat">
+                <span>New</span><strong id="newCount">—</strong>
+            </article>
+            <article class="contact-stat">
+                <span>In Progress</span><strong id="progressCount">—</strong>
+            </article>
+            <article class="contact-stat">
+                <span>Resolved</span><strong id="resolvedCount">—</strong>
+            </article>
+        </section>
+
+        <section class="dashboard-section contact-inbox">
+            <div class="contact-toolbar">
+                <div>
+                    <h2>Inbox</h2>
+                    <p>Newest messages appear first.</p>
+                </div>
+                <select id="statusFilter" aria-label="Filter by status">
+                    <option value="all">All statuses</option>
+                    <option value="new">New</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="resolved">Resolved</option>
+                </select>
+            </div>
+
+            <div id="messagesNotice" class="messages-notice" role="status">
+                Loading messages...
+            </div>
+
+            <div class="contact-table-wrap">
+                <table class="contact-table">
+                    <thead>
+                        <tr>
+                            <th>Customer</th>
+                            <th>Reason</th>
+                            <th>Order</th>
+                            <th>Received</th>
+                            <th>Status</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody id="messagesBody">
+                        <tr><td colspan="6">Loading messages...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="contact-detail" id="messageDetail" hidden>
+            <div class="contact-detail-heading">
+                <div>
+                    <p class="contact-kicker">MESSAGE DETAILS</p>
+                    <h2 id="detailTitle">Customer message</h2>
+                </div>
+                <button type="button" id="closeDetail" class="contact-close">×</button>
+            </div>
+
+            <div class="contact-detail-grid" id="detailFields"></div>
+
+            <div class="contact-message-content">
+                <h3>Message</h3>
+                <p id="detailMessage"></p>
+            </div>
+
+            <div class="contact-update-row">
+                <label for="detailStatus">Update status</label>
+                <select id="detailStatus">
+                    <option value="new">New</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="resolved">Resolved</option>
+                </select>
+                <button type="button" id="saveStatus" class="contact-save">
+                    Save status
+                </button>
+            </div>
+
+            <div id="detailNotice" class="messages-notice" role="status"></div>
+        </section>
+    </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../supabase.js"></script>
+<script src="admin-contact-messages.js"></script>
+</body>
+</html>

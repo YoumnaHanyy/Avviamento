@@ -1,0 +1,225 @@
+
+/* Avviamento Contact Us — petrol, ivory and sand theme */
+
+.contact-hero h1 {
+    max-width: 800px;
+}
+
+.contact-shell {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 88px 7% 105px;
+    display: grid;
+    grid-template-columns: .85fr 1.15fr;
+    gap: clamp(40px, 8vw, 110px);
+    align-items: start;
+}
+
+.contact-intro {
+    position: sticky;
+    top: 110px;
+}
+
+.contact-intro h2 {
+    margin: 0 0 20px;
+    font: normal clamp(42px, 4.5vw, 64px)/1.05 Georgia, "Times New Roman", serif;
+    letter-spacing: -.045em;
+}
+
+.contact-intro > p:not(.policy-eyebrow) {
+    color: var(--policy-muted);
+    font-size: 14px;
+    line-height: 1.85;
+}
+
+.contact-assurance {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    border-top: 1px solid #d7c8b5;
+    margin-top: 30px;
+    padding-top: 20px;
+    color: var(--policy-muted);
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.contact-assurance i {
+    color: var(--policy-petrol);
+    font-size: 17px;
+    margin-top: 2px;
+}
+
+.contact-form {
+    background: #faf7f0;
+    border: 1px solid #d7c8b5;
+    padding: clamp(22px, 4vw, 42px);
+}
+
+.contact-field {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin: 0 0 23px;
+    min-width: 0;
+}
+
+.contact-field > label,
+.contact-field legend {
+    color: var(--policy-petrol);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.contact-field label span,
+.contact-field legend span {
+    color: #7d6b55;
+    font-weight: 400;
+}
+
+.contact-field input:not([type="radio"]),
+.contact-field textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #d6d1c8;
+    border-radius: 2px;
+    background: #fffdf9;
+    padding: 15px 16px;
+    color: var(--policy-petrol);
+    font: 14px Arial, sans-serif;
+    transition: border-color .2s, box-shadow .2s;
+}
+
+.contact-field input:not([type="radio"]) {
+    min-height: 51px;
+}
+
+.contact-field textarea {
+    resize: vertical;
+    min-height: 145px;
+    line-height: 1.65;
+}
+
+.contact-field input::placeholder,
+.contact-field textarea::placeholder {
+    color: #929797;
+}
+
+.contact-field input:focus,
+.contact-field textarea:focus {
+    outline: none;
+    border-color: var(--policy-petrol);
+    box-shadow: 0 0 0 2px rgba(3, 45, 55, .08);
+}
+
+.contact-reasons {
+    border: 0;
+    padding: 0;
+}
+
+.contact-reasons legend {
+    margin-bottom: 13px;
+}
+
+.reason-option {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    min-height: 32px;
+    cursor: pointer;
+    color: #344c50;
+    font-size: 13px;
+}
+
+.reason-option input {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--policy-petrol);
+}
+
+.contact-field > small {
+    text-align: right;
+    color: var(--policy-muted);
+    font-size: 11px;
+}
+
+.contact-submit {
+    width: 100%;
+    min-height: 54px;
+    border: 0;
+    background: var(--policy-petrol);
+    color: var(--policy-ivory);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 19px;
+    font-size: 12px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background .2s;
+}
+
+.contact-submit:hover {
+    background: #0c4a55;
+}
+
+.contact-submit:disabled {
+    opacity: .65;
+    cursor: wait;
+}
+
+.contact-feedback {
+    display: none;
+    margin: 0 0 17px;
+    padding: 13px 15px;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.contact-feedback.is-visible {
+    display: block;
+}
+
+.contact-feedback.is-success {
+    background: #e8f1e9;
+    border: 1px solid #c4d9c7;
+    color: #285c38;
+}
+
+.contact-feedback.is-error {
+    background: #f8e9e6;
+    border: 1px solid #e8c7c1;
+    color: #8a3027;
+}
+
+.contact-privacy {
+    margin: 15px 0 0;
+    color: var(--policy-muted);
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+@media (max-width: 800px) {
+    .contact-shell {
+        grid-template-columns: 1fr;
+        gap: 34px;
+        padding-top: 65px;
+        padding-bottom: 75px;
+    }
+
+    .contact-intro {
+        position: static;
+    }
+}
+
+@media (max-width: 700px) {
+    .contact-hero h1 {
+        font-size: clamp(54px, 13vw, 78px);
+    }
+
+    .contact-form {
+        padding: 22px 18px;
+    }
+}

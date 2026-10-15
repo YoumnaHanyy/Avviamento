@@ -1,0 +1,220 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contact Avviamento customer care.">
+    <title>Contact Us | Avviamento</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="products.css">
+    <link rel="stylesheet" href="menu.css">
+    <link rel="stylesheet" href="search.css">
+    <link rel="stylesheet" href="shipping-policy.css">
+    <link rel="stylesheet" href="contact.css">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="navbar-left">
+        <button class="menu-button" id="menuButton" type="button" aria-label="Open menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <button class="nav-icon" id="searchButton" type="button" aria-label="Search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+    </div>
+
+    <a href="index.html" class="logo" aria-label="Avviamento Home">
+        <img src="images/logo.png" alt="Avviamento Logo">
+    </a>
+
+    <div class="navbar-right">
+        <a href="favorites.html" class="nav-icon" id="navbarFavourite" aria-label="Favourites">
+            <i class="fa-regular fa-heart"></i>
+        </a>
+        <a href="cart.html" class="cart-icon" aria-label="Shopping cart">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <span class="cart-count" id="cartCount">0</span>
+        </a>
+    </div>
+</header>
+
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<aside class="side-menu" id="sideMenu">
+    <div class="menu-header">
+        <a href="index.html" class="menu-wordmark">AVVIAMENTO</a>
+        <button id="closeMenu" type="button" aria-label="Close menu">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    <nav class="menu-links" id="menuLinks"></nav>
+</aside>
+
+<main>
+    <section class="policy-hero contact-hero">
+        <div class="policy-hero-inner">
+            <p class="policy-eyebrow">AVVIAMENTO · CUSTOMER CARE</p>
+            <h1 id="contact-title">How can we <em>help?</em></h1>
+            <p class="policy-hero-intro">
+                Questions about an order, delivery, a product, or a return?
+                Send our team a message and we'll get back to you.
+            </p>
+            <a href="#contact-form-section" class="policy-hero-link">
+                Send us a message <span aria-hidden="true">↓</span>
+            </a>
+        </div>
+        <div class="policy-hero-stamp" aria-hidden="true">
+            <span>AV</span><small>HERE TO HELP</small>
+        </div>
+    </section>
+
+    <section class="contact-shell" id="contact-form-section">
+        <div class="contact-intro">
+            <p class="policy-eyebrow">01 / GET IN TOUCH</p>
+            <h2>Let's talk.</h2>
+            <p>
+                Complete the form below. Fields marked with an asterisk are required.
+                If your message concerns an existing order, include its order number.
+            </p>
+            <div class="contact-assurance">
+                <i class="fa-regular fa-envelope"></i>
+                <span>Your message will be sent privately to our customer care team.</span>
+            </div>
+        </div>
+
+        <form class="contact-form" id="contactForm" novalidate>
+            <div class="contact-field">
+                <label for="orderNumber">Order Number <span>(if applicable)</span></label>
+                <input id="orderNumber" name="orderNumber" type="text"
+                       maxlength="80" placeholder="e.g. AVV-10025" autocomplete="off">
+            </div>
+
+            <div class="contact-field">
+                <label for="fullName">Full Name <span>*</span></label>
+                <input id="fullName" name="fullName" type="text"
+                       maxlength="120" placeholder="Enter your full name"
+                       autocomplete="name" required>
+            </div>
+
+            <div class="contact-field">
+                <label for="email">Email Address <span>*</span></label>
+                <input id="email" name="email" type="email"
+                       maxlength="254" placeholder="you@example.com"
+                       autocomplete="email" required>
+            </div>
+
+            <div class="contact-field">
+                <label for="phone">Phone Number <span>*</span></label>
+                <input id="phone" name="phone" type="tel"
+                       maxlength="30" placeholder="+20..."
+                       autocomplete="tel" required>
+            </div>
+
+            <fieldset class="contact-field contact-reasons">
+                <legend>Reason for Contact <span>*</span></legend>
+
+                <label class="reason-option">
+                    <input type="radio" name="reason" value="Order inquiry" required>
+                    <span>Order inquiry</span>
+                </label>
+
+                <label class="reason-option">
+                    <input type="radio" name="reason" value="Shipping or delivery">
+                    <span>Shipping or delivery</span>
+                </label>
+
+                <label class="reason-option">
+                    <input type="radio" name="reason" value="Return or exchange">
+                    <span>Return or exchange</span>
+                </label>
+
+                <label class="reason-option">
+                    <input type="radio" name="reason" value="Product inquiry">
+                    <span>Product inquiry</span>
+                </label>
+
+                <label class="reason-option">
+                    <input type="radio" name="reason" value="Other">
+                    <span>Other</span>
+                </label>
+            </fieldset>
+
+            <div class="contact-field">
+                <label for="message">Message <span>*</span></label>
+                <textarea id="message" name="message" rows="5"
+                          maxlength="3000" placeholder="How can we help you?"
+                          required></textarea>
+                <small><span id="messageCount">0</span>/3000</small>
+            </div>
+
+            <div id="contactFeedback" class="contact-feedback"
+                 role="status" aria-live="polite"></div>
+
+            <button class="contact-submit" type="submit" id="contactSubmit">
+                Submit message <span aria-hidden="true">↗</span>
+            </button>
+
+            <p class="contact-privacy">
+                Please don't include payment card details or passwords in your message.
+            </p>
+        </form>
+    </section>
+</main>
+
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-brand">
+            <h2>AVVIAMENTO</h2>
+            <p>Refined menswear for an elevated everyday.</p>
+        </div>
+
+        <div class="footer-section">
+            <h3>Information</h3>
+            <ul>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html" aria-current="page">Contact Us</a></li>
+                <li><a href="shipping-policy.html">Shipping Policy</a></li>
+                <li><a href="refund-policy.html">Refund &amp; Exchange Policy</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h3>Contact Us</h3>
+            <ul class="contact-list">
+                <li>
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <a href="https://wa.me/201000000000" target="_blank" rel="noopener noreferrer">
+                        +20 100 000 0000
+                    </a>
+                </li>
+                <li>
+                    <i class="fa-regular fa-envelope"></i>
+                    <a href="mailto:info@avviamento.com">info@avviamento.com</a>
+                </li>
+                <li>
+                    <i class="fa-brands fa-instagram"></i>
+                    <a href="https://instagram.com/" target="_blank" rel="noopener noreferrer">
+                        @avviamento
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2026 Avviamento. All rights reserved.</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script src="menu.js"></script>
+<script src="search.js"></script>
+<script src="style.js"></script>
+<script src="contact.js"></script>
+
+</body>
+</html>
