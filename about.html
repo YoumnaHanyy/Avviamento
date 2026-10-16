@@ -28,11 +28,10 @@
 <!-- =========================
      NAVBAR
 ========================== -->
-
+    
 <header class="navbar">
 
     <div class="navbar-left">
-
         <button
             class="menu-button"
             id="menuButton"
@@ -42,7 +41,6 @@
             <i class="fa-solid fa-bars"></i>
         </button>
 
-
         <button
             class="nav-icon"
             id="searchButton"
@@ -51,51 +49,37 @@
         >
             <i class="fa-solid fa-magnifying-glass"></i>
         </button>
-
     </div>
 
-
-    <a
-        href="index.html"
-        class="logo"
-        aria-label="Avviamento Home"
-    >
-        <img
-            src="images/logo.png"
-            alt="Avviamento Logo"
-        >
+    <a href="index.html" class="logo" aria-label="Avviamento Home">
+        <img src="images/logo.png" alt="Avviamento Logo">
     </a>
 
+    <!-- Desktop Navigation -->
+    <nav class="desktop-menu" id="desktopMenu" aria-label="Main navigation">
+        <div class="desktop-menu-links" id="desktopMenuLinks"></div>
+    </nav>
 
     <div class="navbar-right">
-
         <a
             href="favorites.html"
             class="nav-icon"
+            id="navbarFavourite"
             aria-label="Favourites"
         >
             <i class="fa-regular fa-heart"></i>
         </a>
 
-
-        <a
-            href="cart.html"
-            class="cart-icon"
-            aria-label="Shopping cart"
-        >
+        <a href="cart.html" class="cart-icon" aria-label="Shopping cart">
             <i class="fa-solid fa-bag-shopping"></i>
-
-            <span
-                class="cart-count"
-                id="cartCount"
-            >
-                0
-            </span>
+            <span class="cart-count" id="cartCount">0</span>
         </a>
-
     </div>
 
 </header>
+
+
+
 
 
 

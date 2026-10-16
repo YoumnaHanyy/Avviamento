@@ -17,12 +17,25 @@
 </head>
 <body>
 
+    
 <header class="navbar">
+
     <div class="navbar-left">
-        <button class="menu-button" id="menuButton" type="button" aria-label="Open menu">
+        <button
+            class="menu-button"
+            id="menuButton"
+            type="button"
+            aria-label="Open menu"
+        >
             <i class="fa-solid fa-bars"></i>
         </button>
-        <button class="nav-icon" id="searchButton" type="button" aria-label="Search">
+
+        <button
+            class="nav-icon"
+            id="searchButton"
+            type="button"
+            aria-label="Search"
+        >
             <i class="fa-solid fa-magnifying-glass"></i>
         </button>
     </div>
@@ -31,16 +44,31 @@
         <img src="images/logo.png" alt="Avviamento Logo">
     </a>
 
+    <!-- Desktop Navigation -->
+    <nav class="desktop-menu" id="desktopMenu" aria-label="Main navigation">
+        <div class="desktop-menu-links" id="desktopMenuLinks"></div>
+    </nav>
+
     <div class="navbar-right">
-        <a href="favorites.html" class="nav-icon" id="navbarFavourite" aria-label="Favourites">
+        <a
+            href="favorites.html"
+            class="nav-icon"
+            id="navbarFavourite"
+            aria-label="Favourites"
+        >
             <i class="fa-regular fa-heart"></i>
         </a>
+
         <a href="cart.html" class="cart-icon" aria-label="Shopping cart">
             <i class="fa-solid fa-bag-shopping"></i>
             <span class="cart-count" id="cartCount">0</span>
         </a>
     </div>
+
 </header>
+
+
+
 
 <div class="menu-overlay" id="menuOverlay"></div>
 
