@@ -844,10 +844,14 @@ document
 
         promoMessage.className = "promo-message";
 
+        // A cart/order can have only ONE loyalty promo code.
+        // Remove the previously applied code before checking a replacement.
+        discountRate = 0;
+        window.appliedLoyaltyCode = null;
+        localStorage.removeItem(APPLIED_REWARD_KEY);
+        updateSummary();
+
         if (!enteredCode) {
-            discountRate = 0;
-            window.appliedLoyaltyCode = null;
-            localStorage.removeItem(APPLIED_REWARD_KEY);
             promoMessage.textContent = "Please enter a promo code.";
             promoMessage.classList.add("error");
             updateSummary();
@@ -868,9 +872,8 @@ document
 
             if (!data || data.length === 0 || !data[0].valid) {
                 discountRate = 0;
-                
-            window.appliedLoyaltyCode = null;
-            localStorage.removeItem(APPLIED_REWARD_KEY);
+                window.appliedLoyaltyCode = null;
+                localStorage.removeItem(APPLIED_REWARD_KEY);
 
                 promoMessage.textContent =
                     "Invalid, expired, or already used code.";
@@ -924,6 +927,11 @@ document
 
         } catch (error) {
             console.error("Promo validation error:", error);
+
+            discountRate = 0;
+            window.appliedLoyaltyCode = null;
+            localStorage.removeItem(APPLIED_REWARD_KEY);
+            updateSummary();
 
             promoMessage.textContent =
                 "Unable to validate the code. Please try again.";

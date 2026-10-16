@@ -1106,18 +1106,29 @@ const total = Math.max(0, subtotal - discount) + deliveryFee;
 
 
                 if (
-                    errorMessage.includes(
-                        "not enough stock"
-                    )
-                    || errorMessage.includes(
-                        "available"
-                    )
+                    errorMessage.includes("not enough stock")
+                    || errorMessage.includes("insufficient stock")
+                    || errorMessage.includes("requested quantity")
                 ) {
 
                     alert(
                         "Sorry, the requested quantity is no longer available. Please return to your bag and update the quantity."
                     );
 
+                }
+
+                else if (
+                    errorMessage.includes("invalid, unavailable, or already-used loyalty code")
+                    || errorMessage.includes("already used")
+                    || errorMessage.includes("already-used")
+                    || errorMessage.includes("invalid loyalty code")
+                ) {
+                    // Keep the code available if the order failed; remove it from this cart
+                    // so the customer can enter a different valid code.
+                    appliedDiscountCode = null;
+                    localStorage.removeItem(APPLIED_REWARD_KEY);
+                    updateTotals();
+                    alert("This promo code is invalid or has already been used. Please apply another code.");
                 }
 
                 else if (
@@ -1422,6 +1433,10 @@ const total = Math.max(0, subtotal - discount) + deliveryFee;
             localStorage.removeItem(
                 CHECKOUT_TOKEN_KEY
             );
+
+            // The server has successfully created the order and consumed this code.
+            appliedDiscountCode = null;
+            localStorage.removeItem(APPLIED_REWARD_KEY);
 
 
             /* Display confirmation */
