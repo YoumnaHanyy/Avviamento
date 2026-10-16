@@ -720,3 +720,47 @@ th {
     }
 
 }
+
+/* Out of Stock Size */
+.size-button.out-of-stock {
+    position: relative;
+    color: #999;
+    border-color: rgba(3, 45, 55, 0.12);
+    background: transparent;
+    cursor: not-allowed;
+    opacity: 0.75;
+    overflow: hidden;
+}
+
+/* Diagonal Line */
+.size-button.out-of-stock::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -5%;
+    width: 110%;
+    height: 1px;
+    background: #b33a32;
+    transform: rotate(-35deg);
+    pointer-events: none;
+}
+
+/* Out of Stock Label */
+.size-button.out-of-stock::before {
+    content: "OUT OF STOCK";
+    position: absolute;
+    bottom: -19px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 7px;
+    font-weight: 600;
+    white-space: nowrap;
+    color: #b33a32;
+    letter-spacing: 0;
+    width: max-content;
+}
+
+/* Give space for the label */
+.size-options {
+    row-gap: 25px;
+}
