@@ -47,14 +47,22 @@ let menuItems = [
         order: 6,
         active: true
     },
-
-    {
-        id: 7,
-        label: "Refund & Exchange Policy",
-        url: "refund-policy.html",
-        order: 7,
-        active: true
-    }
+{
+    id: 7,
+    label: "Return & Exchange",
+    order: 7,
+    active: true,
+    children: [
+        {
+            label: "RETURN & EXCHANGE POLICY",
+            url: "refund-policy.html"
+        },
+        {
+            label: "RETURN & EXCHANGE FORM",
+            url: "contact.html"
+        }
+    ]
+}
 
 ];
 
@@ -87,55 +95,69 @@ const menuLinks =
     document.getElementById(
         "menuLinks"
     );
+const desktopMenuLinks =
+    document.getElementById("desktopMenuLinks");
+
 
 
 function renderMenu() {
+    const visibleItems = menuItems
+        .filter(item => item.active)
+        .sort((a, b) => a.order - b.order);
 
-    if (!menuLinks) {
-        return;
+    function buildLinks(container, isDesktop) {
+        if (!container) return;
+
+        container.innerHTML = "";
+
+        visibleItems.forEach(item => {
+            if (item.children && item.children.length > 0) {
+                const dropdown = document.createElement("div");
+                dropdown.className = "menu-dropdown";
+
+                const toggle = document.createElement("button");
+                toggle.type = "button";
+                toggle.className = "menu-dropdown-toggle";
+                toggle.setAttribute("aria-expanded", "false");
+
+                const label = document.createElement("span");
+                label.textContent = item.label;
+
+                const arrow = document.createElement("i");
+                arrow.className = "fa-solid fa-chevron-down";
+
+                toggle.append(label, arrow);
+
+                const submenu = document.createElement("div");
+                submenu.className = "menu-submenu";
+
+                item.children.forEach(child => {
+                    const link = document.createElement("a");
+                    link.href = child.url;
+                    link.textContent = child.label;
+                    submenu.appendChild(link);
+                });
+
+                toggle.addEventListener("click", () => {
+                    const isOpen = dropdown.classList.toggle("open");
+                    toggle.setAttribute("aria-expanded", String(isOpen));
+                });
+
+                dropdown.append(toggle, submenu);
+                container.appendChild(dropdown);
+            } else {
+                const link = document.createElement("a");
+                link.href = item.url;
+                link.textContent = item.label;
+                container.appendChild(link);
+            }
+        });
     }
 
-
-    menuLinks.innerHTML = "";
-
-
-    const visibleItems =
-        menuItems
-            .filter(
-                item =>
-                    item.active
-            )
-            .sort(
-                (a, b) =>
-                    a.order - b.order
-            );
-
-
-    visibleItems.forEach(
-        item => {
-
-            const link =
-                document.createElement(
-                    "a"
-                );
-
-
-            link.href =
-                item.url;
-
-
-            link.textContent =
-                item.label;
-
-
-            menuLinks.appendChild(
-                link
-            );
-
-        }
-    );
-
+    buildLinks(menuLinks, false);
+    buildLinks(desktopMenuLinks, true);
 }
+
 
 
 function openMenu() {

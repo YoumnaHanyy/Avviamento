@@ -321,14 +321,39 @@ function renderOrder() {
             </div>
 
 
-            <strong class="summary-product-price">
+<div class="summary-product-price">
 
-                ${formatPrice(
-                    Number(item.price)
-                    * Number(item.quantity)
-                )}
+    ${
+        item.salePrice !== null &&
+        item.salePrice !== undefined &&
+        Number(item.salePrice) > 0 &&
+        Number(item.salePrice) < Number(item.originalPrice)
+            ? `
+                <del class="original-price">
+                    ${formatPrice(
+                        Number(item.originalPrice) *
+                        Number(item.quantity)
+                    )}
+                </del>
 
-            </strong>
+                <strong class="sale-price">
+                    ${formatPrice(
+                        Number(item.price) *
+                        Number(item.quantity)
+                    )}
+                </strong>
+            `
+            : `
+                <strong>
+                    ${formatPrice(
+                        Number(item.price) *
+                        Number(item.quantity)
+                    )}
+                </strong>
+            `
+    }
+
+</div>
         `;
 
 

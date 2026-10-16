@@ -235,6 +235,7 @@ async function loadProduct() {
                     id,
                     name,
                     price,
+                    sale_price,
                     description,
                     details,
                     care,
@@ -304,10 +305,23 @@ async function loadProduct() {
             name:
                 data.name,
 
-            price:
-                Number(
-                    data.price
-                ),
+           price: Number(data.price || 0),
+
+salePrice:
+    data.sale_price !== null &&
+    data.sale_price !== undefined &&
+    Number(data.sale_price) > 0 &&
+    Number(data.sale_price) < Number(data.price)
+        ? Number(data.sale_price)
+        : null,
+
+currentPrice:
+    data.sale_price !== null &&
+    data.sale_price !== undefined &&
+    Number(data.sale_price) > 0 &&
+    Number(data.sale_price) < Number(data.price)
+        ? Number(data.sale_price)
+        : Number(data.price || 0),
 
             description:
                 data.description || "",
@@ -397,11 +411,20 @@ function renderProduct() {
         product.name;
 
 
-    elements.productPrice.textContent =
-        formatPrice(
-            product.price
-        );
+if (product.salePrice !== null) {
+    elements.productPrice.innerHTML = `
+        <del class="original-price">
+            ${formatPrice(product.price)}
+        </del>
 
+        <strong class="sale-price">
+            ${formatPrice(product.salePrice)}
+        </strong>
+    `;
+} else {
+    elements.productPrice.textContent =
+        formatPrice(product.price);
+}
 
     elements.productDescription.textContent =
         product.description;
@@ -1358,7 +1381,9 @@ document
 
                 existingItem.quantity =
                     newQuantity;
-
+existingItem.price = product.currentPrice;
+existingItem.originalPrice = product.price;
+existingItem.salePrice = product.salePrice;
             }
 
             else {
@@ -1370,10 +1395,11 @@ document
 
                     name:
                         product.name,
+price: product.currentPrice,
 
-                    price:
-                        product.price,
+originalPrice: product.price,
 
+salePrice: product.salePrice,
                     image:
                         product.images[0] || "",
 

@@ -322,11 +322,53 @@ h1 {
     line-height: 0.95;
 }
 
+/* Product Price */
+
 .product-price {
     padding-bottom: 4px;
-    white-space: nowrap;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 10px;
     font-size: 18px;
     font-weight: 600;
+    color: var(--petrol);
+}
+
+/* Original price before discount */
+
+.product-price .original-price {
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 400;
+    text-decoration: line-through;
+    text-decoration-thickness: 1px;
+    opacity: 0.75;
+}
+
+/* Discounted price */
+
+.product-price .sale-price {
+    color: #a63f38;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+/* Mobile */
+
+@media (max-width: 480px) {
+    .product-price {
+        gap: 7px;
+        font-size: 15px;
+    }
+
+    .product-price .original-price {
+        font-size: 12px;
+    }
+
+    .product-price .sale-price {
+        font-size: 17px;
+    }
 }
 
 .product-description {
@@ -719,4 +761,48 @@ th {
         padding: 32px 20px 24px;
     }
 
+}
+
+/* Out of Stock Size */
+.size-button.out-of-stock {
+    position: relative;
+    color: #999;
+    border-color: rgba(3, 45, 55, 0.12);
+    background: transparent;
+    cursor: not-allowed;
+    opacity: 0.75;
+    overflow: hidden;
+}
+
+/* Diagonal Line */
+.size-button.out-of-stock::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -5%;
+    width: 110%;
+    height: 1px;
+    background: #b33a32;
+    transform: rotate(-35deg);
+    pointer-events: none;
+}
+
+/* Out of Stock Label */
+.size-button.out-of-stock::before {
+    content: "OUT OF STOCK";
+    position: absolute;
+    bottom: -19px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 7px;
+    font-weight: 600;
+    white-space: nowrap;
+    color: #b33a32;
+    letter-spacing: 0;
+    width: max-content;
+}
+
+/* Give space for the label */
+.size-options {
+    row-gap: 25px;
 }

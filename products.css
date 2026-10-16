@@ -386,6 +386,9 @@ select {
 
 /* Product Info */
 
+
+/* Product Info */
+
 .product-info {
     padding-top: 11px;
 }
@@ -399,6 +402,50 @@ select {
 
 .product-info p {
     font-size: 14px;
+}
+
+/* Sale Price */
+
+.product-info .product-price {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    font-size: 14px;
+    font-weight: 600;
+    color: #032d37;
+}
+
+.product-info .original-price {
+    color: #667477;
+    font-size: 12px;
+    font-weight: 400;
+    text-decoration: line-through;
+    text-decoration-thickness: 1px;
+}
+
+.product-info .sale-price {
+    color: #a63f38;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+/* Sale Price on Mobile */
+
+@media screen and (max-width: 700px) {
+    .product-info .product-price {
+        gap: 6px;
+        font-size: 12px;
+    }
+
+    .product-info .original-price {
+        font-size: 10px;
+    }
+
+    .product-info .sale-price {
+        font-size: 13px;
+    }
 }
 
 
