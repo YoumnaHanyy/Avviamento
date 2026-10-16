@@ -271,17 +271,37 @@ function renderHomeProducts(
                     primaryImage?.image_url ||
                     "images/placeholder.jpg";
 
+const originalPrice = Number(product.price || 0);
+const salePrice = Number(product.sale_price || 0);
 
-                const price =
-                    Number(
-                        product.price || 0
-                    ).toLocaleString(
-                        "en-EG",
-                        {
-                            minimumFractionDigits: 0,
-                            maximumFractionDigits: 2
-                        }
-                    );
+const hasSale =
+    product.sale_price !== null &&
+    product.sale_price !== undefined &&
+    salePrice > 0 &&
+    salePrice < originalPrice;
+
+const formatPrice = value =>
+    Number(value).toLocaleString("en-EG", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+    });
+
+const priceHTML = hasSale
+    ? `
+        <p class="product-price">
+            <del class="original-price">
+                EGP ${formatPrice(originalPrice)}
+            </del>
+            <strong class="sale-price">
+                EGP ${formatPrice(salePrice)}
+            </strong>
+        </p>
+    `
+    : `
+        <p class="product-price">
+            EGP ${formatPrice(originalPrice)}
+        </p>
+    `;
 
 
                 return `
@@ -314,7 +334,7 @@ function renderHomeProducts(
 
 
                                 <p>
-                                    EGP ${price}
+                                  ${priceHTML}
                                 </p>
 
                             </div>
@@ -384,6 +404,7 @@ async function loadHomeProducts() {
             id,
             name,
             price,
+            sale_price,
             is_active,
             created_at,
 

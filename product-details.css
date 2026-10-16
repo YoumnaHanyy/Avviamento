@@ -322,11 +322,53 @@ h1 {
     line-height: 0.95;
 }
 
+/* Product Price */
+
 .product-price {
     padding-bottom: 4px;
-    white-space: nowrap;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 10px;
     font-size: 18px;
     font-weight: 600;
+    color: var(--petrol);
+}
+
+/* Original price before discount */
+
+.product-price .original-price {
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 400;
+    text-decoration: line-through;
+    text-decoration-thickness: 1px;
+    opacity: 0.75;
+}
+
+/* Discounted price */
+
+.product-price .sale-price {
+    color: #a63f38;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+/* Mobile */
+
+@media (max-width: 480px) {
+    .product-price {
+        gap: 7px;
+        font-size: 15px;
+    }
+
+    .product-price .original-price {
+        font-size: 12px;
+    }
+
+    .product-price .sale-price {
+        font-size: 17px;
+    }
 }
 
 .product-description {

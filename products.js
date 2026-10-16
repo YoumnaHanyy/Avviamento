@@ -122,6 +122,7 @@ async function loadProducts() {
                 id,
                 name,
                 price,
+                sale_price,
                 sales,
                 is_active,
                 created_at,
@@ -247,6 +248,21 @@ async function loadProducts() {
 
                     price:
                         Number(product.price || 0),
+                        salePrice:
+    product.sale_price !== null &&
+    product.sale_price !== undefined &&
+    Number(product.sale_price) > 0 &&
+    Number(product.sale_price) < Number(product.price)
+        ? Number(product.sale_price)
+        : null,
+
+currentPrice:
+    product.sale_price !== null &&
+    product.sale_price !== undefined &&
+    Number(product.sale_price) > 0 &&
+    Number(product.sale_price) < Number(product.price)
+        ? Number(product.sale_price)
+        : Number(product.price || 0),
 
                     image:
                         image,
@@ -432,10 +448,23 @@ function renderProducts(list) {
                     ${escapeHTML(product.name)}
                 </h3>
 
-                <p>
+<p class="product-prices">
+    ${
+        product.salePrice !== null
+            ? `
+                <del class="original-price">
                     EGP ${product.price.toLocaleString()}
-                </p>
+                </del>
 
+                <strong class="sale-price">
+                    EGP ${product.salePrice.toLocaleString()}
+                </strong>
+            `
+            : `
+                EGP ${product.price.toLocaleString()}
+            `
+    }
+</p>
                 ${
                     colorsHTML
                     ?
@@ -676,7 +705,7 @@ function getSortedProducts() {
 
         list.sort(
             (a, b) =>
-                a.price - b.price
+                a.currentPrice - b.currentPrice
         );
 
     }
@@ -686,7 +715,7 @@ function getSortedProducts() {
 
         list.sort(
             (a, b) =>
-                b.price - a.price
+                b.currentPrice - a.currentPrice
         );
 
     }

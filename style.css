@@ -276,9 +276,49 @@ button {
     font-weight: 500;
 }
 
+
 .product-details p {
     font-size: 14px;
 }
+
+.product-details .product-price {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 14px;
+    color: #032d37;
+}
+
+.product-details .original-price {
+    color: #667477;
+    font-size: 12px;
+    font-weight: 400;
+    text-decoration: line-through;
+    text-decoration-thickness: 1px;
+}
+
+.product-details .sale-price {
+    color: #a63f38;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+@media screen and (max-width: 400px) {
+    .product-details .product-price {
+        gap: 5px;
+        font-size: 12px;
+    }
+
+    .product-details .original-price {
+        font-size: 10px;
+    }
+
+    .product-details .sale-price {
+        font-size: 12px;
+    }
+}
+
 
 
 /* Favourite button */

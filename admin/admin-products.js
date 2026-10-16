@@ -156,6 +156,7 @@ async function loadProducts(search = "") {
             id,
             name,
             price,
+            sale_price,
             description,
             details,
             care,
@@ -423,6 +424,7 @@ async function editProduct(id) {
             id,
             name,
             price,
+            sale_price,
             description,
             details,
             care,
@@ -472,7 +474,8 @@ async function editProduct(id) {
         "productPrice"
     ).value =
         product.price || "";
-
+    document.getElementById("salePrice").value =
+        product.sale_price ?? "";
     document.getElementById(
         "productCategory"
     ).value =
@@ -1076,7 +1079,27 @@ productForm.addEventListener(
                     "productPrice"
                 ).value
             );
+const salePriceValue =
+    document.getElementById("salePrice").value.trim();
 
+const salePrice =
+    salePriceValue === ""
+        ? null
+        : Number(salePriceValue);
+
+if (
+    salePrice !== null &&
+    (
+        !Number.isFinite(salePrice) ||
+        salePrice <= 0 ||
+        salePrice >= price
+    )
+) {
+    formError.textContent =
+        "Sale price must be greater than 0 and lower than the original price.";
+
+    return;
+}
         const categoryId =
             document.getElementById(
                 "productCategory"
@@ -1213,7 +1236,7 @@ productForm.addEventListener(
                     name,
 
                     price,
-
+                    sale_price: salePrice,
                     category_id:
                         categoryId
                         ?
@@ -1270,7 +1293,7 @@ productForm.addEventListener(
                     name,
 
                     price,
-
+                    sale_price: salePrice,
                     category_id:
                         categoryId
                         ?
@@ -1361,7 +1384,7 @@ productForm.addEventListener(
 
                         color:
                             variant.color,
-
+                       
                         size:
                             variant.size,
 

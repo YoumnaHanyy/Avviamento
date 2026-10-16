@@ -471,14 +471,35 @@ async function renderCart() {
                     </p>
 
 
-                    <p class="item-price-mobile">
+<p class="item-price-mobile">
+    ${
+        item.salePrice !== null &&
+        item.salePrice !== undefined &&
+        Number(item.salePrice) > 0 &&
+        Number(item.salePrice) < Number(item.originalPrice)
+            ? `
+                <del class="original-price">
+                    ${formatPrice(
+                        Number(item.originalPrice) *
+                        Number(item.quantity)
+                    )}
+                </del>
 
-                        ${formatPrice(
-                            item.price *
-                            item.quantity
-                        )}
-
-                    </p>
+                <strong class="sale-price">
+                    ${formatPrice(
+                        Number(item.price) *
+                        Number(item.quantity)
+                    )}
+                </strong>
+            `
+            : `
+                ${formatPrice(
+                    Number(item.price) *
+                    Number(item.quantity)
+                )}
+            `
+    }
+</p>
 
 
                     <div
@@ -516,16 +537,37 @@ async function renderCart() {
 
 
                 <div class="item-side">
+<div class="item-total">
+    ${
+        item.salePrice !== null &&
+        item.salePrice !== undefined &&
+        Number(item.salePrice) > 0 &&
+        Number(item.salePrice) < Number(item.originalPrice)
+            ? `
+                <del class="original-price">
+                    ${formatPrice(
+                        Number(item.originalPrice) *
+                        Number(item.quantity)
+                    )}
+                </del>
 
-                    <p class="item-total">
-
-                        ${formatPrice(
-                            item.price *
-                            item.quantity
-                        )}
-
-                    </p>
-
+                <strong class="sale-price">
+                    ${formatPrice(
+                        Number(item.price) *
+                        Number(item.quantity)
+                    )}
+                </strong>
+            `
+            : `
+                <strong>
+                    ${formatPrice(
+                        Number(item.price) *
+                        Number(item.quantity)
+                    )}
+                </strong>
+            `
+    }
+</div>
 
                     <button
                         class="remove-item"
