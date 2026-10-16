@@ -393,35 +393,16 @@ async function loadLevels() {
 ========================================================= */
 
 async function loadRedemptions() {
-
-    const {
-        data,
-        error
-    } = await supabaseClient.rpc(
-        "get_loyalty_redemptions_by_email",
-        {
-            p_email: loyaltyEmail
-        }
+    const { data, error } = await supabaseClient.rpc(
+        "get_my_loyalty_redemptions"
     );
 
-
     if (error) {
-
-        console.error(
-            "Redemptions error:",
-            error
-        );
-
+        console.error("Redemptions error:", error);
         throw error;
-
     }
 
-
-    redemptions =
-        Array.isArray(data)
-            ? data
-            : [];
-
+    redemptions = Array.isArray(data) ? data : [];
 }
 
 
@@ -1267,99 +1248,171 @@ promoList.addEventListener(
    EMAIL LOGIN
 ========================================================= */
 
+
+/* =========================================================
+   EMAIL OTP LOGIN
+========================================================= */
+
+let otpSent = false;
+let otpInput = null;
+
+function resetOTPForm() {
+    otpSent = false;
+
+    if (otpInput) {
+        otpInput.remove();
+        otpInput = null;
+    }
+
+    loyaltyEmailInput.disabled = false;
+
+    continueButton.disabled = false;
+    continueButton.innerHTML = `
+        <span>CONTINUE</span>
+        <span class="button-arrow">→</span>
+    `;
+}
+
+function createOTPInput() {
+    if (otpInput) return;
+
+    const wrapper = document.createElement("div");
+    wrapper.id = "loyaltyOTPWrapper";
+    wrapper.style.marginTop = "16px";
+
+    const label = document.createElement("label");
+    label.htmlFor = "loyaltyOTP";
+    label.textContent = "Enter your 6-digit verification code";
+    label.style.display = "block";
+    label.style.marginBottom = "8px";
+
+    otpInput = document.createElement("input");
+    otpInput.id = "loyaltyOTP";
+    otpInput.type = "text";
+    otpInput.inputMode = "numeric";
+    otpInput.autocomplete = "one-time-code";
+    otpInput.maxLength = 6;
+    otpInput.pattern = "[0-9]{6}";
+    otpInput.placeholder = "000000";
+    otpInput.required = true;
+    otpInput.style.width = "100%";
+    otpInput.style.boxSizing = "border-box";
+    otpInput.style.padding = "12px";
+    otpInput.style.marginBottom = "12px";
+
+    wrapper.appendChild(label);
+    wrapper.appendChild(otpInput);
+
+    loyaltyLoginForm.insertBefore(
+        wrapper,
+        continueButton
+    );
+
+    continueButton.innerHTML = "<span>VERIFY CODE</span>";
+    otpInput.focus();
+}
+
 loyaltyLoginForm.addEventListener(
     "submit",
-    async event => {
-
+    async function (event) {
         event.preventDefault();
-
-
         clearLoginError();
 
+        const email = loyaltyEmailInput.value
+            .trim()
+            .toLowerCase();
 
-        const email =
-            loyaltyEmailInput.value
-                .trim()
-                .toLowerCase();
-
-
-        if (!email) {
-
-            showLoginError(
-                "Please enter your email."
-            );
-
+        if (!email || !loyaltyEmailInput.checkValidity()) {
+            showLoginError("Please enter a valid email address.");
             return;
-
         }
 
-
-        if (
-            !loyaltyEmailInput.checkValidity()
-        ) {
-
-            showLoginError(
-                "Please enter a valid email address."
-            );
-
-            return;
-
-        }
-
-
-        loyaltyEmail =
-            email;
-
-
-        /*
-         * Save the email for this browser tab.
-         * This allows the loyalty page to survive
-         * a refresh.
-         */
-
-        saveLoyaltyEmail(
-            loyaltyEmail
-        );
-
-
-        continueButton.disabled =
-            true;
-
-
-        continueButton.innerHTML = `
-            <span>LOADING...</span>
-        `;
-
+        continueButton.disabled = true;
 
         try {
+            if (!otpSent) {
+                continueButton.innerHTML =
+                    "<span>SENDING CODE...</span>";
+
+                const { error } =
+                    await supabaseClient.auth.signInWithOtp({
+                        email: email,
+                        options: {
+                            shouldCreateUser: true
+                        }
+                    });
+
+                if (error) throw error;
+
+                loyaltyEmail = email;
+                otpSent = true;
+
+                loyaltyEmailInput.disabled = true;
+                createOTPInput();
+
+                showLoginError(
+                    "A verification code was requested. Check your email."
+                );
+
+                return;
+            }
+
+            const token = otpInput
+                ? otpInput.value.trim()
+                : "";
+
+            if (!/^[0-9]{6}$/.test(token)) {
+                showLoginError(
+                    "Please enter the 6-digit code."
+                );
+                return;
+            }
+
+            continueButton.innerHTML =
+                "<span>VERIFYING...</span>";
+
+            const { data, error } =
+                await supabaseClient.auth.verifyOtp({
+                    email: email,
+                    token: token,
+                    type: "email"
+                });
+
+            if (error) throw error;
+
+            if (!data.session || !data.user) {
+                throw new Error(
+                    "Verification succeeded but no login session was created."
+                );
+            }
+
+            loyaltyEmail = data.user.email || email;
+            saveLoyaltyEmail(loyaltyEmail);
 
             await loadLoyaltyData();
+        } catch (error) {
+            console.error("OTP login error:", error);
 
-        }
-
-        catch (error) {
-
-            console.error(
-                error
+            showLoginError(
+                error.message ||
+                "Could not verify your code. Please try again."
             );
+        } finally {
+            continueButton.disabled = false;
 
+            if (otpSent) {
+                continueButton.innerHTML =
+                    "<span>VERIFY CODE</span>";
+            } else {
+                continueButton.innerHTML = `
+                    <span>CONTINUE</span>
+                    <span class="button-arrow">→</span>
+                `;
+            }
         }
-
-        finally {
-
-            continueButton.disabled =
-                false;
-
-
-            continueButton.innerHTML = `
-                <span>CONTINUE</span>
-                <span class="button-arrow">→</span>
-            `;
-
-        }
-
     }
 );
+
 
 
 /* =========================================================
@@ -1368,60 +1421,54 @@ loyaltyLoginForm.addEventListener(
 
 logoutButton.addEventListener(
     "click",
-    () => {
+    async () => {
+        logoutButton.disabled = true;
 
-        /*
-         * Clear the saved loyalty session
-         * when the customer explicitly
-         * chooses Change Email / Logout.
-         */
+        try {
+            const { error } =
+                await supabaseClient.auth.signOut();
 
-        clearSavedLoyaltyEmail();
+            if (error) {
+                throw error;
+            }
 
+            clearSavedLoyaltyEmail();
 
-        loyaltyEmail =
-            "";
+            loyaltyEmail = "";
+            loyaltyCustomer = null;
+            rewards = [];
+            missions = [];
+            levels = [];
+            redemptions = [];
 
-        loyaltyCustomer =
-            null;
+            loyaltyDashboard.hidden = true;
+            loginSection.hidden = false;
+            loadingState.hidden = true;
 
-        rewards = [];
+            loyaltyEmailInput.value = "";
+            loyaltyEmailInput.disabled = false;
 
-        missions = [];
+            resetOTPForm();
+            clearLoginError();
 
-        levels = [];
-
-        redemptions = [];
-
-
-        loyaltyDashboard.hidden =
-            true;
-
-        loginSection.hidden =
-            false;
-
-
-        loyaltyEmailInput.value =
-            "";
-
-
-        clearLoginError();
-
-
-        window.scrollTo({
-            top: 0,
-            behavior: "instant"
-        });
-
-
-        setTimeout(() => {
+            window.scrollTo({
+                top: 0,
+                behavior: "instant"
+            });
 
             loyaltyEmailInput.focus();
+        } catch (error) {
+            console.error("Logout error:", error);
 
-        }, 300);
-
+            showToast(
+                "Could not log out. Please try again."
+            );
+        } finally {
+            logoutButton.disabled = false;
+        }
     }
 );
+
 
 
 /* =========================================================
@@ -1430,62 +1477,33 @@ logoutButton.addEventListener(
 
 document.addEventListener(
     "DOMContentLoaded",
-    async () => {
+    async function () {
+        const {
+            data: { session },
+            error
+        } = await supabaseClient.auth.getSession();
 
-        /*
-         * Restore the loyalty session after refresh.
-         */
-
-        const savedEmail =
-            getSavedLoyaltyEmail();
-
-
-        if (!savedEmail) {
-
-            loyaltyEmail =
-                "";
-
-            loyaltyCustomer =
-                null;
-
-            rewards = [];
-
-            missions = [];
-
-            levels = [];
-
-            redemptions = [];
-
-
-            loginSection.hidden =
-                false;
-
-            loyaltyDashboard.hidden =
-                true;
-
-            loadingState.hidden =
-                true;
-
-
-            return;
-
+        if (error) {
+            console.error("Session error:", error);
         }
 
+        if (!session || !session.user) {
+            clearSavedLoyaltyEmail();
+            loyaltyEmail = "";
+            loyaltyCustomer = null;
 
-        /*
-         * We found a previous loyalty session.
-         * Load the customer automatically.
-         */
+            loginSection.hidden = false;
+            loyaltyDashboard.hidden = true;
+            loadingState.hidden = true;
 
-        loyaltyEmail =
-            savedEmail;
+            return;
+        }
 
-
-        loyaltyEmailInput.value =
-            savedEmail;
-
+        loyaltyEmail = session.user.email || "";
+        loyaltyEmailInput.value = loyaltyEmail;
 
         await loadLoyaltyData();
-
     }
 );
+
+
