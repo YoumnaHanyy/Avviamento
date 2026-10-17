@@ -1638,3 +1638,58 @@ textarea:focus {
             calc(100vh - 14px);
     }
 }
+
+
+/* Delivery Settings */
+.delivery-settings {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    max-width: 420px;
+}
+
+.delivery-settings label {
+    color: var(--admin-text);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.delivery-settings input {
+    width: 100%;
+    min-height: 44px;
+    padding: 0 14px;
+    border: 1px solid var(--admin-border);
+    border-radius: 10px;
+    background: var(--admin-white);
+    font-size: 14px;
+}
+
+.delivery-settings input:focus {
+    border-color: var(--admin-navy);
+    box-shadow: 0 0 0 3px rgba(11, 47, 58, 0.08);
+}
+
+#saveDeliveryFeeBtn {
+    min-height: 44px;
+    padding: 0 18px;
+    border: none;
+    border-radius: 10px;
+    background: var(--admin-navy);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+#saveDeliveryFeeBtn:hover {
+    background: var(--admin-navy-light);
+}
+
+#deliveryFeeMessage {
+    font-size: 13px;
+    color: var(--admin-success);
+}
+
+#deliveryFeeMessage.error {
+    color: var(--admin-danger);
+}
